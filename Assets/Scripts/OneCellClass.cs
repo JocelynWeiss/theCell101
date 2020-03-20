@@ -72,6 +72,7 @@ public class OneCellClass : MonoBehaviour
         MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>();
         renderer.material.color = GetColorByType();
         transform.localScale = new Vector3(80.0f, 80.0f, 80.0f);
+        transform.localScale = new Vector3(8.0f, 8.0f, 8.0f);
     }
 
 

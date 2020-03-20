@@ -68,14 +68,14 @@ public class TheCellGameMgr : MonoBehaviour
     void Awake()
     {
         Debug.Log($"[GameMgr] Awake. {gameState}");
-        transform.position = new Vector3(-0.5f, 0.0f, 5.25f);
+        transform.position = new Vector3(-1.0f, 0.0f, 1.2f); // position of the mini game
 
         // add a sphere to represent the player     
         if (playerSphere == null)
         {
             playerSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            playerSphere.transform.position = transform.position + new Vector3(0.0f, 1.0f, 0.0f);
-            playerSphere.transform.localScale = new Vector3(0.5f, 0.8f, 0.5f);
+            playerSphere.transform.position = transform.position + new Vector3(0.0f, 0.1f, 0.0f);
+            playerSphere.transform.localScale = new Vector3(0.08f, 0.1f, 0.08f);
         }
 
         InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
@@ -190,13 +190,13 @@ public class TheCellGameMgr : MonoBehaviour
                 cell.name = "Cell_" + id;
                 float z = i;
                 float x = j;
-                cell.transform.SetPositionAndRotation(new Vector3(x, 0.0f, z * -1.0f) + transform.position, Quaternion.identity);
+                cell.transform.SetPositionAndRotation(new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position, Quaternion.identity);
                 float aRndNb = Random.value;
 
                 if ((i == 2) && (j == 2))
                 {
                     cell.InitCell(CellTypes.Start, 0, aRndNb);
-                    playerSphere.transform.position = cell.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+                    playerSphere.transform.position = cell.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
                     continue;
                 }
 
@@ -393,7 +393,7 @@ public class TheCellGameMgr : MonoBehaviour
         OneCellClass current = GetCurrentCell();
         if (current != null)
         {
-            playerSphere.transform.position = current.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+            playerSphere.transform.position = current.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
         }
     }
 

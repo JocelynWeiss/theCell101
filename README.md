@@ -1,9 +1,9 @@
 # theCell101
 To manage The Cell...
 
-This is using Unity 2019.3.5.f1
+This is using Unity 2019.3.6f1
 
-## PLayer Settings
+## Player Settings
 Company Name: StudioHG  
 Product Name: TheCell  
 Package Name: com.StudioHG.TheCell  

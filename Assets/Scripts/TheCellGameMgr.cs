@@ -85,7 +85,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             playerSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             playerSphere.transform.position = transform.position + new Vector3(0.0f, 0.1f, 0.0f);
-            playerSphere.transform.localScale = new Vector3(0.08f, 0.1f, 0.08f);
+            playerSphere.transform.localScale = new Vector3(0.08f, 0.12f, 0.08f);
         }
 
         InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
@@ -200,13 +200,13 @@ public class TheCellGameMgr : MonoBehaviour
                 cell.name = "Cell_" + id;
                 float z = i;
                 float x = j;
-                cell.transform.SetPositionAndRotation(new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position, Quaternion.identity);
+                cell.m_Translation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
                 float aRndNb = Random.value;
 
                 if ((i == 2) && (j == 2))
                 {
                     cell.InitCell(CellTypes.Start, 0, aRndNb);
-                    playerSphere.transform.position = cell.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
+                    playerSphere.transform.position = cell.SmallCell.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
                     continue;
                 }
 
@@ -246,6 +246,8 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         gameState = GameStates.Running;
+        OneCellClass current = GetCurrentCell();
+        current.OnPlayerEnter();
     }
 
 
@@ -403,7 +405,7 @@ public class TheCellGameMgr : MonoBehaviour
         OneCellClass current = GetCurrentCell();
         if (current != null)
         {
-            playerSphere.transform.position = current.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
+            playerSphere.transform.position = current.SmallCell.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
         }
     }
 
@@ -449,7 +451,7 @@ public class TheCellGameMgr : MonoBehaviour
 
         OneCellClass current = GetCurrentCell();
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(current.transform.position, current.transform.localScale * 0.01f);
+        Gizmos.DrawWireCube(current.SmallCell.transform.position, current.SmallCell.transform.localScale);
     }
 
 

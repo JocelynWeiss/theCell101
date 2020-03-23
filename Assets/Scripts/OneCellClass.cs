@@ -10,6 +10,12 @@ public class OneCellClass : MonoBehaviour
     [ViewOnly] public TheCellGameMgr.CellSubTypes cellSubType = TheCellGameMgr.CellSubTypes.Empty;
     public float cellRndSource; // A random number set at init [0..1]
     public float enterTime { get; private set; }
+    public GameObject SmallCell;
+    public GameObject NorthDoor;
+    public GameObject EastDoor;
+    public GameObject SouthDoor;
+    public GameObject WestDoor;
+    public Vector3 m_Translation;
 
     // Start is called before the first frame update
     void Start()
@@ -69,10 +75,14 @@ public class OneCellClass : MonoBehaviour
 
         gameObject.SetActive(true);
 
-        MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>();
+        //MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>();
+        //renderer.material.color = GetColorByType();
+        //transform.localScale = new Vector3(80.0f, 80.0f, 80.0f);
+        //transform.localScale = new Vector3(8.0f, 8.0f, 8.0f);
+
+        MeshRenderer renderer = SmallCell.GetComponent<MeshRenderer>();
         renderer.material.color = GetColorByType();
-        transform.localScale = new Vector3(80.0f, 80.0f, 80.0f);
-        transform.localScale = new Vector3(8.0f, 8.0f, 8.0f);
+        SmallCell.transform.position = m_Translation;
     }
 
 
@@ -115,16 +125,15 @@ public class OneCellClass : MonoBehaviour
     {
         Gizmos.color = GetColorByType();
 
-        float size = 0.01f;
+        float size = 1.0f;
         bool wire = false;
         if (wire)
         {
-            Gizmos.DrawWireCube(transform.position, transform.localScale * size);
+            Gizmos.DrawWireCube(SmallCell.transform.position, SmallCell.transform.localScale * size);
         }
         else
         {
-            //Gizmos.color = Gizmos.color * new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            Gizmos.DrawCube(transform.position, transform.localScale * size);
+            Gizmos.DrawCube(SmallCell.transform.position, SmallCell.transform.localScale * size);
         }
     }
 
@@ -132,7 +141,10 @@ public class OneCellClass : MonoBehaviour
     // Player just exited this cell
     public void OnPlayerExit()
     {
-        
+        NorthDoor.SetActive(false);
+        EastDoor.SetActive(false);
+        SouthDoor.SetActive(false);
+        WestDoor.SetActive(false);
     }
 
 
@@ -140,6 +152,10 @@ public class OneCellClass : MonoBehaviour
     public void OnPlayerEnter()
     {
         enterTime = Time.fixedTime;
+        NorthDoor.SetActive(true);
+        EastDoor.SetActive(true);
+        SouthDoor.SetActive(true);
+        WestDoor.SetActive(true);
 
         switch (cellSubType)
         {

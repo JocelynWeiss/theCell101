@@ -45,6 +45,16 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // Cardinal direction as North = +Z, East = +X, South = -Z, West = -X
+    public enum CardinalPoint
+    {
+        North,
+        East,
+        South,
+        West
+    }
+
+
     private int deadlyCellNb = 9;
     private int effectCellNb = 7;
 
@@ -240,7 +250,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Move the player position on the board to the north +Z
-    void MovePlayerNorth()
+    public void MovePlayerNorth()
     {
         if (playerCellId > 4)
         {
@@ -256,7 +266,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Move the player position on the board to the south -Z
-    void MovePlayerSouth()
+    public void MovePlayerSouth()
     {
         if (playerCellId < 20)
         {
@@ -272,7 +282,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Move the player position on the board to the east +X
-    void MovePlayerEast()
+    public void MovePlayerEast()
     {
         if (playerCellId % 5 == 4)
         {
@@ -289,7 +299,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Move the player position on the board to the west -X
-    void MovePlayerWest()
+    public void MovePlayerWest()
     {
         if (playerCellId % 5 == 0)
         {

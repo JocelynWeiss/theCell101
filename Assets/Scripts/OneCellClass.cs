@@ -15,6 +15,11 @@ public class OneCellClass : MonoBehaviour
     public GameObject EastDoor;
     public GameObject SouthDoor;
     public GameObject WestDoor;
+    public MechanismMove MechanismNorth;
+    public MechanismMove MechanismEast;
+    public MechanismMove MechanismSouth;
+    public MechanismMove MechanismWest;
+
     public Vector3 m_Translation;
 
     // Start is called before the first frame update
@@ -145,6 +150,10 @@ public class OneCellClass : MonoBehaviour
         EastDoor.SetActive(false);
         SouthDoor.SetActive(false);
         WestDoor.SetActive(false);
+        MechanismNorth.gameObject.SetActive(false);
+        MechanismEast.gameObject.SetActive(false);
+        MechanismSouth.gameObject.SetActive(false);
+        MechanismWest.gameObject.SetActive(false);
     }
 
 
@@ -156,6 +165,10 @@ public class OneCellClass : MonoBehaviour
         EastDoor.SetActive(true);
         SouthDoor.SetActive(true);
         WestDoor.SetActive(true);
+        MechanismNorth.gameObject.SetActive(true);
+        MechanismEast.gameObject.SetActive(true);
+        MechanismSouth.gameObject.SetActive(true);
+        MechanismWest.gameObject.SetActive(true);
 
         switch (cellSubType)
         {

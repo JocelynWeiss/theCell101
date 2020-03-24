@@ -383,26 +383,22 @@ public class TheCellGameMgr : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Keypad6))
         {
             TestGetNorth();
-            int from = playerCellId / 5 * 5;
-            MoveRow(from, true);
+            MoveRow(true);
             TestGetNorth();
         }
         if (Input.GetKeyUp(KeyCode.Keypad4))
         {
             TestGetNorth();
-            int from = playerCellId / 5 * 5;
-            MoveRow(from, false);
+            MoveRow(false);
             TestGetNorth();
         }
         if (Input.GetKeyUp(KeyCode.Keypad8))
         {
-            int from = playerCellId % 5;
-            MoveColumn(from, true);
+            MoveColumn(true);
         }
         if (Input.GetKeyUp(KeyCode.Keypad2))
         {
-            int from = playerCellId % 5;
-            MoveColumn(from, false);
+            MoveColumn(false);
         }
 
         OneCellClass current = GetCurrentCell();
@@ -470,6 +466,14 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // Move an entire row to the east or west from player position
+    public void MoveRow(bool onEast)
+    {
+        int from = playerCellId / 5 * 5;
+        MoveRow(from, onEast);
+    }
+
+
     // Move an entire row to the east or west
     void MoveRow(int from, bool onEast)
     {
@@ -534,6 +538,14 @@ public class TheCellGameMgr : MonoBehaviour
             }
         }
         Debug.Log($"[GameMgr] north of 10 -> {msg}");
+    }
+
+
+    // Move an entire column to the north or south from player position
+    public void MoveColumn(bool onNorth)
+    {
+        int from = playerCellId % 5;
+        MoveColumn(from, onNorth);
     }
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 
 
@@ -73,6 +74,7 @@ public class TheCellGameMgr : MonoBehaviour
     public List<int> lookupTab = new List<int>(25); // lookup table, hold a map of cell's id
     int playerCellId = 12; // in which place on the chess the player is. Match the lookup table.
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
+    Canvas m_basicCanvas = null;
 
 
     void Awake()
@@ -96,6 +98,15 @@ public class TheCellGameMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Grab text from canvas and change it
+        //GameObject canvas = GameObject.Find("Canvas");
+        m_basicCanvas = GameObject.FindObjectOfType<Canvas>();
+        int n = m_basicCanvas.transform.childCount;
+        GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
+        string toto = directions.GetComponent<TextMeshProUGUI>().text;
+        Debug.Log($"----------------- {toto}");
+        directions.GetComponent<TextMeshProUGUI>().text = $"Bonne journée\n {Time.fixedTime}s";
+
         Debug.Log($"[GameMgr] Start. {gameState}");
     }
 
@@ -393,6 +404,10 @@ public class TheCellGameMgr : MonoBehaviour
             int from = playerCellId % 5;
             MoveColumn(from, false);
         }
+
+        OneCellClass current = GetCurrentCell();
+        GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
+        directions.GetComponent<TextMeshProUGUI>().text = $"Counter\n {Time.fixedTime - current.enterTime}s";
     }
 
 
@@ -492,7 +507,9 @@ public class TheCellGameMgr : MonoBehaviour
         for (int j = 0; j < 5; ++j)
         {
             float x = j;
-            allCells[lookupTab[from + j]].transform.SetPositionAndRotation(new Vector3(x, 0.0f, z * -1.0f) + transform.position, Quaternion.identity);
+            OneCellClass cell = allCells[lookupTab[from + j]];
+            cell.m_Translation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
+            cell.SmallCell.transform.position = cell.m_Translation;
         }
 
         // reposition the player
@@ -557,7 +574,9 @@ public class TheCellGameMgr : MonoBehaviour
         for (int j = 0; j < 5; ++j)
         {
             float z = j;
-            allCells[lookupTab[from + j * 5]].transform.SetPositionAndRotation(new Vector3(x, 0.0f, z * -1.0f) + transform.position, Quaternion.identity);
+            OneCellClass cell = allCells[lookupTab[from + j * 5]];
+            cell.m_Translation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
+            cell.SmallCell.transform.position = cell.m_Translation;
         }
 
         // reposition the player

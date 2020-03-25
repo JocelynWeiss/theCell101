@@ -676,6 +676,11 @@ MonoBehaviour:
   cellClassPrefab: {fileID: 1865194522}
   allCells: []
   lookupTab: 
+  m_MiddleCell: {fileID: 1983158139}
+  m_light_N: {fileID: 2088713486}
+  m_light_E: {fileID: 1530805838}
+  m_light_S: {fileID: 38158366}
+  m_light_W: {fileID: 1201498761}
 --- !u!4 &213176292
 Transform:
   m_ObjectHideFlags: 0
@@ -1254,7 +1259,7 @@ MonoBehaviour:
   MechanismEast: {fileID: 0}
   MechanismSouth: {fileID: 0}
   MechanismWest: {fileID: 0}
-  m_Translation: {x: 0, y: 0, z: 0}
+  m_MiniGameTranslation: {x: 0, y: 0, z: 0}
 --- !u!1 &1109090278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,6 +1955,11 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4569350481710284593, guid: d13c5814c1bb87045860db08fc5f5b5f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5577751923909217859, guid: d13c5814c1bb87045860db08fc5f5b5f,
         type: 3}
       propertyPath: m_CastShadows
@@ -2605,7 +2615,7 @@ MonoBehaviour:
   MechanismEast: {fileID: 0}
   MechanismSouth: {fileID: 0}
   MechanismWest: {fileID: 0}
-  m_Translation: {x: 0, y: 0, z: 0}
+  m_MiniGameTranslation: {x: 0, y: 0, z: 0}
 --- !u!1 &1683059469
 GameObject:
   m_ObjectHideFlags: 0
@@ -2714,7 +2724,7 @@ MonoBehaviour:
   MechanismEast: {fileID: 1109090280}
   MechanismSouth: {fileID: 144860853}
   MechanismWest: {fileID: 134533244}
-  m_Translation: {x: 0, y: 0, z: 0}
+  m_MiniGameTranslation: {x: 0, y: 0, z: 0}
 --- !u!4 &1865194523
 Transform:
   m_ObjectHideFlags: 0
@@ -2900,6 +2910,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910990815}
   m_CullTransparentMesh: 0
+--- !u!1 &1983158139 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: d13c5814c1bb87045860db08fc5f5b5f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1261091118}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2060464555
 GameObject:
   m_ObjectHideFlags: 0

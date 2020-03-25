@@ -76,6 +76,15 @@ public class TheCellGameMgr : MonoBehaviour
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
     Canvas m_basicCanvas = null;
 
+    public GameObject m_MiddleCell; // The Room
+    bool displayCell_N = false;
+    GameObject cell_N = null;
+
+    public Light m_light_N;
+    public Light m_light_E;
+    public Light m_light_S;
+    public Light m_light_W;
+
 
     void Awake()
     {
@@ -106,6 +115,12 @@ public class TheCellGameMgr : MonoBehaviour
         string toto = directions.GetComponent<TextMeshProUGUI>().text;
         Debug.Log($"----------------- {toto}");
         directions.GetComponent<TextMeshProUGUI>().text = $"Bonne journée\n {Time.fixedTime}s";
+
+        // Switch off the light
+        m_light_N.range = 0.0f;
+        m_light_E.range = 0.0f;
+        m_light_S.range = 0.0f;
+        m_light_W.range = 0.0f;
 
         Debug.Log($"[GameMgr] Start. {gameState}");
     }
@@ -211,7 +226,7 @@ public class TheCellGameMgr : MonoBehaviour
                 cell.name = "Cell_" + id;
                 float z = i;
                 float x = j;
-                cell.m_Translation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
+                cell.m_MiniGameTranslation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
                 float aRndNb = Random.value;
 
                 if ((i == 2) && (j == 2))
@@ -404,6 +419,36 @@ public class TheCellGameMgr : MonoBehaviour
         OneCellClass current = GetCurrentCell();
         GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
         directions.GetComponent<TextMeshProUGUI>().text = $"Counter\n {Time.fixedTime - current.enterTime}s";
+
+        if (m_light_N.range < 10.0f)
+        {
+            m_light_N.range += Time.deltaTime * 2.0f;
+            m_light_E.range += Time.deltaTime * 2.0f;
+            m_light_S.range += Time.deltaTime * 2.0f;
+            m_light_W.range += Time.deltaTime * 2.0f;
+        }
+
+
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            if (displayCell_N == false)
+            {
+                displayCell_N = true;
+                //cell_N = GameObject.Find("Cube_00");
+
+                // Open the shutters
+                GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
+                obj.transform.Find(("pPlane8")).gameObject.SetActive(false);
+
+                cell_N = GameObject.Instantiate(m_MiddleCell);
+                cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.8f);
+                obj = cell_N.transform.Find(("wall_pipe")).gameObject;
+                obj.transform.Find(("pPlane10")).gameObject.SetActive(false);
+
+                // Launch close sequence
+                StartCoroutine(CloseShutters());
+            }
+        }
     }
 
 
@@ -512,8 +557,8 @@ public class TheCellGameMgr : MonoBehaviour
         {
             float x = j;
             OneCellClass cell = allCells[lookupTab[from + j]];
-            cell.m_Translation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
-            cell.SmallCell.transform.position = cell.m_Translation;
+            cell.m_MiniGameTranslation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
+            cell.SmallCell.transform.position = cell.m_MiniGameTranslation;
         }
 
         // reposition the player
@@ -587,11 +632,20 @@ public class TheCellGameMgr : MonoBehaviour
         {
             float z = j;
             OneCellClass cell = allCells[lookupTab[from + j * 5]];
-            cell.m_Translation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
-            cell.SmallCell.transform.position = cell.m_Translation;
+            cell.m_MiniGameTranslation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
+            cell.SmallCell.transform.position = cell.m_MiniGameTranslation;
         }
 
         // reposition the player
         SetPlayerLookupId(currentCellId);
+    }
+
+
+    private IEnumerator CloseShutters()
+    {
+        yield return new WaitForSecondsRealtime(5.0f);
+
+        GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
+        obj.transform.Find(("pPlane8")).gameObject.SetActive(true);
     }
 }

@@ -20,7 +20,7 @@ public class OneCellClass : MonoBehaviour
     public MechanismMove MechanismSouth;
     public MechanismMove MechanismWest;
 
-    public Vector3 m_Translation;
+    public Vector3 m_MiniGameTranslation;
 
     // Start is called before the first frame update
     void Start()
@@ -87,7 +87,7 @@ public class OneCellClass : MonoBehaviour
 
         MeshRenderer renderer = SmallCell.GetComponent<MeshRenderer>();
         renderer.material.color = GetColorByType();
-        SmallCell.transform.position = m_Translation;
+        SmallCell.transform.position = m_MiniGameTranslation;
     }
 
 

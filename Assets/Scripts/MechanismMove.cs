@@ -7,21 +7,9 @@ public class MechanismMove : MonoBehaviour
 {
     // Which orientation is it facing
     public TheCellGameMgr.CardinalPoint cardinal;
-    // First item is left hand, second item is right hand
-    private OVRHand[] m_hands;
     private bool m_actionTriggered = false;
     bool m_rightIndexIn = false;
     bool m_leftIndexIn = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        m_hands = new OVRHand[]
-        {
-            GameObject.Find("OVRCameraRig/TrackingSpace/LeftHandAnchor/OVRHandPrefab").GetComponent<OVRHand>(),
-            GameObject.Find("OVRCameraRig/TrackingSpace/RightHandAnchor/OVRHandPrefab").GetComponent<OVRHand>()
-        };
-    }
 
 
     // Update is called once per frame
@@ -37,11 +25,11 @@ public class MechanismMove : MonoBehaviour
         // Check for hands
         if ((m_leftIndexIn) || (m_rightIndexIn))
         {
-            if (m_hands[0].GetFingerIsPinching(OVRHand.HandFinger.Index))
+            if (TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandLeft).hand.GetFingerIsPinching(OVRHand.HandFinger.Index))
             {
                 actionning = true;
             }
-            if (m_hands[1].GetFingerIsPinching(OVRHand.HandFinger.Index))
+            if (TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandRight).hand.GetFingerIsPinching(OVRHand.HandFinger.Index))
             {
                 actionning = true;
             }
@@ -90,7 +78,7 @@ public class MechanismMove : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         //get hand associated with trigger
-        int handIdx = GetIndexFingerHandId(collider);
+        int handIdx = TheCellGameMgr.instance.GetFingerHandId(collider, OVRPlugin.BoneId.Hand_Index3);
 
         if (handIdx == 0)
         {
@@ -106,7 +94,7 @@ public class MechanismMove : MonoBehaviour
     private void OnTriggerExit(Collider collider)
     {
         //get hand associated with trigger
-        int handIdx = GetIndexFingerHandId(collider);
+        int handIdx = TheCellGameMgr.instance.GetFingerHandId(collider, OVRPlugin.BoneId.Hand_Index3);
 
         if (handIdx == 0)
         {
@@ -116,38 +104,5 @@ public class MechanismMove : MonoBehaviour
         {
             m_rightIndexIn = false;
         }
-    }
-
-
-    /// <summary>
-    /// Gets the hand id associated with the index finger of the collider passed as parameter, if any
-    /// </summary>
-    /// <param name="collider">Collider of interest</param>
-    /// <returns>0 if the collider represents the finger tip of left hand, 1 if it is the one of right hand, -1 if it is not an index fingertip</returns>
-    private int GetIndexFingerHandId(Collider collider)
-    {
-        //Checking Oculus code, it is possible to see that physics capsules gameobjects always end with _CapsuleCollider
-        if (collider.gameObject.name.Contains("_CapsuleCollider"))
-        {
-            //get the name of the bone from the name of the gameobject, and convert it to an enum value
-            string boneName = collider.gameObject.name.Substring(0, collider.gameObject.name.Length - 16);
-            OVRPlugin.BoneId boneId = (OVRPlugin.BoneId)Enum.Parse(typeof(OVRPlugin.BoneId), boneName);
-
-            //if it is the tip of the Index
-            if (boneId == OVRPlugin.BoneId.Hand_Index3)
-                //check if it is left or right hand, and change color accordingly.
-                //Notice that absurdly, we don't have a way to detect the type of the hand
-                //so we have to use the hierarchy to detect current hand
-                if (collider.transform.IsChildOf(m_hands[0].transform))
-                {
-                    return 0;
-                }
-                else if (collider.transform.IsChildOf(m_hands[1].transform))
-                {
-                    return 1;
-                }
-        }
-
-        return -1;
     }
 }

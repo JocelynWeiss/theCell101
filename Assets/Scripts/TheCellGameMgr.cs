@@ -56,6 +56,13 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    public struct MyHands
+    {
+        public OVRHand.Hand handType;
+        public OVRHand hand;
+    }
+
+
     private int deadlyCellNb = 9;
     private int effectCellNb = 7;
 
@@ -76,9 +83,13 @@ public class TheCellGameMgr : MonoBehaviour
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
     Canvas m_basicCanvas = null;
 
+    private MyHands[] m_hands = new MyHands[2];
+
     public GameObject m_MiddleCell; // The Room
     bool displayCell_N = false;
     GameObject cell_N = null;
+    bool displayCell_E = false;
+    GameObject cell_E = null;
 
     public Light m_light_N;
     public Light m_light_E;
@@ -116,6 +127,12 @@ public class TheCellGameMgr : MonoBehaviour
         Debug.Log($"----------------- {toto}");
         directions.GetComponent<TextMeshProUGUI>().text = $"Bonne journée\n {Time.fixedTime}s";
 
+        // Init hands
+        m_hands[0].handType = OVRHand.Hand.HandLeft;
+        m_hands[0].hand = GameObject.Find("OVRCameraRig/TrackingSpace/LeftHandAnchor/OVRHandPrefab").GetComponent<OVRHand>();
+        m_hands[1].handType = OVRHand.Hand.HandRight;
+        m_hands[1].hand = GameObject.Find("OVRCameraRig/TrackingSpace/RightHandAnchor/OVRHandPrefab").GetComponent<OVRHand>();
+
         // Switch off the light
         m_light_N.range = 0.0f;
         m_light_E.range = 0.0f;
@@ -138,6 +155,15 @@ public class TheCellGameMgr : MonoBehaviour
     {
         OneCellClass current = allCells[lookupTab[playerCellId]];
         return current;
+    }
+
+
+    public MyHands GetHand(OVRHand.Hand type)
+    {
+        if (type == OVRHand.Hand.HandLeft)
+            return m_hands[0];
+        else
+            return m_hands[1];
     }
 
 
@@ -420,7 +446,7 @@ public class TheCellGameMgr : MonoBehaviour
         GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
         directions.GetComponent<TextMeshProUGUI>().text = $"Counter\n {Time.fixedTime - current.enterTime}s";
 
-        if (m_light_N.range < 10.0f)
+        if (m_light_N.range < 5.0f)
         {
             m_light_N.range += Time.deltaTime * 2.0f;
             m_light_E.range += Time.deltaTime * 2.0f;
@@ -431,23 +457,19 @@ public class TheCellGameMgr : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Z))
         {
-            if (displayCell_N == false)
-            {
-                displayCell_N = true;
-                //cell_N = GameObject.Find("Cube_00");
-
-                // Open the shutters
-                GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
-                obj.transform.Find(("pPlane8")).gameObject.SetActive(false);
-
-                cell_N = GameObject.Instantiate(m_MiddleCell);
-                cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.8f);
-                obj = cell_N.transform.Find(("wall_pipe")).gameObject;
-                obj.transform.Find(("pPlane10")).gameObject.SetActive(false);
-
-                // Launch close sequence
-                StartCoroutine(CloseShutters());
-            }
+            ScanTriggerAction(CardinalPoint.North);
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            ScanTriggerAction(CardinalPoint.East);
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            ScanTriggerAction(CardinalPoint.South);
+        }
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            ScanTriggerAction(CardinalPoint.West);
         }
     }
 
@@ -641,11 +663,127 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    private IEnumerator CloseShutters()
+    /// <summary>
+    /// Gets the hand id associated with the index finger of the collider passed as parameter, if any
+    /// </summary>
+    /// <param name="collider">Collider of interest</param>
+    /// <returns>0 if the collider represents the finger tip of left hand, 1 if it is the one of right hand, -1 if it is not an index fingertip</returns>
+    public int GetFingerHandId(Collider collider, OVRPlugin.BoneId fingerId)
+    {
+        //Checking Oculus code, it is possible to see that physics capsules gameobjects always end with _CapsuleCollider
+        if (collider.gameObject.name.Contains("_CapsuleCollider"))
+        {
+            //get the name of the bone from the name of the gameobject, and convert it to an enum value
+            string boneName = collider.gameObject.name.Substring(0, collider.gameObject.name.Length - 16);
+            OVRPlugin.BoneId boneId = (OVRPlugin.BoneId)System.Enum.Parse(typeof(OVRPlugin.BoneId), boneName);
+
+            //if it is the tip of the Index
+            if (boneId == fingerId)
+                //check if it is left or right hand, and change color accordingly.
+                //Notice that absurdly, we don't have a way to detect the type of the hand
+                //so we have to use the hierarchy to detect current hand
+                if (collider.transform.IsChildOf(m_hands[0].hand.transform))
+                {
+                    return 0;
+                }
+                else if (collider.transform.IsChildOf(m_hands[1].hand.transform))
+                {
+                    return 1;
+                }
+        }
+
+        return -1;
+    }
+
+
+    // Open the shutters to look through cells
+    public void ScanTriggerAction(CardinalPoint point)
+    {
+        switch (point)
+        {
+            case CardinalPoint.North:
+                {
+                    if (displayCell_N == false)
+                    {
+                        displayCell_N = true;
+                        //cell_N = GameObject.Find("Cube_00");
+
+                        /*
+                        // Open the shutters
+                        GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
+                        obj.transform.Find(("pPlane8")).gameObject.SetActive(false);
+
+                        cell_N = GameObject.Instantiate(m_MiddleCell);
+                        cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.8f);
+                        obj = cell_N.transform.Find(("wall_pipe")).gameObject;
+                        obj.transform.Find(("pPlane10")).gameObject.SetActive(false);
+
+                        // Launch close sequence
+                        StartCoroutine(CloseShutters());
+                        */
+
+                        // With new model cube_01 there is no shutters anymore
+                        cell_N = GameObject.Instantiate(m_MiddleCell);
+                        cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
+                        GameObject obj = cell_N.transform.Find(("Trap_1")).gameObject;
+                        obj.transform.Find(("trape_1")).gameObject.SetActive(false);
+
+                        obj = m_MiddleCell.transform.Find(("trap_0")).gameObject;
+                        obj.transform.Find(("trape_2 1")).gameObject.SetActive(false);
+
+                        StartCoroutine(CloseShutters(point));
+                    }
+                    break;
+                }
+            case CardinalPoint.East:
+                {
+                    if (displayCell_E == false)
+                    {
+                        displayCell_E = true;
+
+                        cell_E = GameObject.Instantiate(m_MiddleCell);
+                        cell_E.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
+                        GameObject obj = cell_E.transform.Find(("trap_3")).gameObject;
+                        obj.transform.Find(("trape_2 2")).gameObject.SetActive(false);
+
+                        obj = m_MiddleCell.transform.Find(("ground_all")).gameObject;
+                        obj.transform.Find(("trape_2")).gameObject.SetActive(false);
+                    }
+                    break;
+                }
+        }
+    }
+
+
+    // Close the shutters after x sec
+    private IEnumerator CloseShutters(CardinalPoint point)
     {
         yield return new WaitForSecondsRealtime(5.0f);
 
-        GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
-        obj.transform.Find(("pPlane8")).gameObject.SetActive(true);
+        //GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
+        //obj.transform.Find(("pPlane8")).gameObject.SetActive(true);
+
+        switch (point)
+        {
+            case CardinalPoint.North:
+                {
+                    GameObject obj = m_MiddleCell.transform.Find(("trap_0")).gameObject;
+                    obj.transform.Find(("trape_2 1")).gameObject.SetActive(true);
+                    displayCell_N = false;
+                    break;
+                }
+            case CardinalPoint.East:
+                {
+                    break;
+                }
+            case CardinalPoint.South:
+                {
+                    break;
+                }
+            case CardinalPoint.West:
+                {
+                    break;
+                }
+        }
     }
 }

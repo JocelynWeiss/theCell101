@@ -86,10 +86,14 @@ public class TheCellGameMgr : MonoBehaviour
     private MyHands[] m_hands = new MyHands[2];
 
     public GameObject m_MiddleCell; // The Room
-    bool displayCell_N = false;
-    GameObject cell_N = null;
-    bool displayCell_E = false;
-    GameObject cell_E = null;
+    bool m_displayCell_N = false;
+    GameObject m_cell_N = null;
+    bool m_displayCell_E = false;
+    GameObject m_cell_E = null;
+    bool m_displayCell_S = false;
+    GameObject m_cell_S = null;
+    bool m_displayCell_W = false;
+    GameObject m_cell_W = null;
 
     public Light m_light_N;
     public Light m_light_E;
@@ -295,6 +299,68 @@ public class TheCellGameMgr : MonoBehaviour
 
                 cell.InitCell(CellTypes.Safe, 0, aRndNb);
             }
+        }
+
+        // Instantiate a cell to the north
+        if (m_cell_N == null)
+        {
+            m_cell_N = GameObject.Instantiate(m_MiddleCell);
+            m_cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
+            // Switch off the lights
+            GameObject obj = m_cell_N.transform.Find(("Point Light North")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_N.transform.Find(("Point Light East")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_N.transform.Find(("Point Light South")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_N.transform.Find(("Point Light West")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            //m_cell_N.SetActive(false);
+        }
+        if (m_cell_E == null)
+        {
+            m_cell_E = GameObject.Instantiate(m_MiddleCell);
+            m_cell_E.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
+            // Switch off the lights
+            GameObject obj = m_cell_E.transform.Find(("Point Light North")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_E.transform.Find(("Point Light East")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_E.transform.Find(("Point Light South")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_E.transform.Find(("Point Light West")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            //m_cell_E.SetActive(false);
+        }
+        if (m_cell_S == null)
+        {
+            m_cell_S = GameObject.Instantiate(m_MiddleCell);
+            m_cell_S.transform.position = new Vector3(0.0f, 0.0f, -2.9f);
+            // Switch off the lights
+            GameObject obj = m_cell_S.transform.Find(("Point Light North")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_S.transform.Find(("Point Light East")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_S.transform.Find(("Point Light South")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_S.transform.Find(("Point Light West")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            //m_cell_S.SetActive(false);
+        }
+        if (m_cell_W == null)
+        {
+            m_cell_W = GameObject.Instantiate(m_MiddleCell);
+            m_cell_W.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
+            // Switch off the lights
+            GameObject obj = m_cell_W.transform.Find(("Point Light North")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_W.transform.Find(("Point Light East")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_W.transform.Find(("Point Light South")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            obj = m_cell_W.transform.Find(("Point Light West")).gameObject;
+            obj.GetComponent<Light>().range = 0.0f;
+            //m_cell_W.SetActive(false);
         }
 
         gameState = GameStates.Running;
@@ -703,51 +769,65 @@ public class TheCellGameMgr : MonoBehaviour
         {
             case CardinalPoint.North:
                 {
-                    if (displayCell_N == false)
+                    if (m_displayCell_N == false)
                     {
-                        displayCell_N = true;
-                        //cell_N = GameObject.Find("Cube_00");
+                        m_displayCell_N = true;
+                        m_cell_N.SetActive(true);
+                        GameObject obj = m_cell_N.transform.Find("Trap_1").gameObject;
+                        obj.transform.Find("trape_1").gameObject.SetActive(false);
 
-                        /*
-                        // Open the shutters
-                        GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
-                        obj.transform.Find(("pPlane8")).gameObject.SetActive(false);
+                        obj = m_MiddleCell.transform.Find("trap_0").gameObject;
+                        obj = obj.transform.Find("trape_2").gameObject;
 
-                        cell_N = GameObject.Instantiate(m_MiddleCell);
-                        cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.8f);
-                        obj = cell_N.transform.Find(("wall_pipe")).gameObject;
-                        obj.transform.Find(("pPlane10")).gameObject.SetActive(false);
-
-                        // Launch close sequence
-                        StartCoroutine(CloseShutters());
-                        */
-
-                        // With new model cube_01 there is no shutters anymore
-                        cell_N = GameObject.Instantiate(m_MiddleCell);
-                        cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
-                        GameObject obj = cell_N.transform.Find(("Trap_1")).gameObject;
-                        obj.transform.Find(("trape_1")).gameObject.SetActive(false);
-
-                        obj = m_MiddleCell.transform.Find(("trap_0")).gameObject;
-                        obj.transform.Find(("trape_2 1")).gameObject.SetActive(false);
-
-                        StartCoroutine(CloseShutters(point));
+                        StartCoroutine(OpenShutters(point, obj));
                     }
                     break;
                 }
             case CardinalPoint.East:
                 {
-                    if (displayCell_E == false)
+                    if (m_displayCell_E == false)
                     {
-                        displayCell_E = true;
+                        m_displayCell_E = true;
+                        m_cell_E.SetActive(true);
+                        GameObject obj = m_cell_E.transform.Find("trap_3").gameObject;
+                        obj.transform.Find("trape_2 2").gameObject.SetActive(false);
 
-                        cell_E = GameObject.Instantiate(m_MiddleCell);
-                        cell_E.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
-                        GameObject obj = cell_E.transform.Find(("trap_3")).gameObject;
-                        obj.transform.Find(("trape_2 2")).gameObject.SetActive(false);
+                        obj = m_MiddleCell.transform.Find("trap_2").gameObject;
+                        obj = obj.transform.Find("trape_2 1").gameObject;
 
-                        obj = m_MiddleCell.transform.Find(("ground_all")).gameObject;
-                        obj.transform.Find(("trape_2")).gameObject.SetActive(false);
+                        StartCoroutine(OpenShutters(point, obj));
+                    }
+                    break;
+                }
+            case CardinalPoint.South:
+                {
+                    if (m_displayCell_S == false)
+                    {
+                        m_displayCell_S = true;
+                        m_cell_S.SetActive(true);
+                        GameObject obj = m_cell_S.transform.Find("trap_0").gameObject;
+                        obj.transform.Find("trape_2").gameObject.SetActive(false);
+
+                        obj = m_MiddleCell.transform.Find("Trap_1").gameObject;
+                        obj = obj.transform.Find("trape_1").gameObject;
+
+                        StartCoroutine(OpenShutters(point, obj));
+                    }
+                    break;
+                }
+            case CardinalPoint.West:
+                {
+                    if (m_displayCell_W == false)
+                    {
+                        m_displayCell_W = true;
+                        m_cell_W.SetActive(true);
+                        GameObject obj = m_cell_W.transform.Find("trap_2").gameObject;
+                        obj.transform.Find("trape_2 1").gameObject.SetActive(false);
+
+                        obj = m_MiddleCell.transform.Find("trap_3").gameObject;
+                        obj = obj.transform.Find("trape_2 2").gameObject;
+
+                        StartCoroutine(OpenShutters(point, obj));
                     }
                     break;
                 }
@@ -755,33 +835,58 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    private IEnumerator OpenShutters(CardinalPoint point, GameObject trappe)
+    {
+        yield return new WaitForSecondsRealtime(1.0f);
+        float startTime = Time.time;
+
+        while (Time.time - startTime < 2.0f)
+        {
+            trappe.transform.position += Vector3.up * Time.fixedDeltaTime * 0.25f;
+            yield return new WaitForFixedUpdate();
+        }
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {trappe.name} is open.");
+        StartCoroutine(CloseShutters(point, trappe));
+    }
+
+
     // Close the shutters after x sec
-    private IEnumerator CloseShutters(CardinalPoint point)
+    private IEnumerator CloseShutters(CardinalPoint point, GameObject trappe)
     {
         yield return new WaitForSecondsRealtime(5.0f);
 
         //GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
         //obj.transform.Find(("pPlane8")).gameObject.SetActive(true);
 
+        float startTime = Time.time;
+        while (Time.time - startTime < 2.0f)
+        {
+            trappe.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.25f;
+            yield return new WaitForFixedUpdate();
+        }
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {trappe.name} is closed.");
+
         switch (point)
         {
             case CardinalPoint.North:
                 {
-                    GameObject obj = m_MiddleCell.transform.Find(("trap_0")).gameObject;
-                    obj.transform.Find(("trape_2 1")).gameObject.SetActive(true);
-                    displayCell_N = false;
+                    m_displayCell_N = false;
+                    //m_cell_N.SetActive(false);
                     break;
                 }
             case CardinalPoint.East:
                 {
+                    m_displayCell_E = false;
                     break;
                 }
             case CardinalPoint.South:
                 {
+                    m_displayCell_S = false;
                     break;
                 }
             case CardinalPoint.West:
                 {
+                    m_displayCell_W = false;
                     break;
                 }
         }

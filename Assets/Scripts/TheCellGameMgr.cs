@@ -100,6 +100,9 @@ public class TheCellGameMgr : MonoBehaviour
     public Light m_light_S;
     public Light m_light_W;
 
+    public GameObject Snd_OpenShutters;
+    private AudioSource Audio_OpenShutters;
+
 
     void Awake()
     {
@@ -142,6 +145,9 @@ public class TheCellGameMgr : MonoBehaviour
         m_light_E.range = 0.0f;
         m_light_S.range = 0.0f;
         m_light_W.range = 0.0f;
+
+        // Sounds
+        Audio_OpenShutters = Snd_OpenShutters.GetComponent<AudioSource>();
 
         Debug.Log($"[GameMgr] Start. {gameState}");
     }
@@ -302,19 +308,21 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         // Instantiate a cell to the north
+        float light_range = 1.0f;
+        Color light_colour = Color.red;
         if (m_cell_N == null)
         {
             m_cell_N = GameObject.Instantiate(m_MiddleCell);
             m_cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
             // Switch off the lights
             GameObject obj = m_cell_N.transform.Find(("Point Light North")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_N.transform.Find(("Point Light East")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_N.transform.Find(("Point Light South")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_N.transform.Find(("Point Light West")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             //m_cell_N.SetActive(false);
         }
         if (m_cell_E == null)
@@ -323,13 +331,13 @@ public class TheCellGameMgr : MonoBehaviour
             m_cell_E.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
             // Switch off the lights
             GameObject obj = m_cell_E.transform.Find(("Point Light North")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_E.transform.Find(("Point Light East")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_E.transform.Find(("Point Light South")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_E.transform.Find(("Point Light West")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             //m_cell_E.SetActive(false);
         }
         if (m_cell_S == null)
@@ -338,13 +346,13 @@ public class TheCellGameMgr : MonoBehaviour
             m_cell_S.transform.position = new Vector3(0.0f, 0.0f, -2.9f);
             // Switch off the lights
             GameObject obj = m_cell_S.transform.Find(("Point Light North")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_S.transform.Find(("Point Light East")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_S.transform.Find(("Point Light South")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_S.transform.Find(("Point Light West")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             //m_cell_S.SetActive(false);
         }
         if (m_cell_W == null)
@@ -353,13 +361,13 @@ public class TheCellGameMgr : MonoBehaviour
             m_cell_W.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
             // Switch off the lights
             GameObject obj = m_cell_W.transform.Find(("Point Light North")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_W.transform.Find(("Point Light East")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_W.transform.Find(("Point Light South")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             obj = m_cell_W.transform.Find(("Point Light West")).gameObject;
-            obj.GetComponent<Light>().range = 0.0f;
+            SetupLight(obj, light_range, light_colour);
             //m_cell_W.SetActive(false);
         }
 
@@ -729,6 +737,15 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // Setup initial lights from game object
+    void SetupLight(GameObject obj, float range, Color colour)
+    {
+        Light light = obj.GetComponent<Light>();
+        light.range = range;
+        light.color = colour;
+    }
+
+
     /// <summary>
     /// Gets the hand id associated with the index finger of the collider passed as parameter, if any
     /// </summary>
@@ -837,9 +854,15 @@ public class TheCellGameMgr : MonoBehaviour
 
     private IEnumerator OpenShutters(CardinalPoint point, GameObject trappe)
     {
-        yield return new WaitForSecondsRealtime(1.0f);
-        float startTime = Time.time;
+        yield return new WaitForSecondsRealtime(0.5f);
 
+        //--- Snd ---
+        Audio_OpenShutters.transform.SetParent(trappe.transform);
+        Audio_OpenShutters.transform.localPosition = Vector3.zero;
+        Audio_OpenShutters.Play();
+        //--- Snd ---
+
+        float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
         {
             trappe.transform.position += Vector3.up * Time.fixedDeltaTime * 0.25f;
@@ -855,8 +878,9 @@ public class TheCellGameMgr : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(5.0f);
 
-        //GameObject obj = m_MiddleCell.transform.Find(("wall_pipe")).gameObject;
-        //obj.transform.Find(("pPlane8")).gameObject.SetActive(true);
+        //--- Snd ---
+        Audio_OpenShutters.Play();
+        //--- Snd ---
 
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)

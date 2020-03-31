@@ -85,7 +85,8 @@ public class TheCellGameMgr : MonoBehaviour
 
     private MyHands[] m_hands = new MyHands[2];
 
-    public GameObject m_MiddleCell; // The Room
+    public GameObject m_MiddleCell; // The Exit Room
+    public GameObject m_GenCellA;   // Generic Room A
     bool m_displayCell_N = false;
     GameObject m_cell_N = null;
     bool m_displayCell_E = false;
@@ -312,7 +313,8 @@ public class TheCellGameMgr : MonoBehaviour
         Color light_colour = Color.red;
         if (m_cell_N == null)
         {
-            m_cell_N = GameObject.Instantiate(m_MiddleCell);
+            m_cell_N = GameObject.Instantiate(m_GenCellA);
+            m_cell_N.SetActive(true);
             m_cell_N.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
             // Switch off the lights
             GameObject obj = m_cell_N.transform.Find(("Point Light North")).gameObject;
@@ -323,7 +325,6 @@ public class TheCellGameMgr : MonoBehaviour
             SetupLight(obj, light_range, light_colour);
             obj = m_cell_N.transform.Find(("Point Light West")).gameObject;
             SetupLight(obj, light_range, light_colour);
-            //m_cell_N.SetActive(false);
         }
         if (m_cell_E == null)
         {

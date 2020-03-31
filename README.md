@@ -32,4 +32,24 @@ Finally, to configure Oculus-specific settings, navigate to the “Oculus” tab
 From the Build folder where the apk is:
 ```
 adb install -r TheCell01.apk
-```
+``` 
+You can check for the list of connected devices using:  
+``` adb devices ``` 
+
+---------------------------------------------  
+  
+## Interactions
+For the moment only 3 programmed:  
+### Moving from cell to cell 
+To move from one cell to another, there are the big transparent cyan zones.  
+Both hands must be immersed in it for a minimum of 2 seconds. The code is on the NorthDoor game object for example in the CellInteract group.  
+### To open hatches  
+You can open hatches to look to the next room. The hatch will automatically close itself after few seconds.  
+You have to put your hand (right or left) on the hand scanner on the right side of the hatches. Both the index and the pinky finger must be inside the trigger.  
+Code is in HandScanTrigger.cs  
+### Push a row of cells
+There is big handles floating in the air at the moment, one on each cardinal point. They push the row forward.  
+To activate them, the thumb and the index must be pinching inside the trigger while the lever is going down.  
+The action take place at the end of the mouvement. Code is in the CellInteract group on the game object Mechanism_N for instance.
+
+---------------------------------------------  

@@ -790,14 +790,13 @@ public class TheCellGameMgr : MonoBehaviour
                     if (m_displayCell_N == false)
                     {
                         m_displayCell_N = true;
-                        m_cell_N.SetActive(true);
-                        GameObject obj = m_cell_N.transform.Find("Trap_1").gameObject;
-                        obj.transform.Find("trape_1").gameObject.SetActive(false);
+                        //m_cell_N.SetActive(true);
 
-                        obj = m_MiddleCell.transform.Find("trap_0").gameObject;
-                        obj = obj.transform.Find("trape_2").gameObject;
-
-                        StartCoroutine(OpenShutters(point, obj));
+                        GameObject front = m_MiddleCell.transform.Find("trap_0").gameObject;
+                        front = front.transform.Find("trape_2").gameObject;
+                        GameObject back = m_cell_N.transform.Find("trap_0").gameObject;
+                        back = back.transform.Find("trape_2").gameObject;
+                        StartCoroutine(OpenShutters(point, front, back));
                     }
                     break;
                 }
@@ -806,14 +805,13 @@ public class TheCellGameMgr : MonoBehaviour
                     if (m_displayCell_E == false)
                     {
                         m_displayCell_E = true;
-                        m_cell_E.SetActive(true);
-                        GameObject obj = m_cell_E.transform.Find("trap_3").gameObject;
-                        obj.transform.Find("trape_2 2").gameObject.SetActive(false);
+                        //m_cell_E.SetActive(true);
 
-                        obj = m_MiddleCell.transform.Find("trap_2").gameObject;
-                        obj = obj.transform.Find("trape_2 1").gameObject;
-
-                        StartCoroutine(OpenShutters(point, obj));
+                        GameObject front = m_MiddleCell.transform.Find("trap_2").gameObject;
+                        front = front.transform.Find("trape_2 1").gameObject;
+                        GameObject back = m_cell_E.transform.Find("trap_3").gameObject;
+                        back = back.transform.Find("trape_2 2").gameObject;
+                        StartCoroutine(OpenShutters(point, front, back));
                     }
                     break;
                 }
@@ -822,14 +820,13 @@ public class TheCellGameMgr : MonoBehaviour
                     if (m_displayCell_S == false)
                     {
                         m_displayCell_S = true;
-                        m_cell_S.SetActive(true);
-                        GameObject obj = m_cell_S.transform.Find("trap_0").gameObject;
-                        obj.transform.Find("trape_2").gameObject.SetActive(false);
+                        //m_cell_S.SetActive(true);
 
-                        obj = m_MiddleCell.transform.Find("Trap_1").gameObject;
-                        obj = obj.transform.Find("trape_1").gameObject;
-
-                        StartCoroutine(OpenShutters(point, obj));
+                        GameObject front = m_MiddleCell.transform.Find("Trap_1").gameObject;
+                        front = front.transform.Find("trape_1").gameObject;
+                        GameObject back = m_cell_S.transform.Find("trap_0").gameObject;
+                        back = back.transform.Find("trape_2").gameObject;
+                        StartCoroutine(OpenShutters(point, front, back));
                     }
                     break;
                 }
@@ -838,14 +835,13 @@ public class TheCellGameMgr : MonoBehaviour
                     if (m_displayCell_W == false)
                     {
                         m_displayCell_W = true;
-                        m_cell_W.SetActive(true);
-                        GameObject obj = m_cell_W.transform.Find("trap_2").gameObject;
-                        obj.transform.Find("trape_2 1").gameObject.SetActive(false);
+                        //m_cell_W.SetActive(true);
 
-                        obj = m_MiddleCell.transform.Find("trap_3").gameObject;
-                        obj = obj.transform.Find("trape_2 2").gameObject;
-
-                        StartCoroutine(OpenShutters(point, obj));
+                        GameObject front = m_MiddleCell.transform.Find("trap_3").gameObject;
+                        front = front.transform.Find("trape_2 2").gameObject;
+                        GameObject back = m_cell_W.transform.Find("trap_2").gameObject;
+                        back = back.transform.Find("trape_2 1").gameObject;
+                        StartCoroutine(OpenShutters(point, front, back));
                     }
                     break;
                 }
@@ -853,12 +849,12 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    private IEnumerator OpenShutters(CardinalPoint point, GameObject trappe)
+    private IEnumerator OpenShutters(CardinalPoint point, GameObject front, GameObject back)
     {
         yield return new WaitForSecondsRealtime(0.5f);
 
         //--- Snd ---
-        Audio_OpenShutters.transform.SetParent(trappe.transform);
+        Audio_OpenShutters.transform.SetParent(front.transform);
         Audio_OpenShutters.transform.localPosition = Vector3.zero;
         Audio_OpenShutters.Play();
         //--- Snd ---
@@ -866,16 +862,17 @@ public class TheCellGameMgr : MonoBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
         {
-            trappe.transform.position += Vector3.up * Time.fixedDeltaTime * 0.25f;
+            front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.25f;
+            back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.25f;
             yield return new WaitForFixedUpdate();
         }
-        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {trappe.name} is open.");
-        StartCoroutine(CloseShutters(point, trappe));
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is open.");
+        StartCoroutine(CloseShutters(point, front, back));
     }
 
 
     // Close the shutters after x sec
-    private IEnumerator CloseShutters(CardinalPoint point, GameObject trappe)
+    private IEnumerator CloseShutters(CardinalPoint point, GameObject front, GameObject back)
     {
         yield return new WaitForSecondsRealtime(5.0f);
 
@@ -886,17 +883,17 @@ public class TheCellGameMgr : MonoBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
         {
-            trappe.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.25f;
+            front.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.25f;
+            back.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.25f;
             yield return new WaitForFixedUpdate();
         }
-        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {trappe.name} is closed.");
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is closed.");
 
         switch (point)
         {
             case CardinalPoint.North:
                 {
                     m_displayCell_N = false;
-                    //m_cell_N.SetActive(false);
                     break;
                 }
             case CardinalPoint.East:

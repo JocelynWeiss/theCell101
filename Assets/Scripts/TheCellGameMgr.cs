@@ -309,6 +309,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_EntryCell.SetActive(true);
             m_CentreModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_CentreModels.m_GenCellA.transform.SetParent(m_CentreModels.transform);
+            m_CentreModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_CentreModels.m_ExitCell.transform.SetParent(m_CentreModels.transform);
             SetupLights(m_CentreModels, light_range, light_colour);
 
             light_colour = Color.red;
@@ -316,24 +318,40 @@ public class TheCellGameMgr : MonoBehaviour
             m_NorthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_NorthModels.m_GenCellA.SetActive(true);
             m_NorthModels.m_GenCellA.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_NorthModels.m_ExitCell.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
+            m_NorthModels.m_EntryCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
             SetupLights(m_NorthModels, light_range, light_colour);
 
             m_EastModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_EastModels.m_GenCellA.SetActive(true);
             m_EastModels.m_GenCellA.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
+            m_EastModels.m_EntryCell.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_EastModels.m_ExitCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
             SetupLights(m_EastModels, light_range, light_colour);
 
             m_SouthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_SouthModels.m_GenCellA.SetActive(true);
             m_SouthModels.m_GenCellA.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
+            m_SouthModels.m_EntryCell.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_SouthModels.m_ExitCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);
             SetupLights(m_SouthModels, light_range, light_colour);
 
             m_WestModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_WestModels.m_GenCellA.SetActive(true);
             m_WestModels.m_GenCellA.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
+            m_WestModels.m_EntryCell.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_WestModels.m_ExitCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
             SetupLights(m_WestModels, light_range, light_colour);
         }
@@ -358,12 +376,8 @@ public class TheCellGameMgr : MonoBehaviour
             current = GetCurrentCell();
             current.OnPlayerEnter();
 
-            // JowNext: create a method to set a current model
-            if (current.cellType != CellTypes.Start)
-            {
-                m_CentreModels.m_EntryCell.SetActive(false);
-                m_CentreModels.m_GenCellA.SetActive(true);
-            }
+            // Update cells models to display
+            UpdateCellsModels();
         }
     }
 
@@ -380,6 +394,9 @@ public class TheCellGameMgr : MonoBehaviour
 
             current = GetCurrentCell();
             current.OnPlayerEnter();
+
+            // Update cells models to display
+            UpdateCellsModels();
         }
     }
 
@@ -398,6 +415,9 @@ public class TheCellGameMgr : MonoBehaviour
 
         current = GetCurrentCell();
         current.OnPlayerEnter();
+
+        // Update cells models to display
+        UpdateCellsModels();
     }
 
 
@@ -415,6 +435,9 @@ public class TheCellGameMgr : MonoBehaviour
 
         current = GetCurrentCell();
         current.OnPlayerEnter();
+
+        // Update cells models to display
+        UpdateCellsModels();
     }
 
 
@@ -570,6 +593,98 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         return null;
+    }
+
+
+    public CellTypes GetNorthType(int current)
+    {
+        OneCellClass cell = GetNorth(current);
+        if (cell)
+            return cell.cellType;
+        else
+            return CellTypes.Undefined;
+    }
+
+
+    public OneCellClass GetEast(int current)
+    {
+        if (current % 5 == 4)
+        {
+            return null;
+        }
+        return allCells[lookupTab[current + 1]];
+    }
+
+
+    public CellTypes GetEastType(int current)
+    {
+        OneCellClass cell = GetEast(current);
+        if (cell)
+            return cell.cellType;
+        else
+            return CellTypes.Undefined;
+    }
+
+
+    public OneCellClass GetSouth(int current)
+    {
+        if (current < 20)
+        {
+            return allCells[lookupTab[current + 5]];
+        }
+
+        return null;
+    }
+
+
+    public CellTypes GetSouthType(int current)
+    {
+        OneCellClass cell = GetSouth(current);
+        if (cell)
+            return cell.cellType;
+        else
+            return CellTypes.Undefined;
+    }
+
+
+    public OneCellClass GetWest(int current)
+    {
+        if (current % 5 == 0)
+        {
+            return null;
+        }
+        return allCells[lookupTab[current - 1]];
+    }
+
+
+    public CellTypes GetWestType(int current)
+    {
+        OneCellClass cell = GetWest(current);
+        if (cell)
+            return cell.cellType;
+        else
+            return CellTypes.Undefined;
+    }
+
+
+    // Update cells models to display
+    void UpdateCellsModels()
+    {
+        OneCellClass current = GetCurrentCell();
+        CellTypes curType = current.cellType;
+        int curId = current.cellId;
+        m_CentreModels.SetActiveModel(curType);
+        m_NorthModels.SetActiveModel(GetNorthType(curId));
+        m_EastModels.SetActiveModel(GetEastType(curId));
+        m_SouthModels.SetActiveModel(GetSouthType(curId));
+        m_WestModels.SetActiveModel(GetWestType(curId));
+
+        if (curType == CellTypes.Exit)
+        {
+            float light_range = 4.0f;
+            Color light_colour = new Color(0.9f, 1.0f, 0.9f, 1.0f);
+            SetupLights(m_CentreModels, light_range, light_colour);
+        }
     }
 
 

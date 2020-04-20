@@ -1,7 +1,7 @@
 # theCell101
 To manage The Cell...
 
-This is using Unity 2019.3.7f1
+This is using Unity 2019.3.10f1
 
 ## Player Settings
 Company Name: StudioHG  

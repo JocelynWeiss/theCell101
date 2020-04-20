@@ -40,6 +40,32 @@ public class CellsModels : MonoBehaviour
     }
 
 
+    public GameObject GetActiveModel()
+    {
+        GameObject obj = null;
+        switch (m_CurrentType)
+        {
+            case CellsModelsType.None:
+            default:
+                break;
+            case CellsModelsType.Entry:
+                obj = m_EntryCell;
+                break;
+            case CellsModelsType.GenA:
+                obj = m_GenCellA;
+                break;
+            case CellsModelsType.GenB:
+                obj = m_GenCellB;
+                break;
+            case CellsModelsType.Exit:
+                obj = m_ExitCell;
+                break;
+        }
+
+        return obj;
+    }
+
+
     public void SetActiveModel(TheCellGameMgr.CellTypes cellType)
     {
         switch (cellType)
@@ -97,5 +123,7 @@ public class CellsModels : MonoBehaviour
                 Debug.LogWarning($"Wrong model type in SetActiveModel: {newType}");
                 break;
         }
+
+        m_CurrentType = newType;
     }
 }

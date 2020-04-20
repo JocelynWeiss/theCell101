@@ -3,22 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MechanismMove : MonoBehaviour
+public class ExitHandsTrigger : MonoBehaviour
 {
-    // Which orientation is it facing
-    public TheCellGameMgr.CardinalPoint cardinal;
     private bool m_actionTriggered = false;
     bool m_rightIndexIn = false;
     bool m_leftIndexIn = false;
+    [ViewOnly] public GameObject m_HatchModel;
+
+
+    private void Awake()
+    {
+        //--- attached the instanciated model
+        GameObject exitmodel = TheCellGameMgr.instance.m_CentreModels.m_ExitCell.gameObject;
+        GameObject trap_exit = exitmodel.transform.Find("trap_exit").gameObject;
+        GameObject hatch = trap_exit.transform.Find("door_exit").gameObject;
+        if (hatch != null)
+        {
+            m_HatchModel = hatch;
+            Debug.Log($"[ExitHandsTrigger] Awake. {transform.name}, model: {m_HatchModel.name} in {m_HatchModel.transform.position}");
+        }
+    }
 
 
     // Update is called once per frame
     void Update()
     {
+        if (m_actionTriggered)
+            return;
+
         bool actionning = false;
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.B))
         {
-            //Debug.Log($"a = {transform.eulerAngles}");
+            //Debug.Log($"ExitPos = {transform.position} at {Time.fixedTime}");
             actionning = true;
         }
 
@@ -35,9 +51,9 @@ public class MechanismMove : MonoBehaviour
             }
         }
 
-        if (actionning)
+        if ((actionning) && (!m_actionTriggered))
         {
-            if (transform.rotation.eulerAngles.x > 355.0f)
+            if (transform.position.y > 1.0f)
             {
                 if (m_actionTriggered)
                 {
@@ -48,27 +64,26 @@ public class MechanismMove : MonoBehaviour
                     m_actionTriggered = TriggerAction();
                 }
             }
-            transform.RotateAround(transform.position, transform.right, Time.deltaTime * -90.0f);
+            Vector3 pos = transform.position;
+            //transform.position.Set(pos.x, pos.y + Time.deltaTime * 1.0f, pos.z);
+            transform.position = pos + new Vector3(0.0f, Time.deltaTime * 0.1f, 0.0f);
+
+            m_HatchModel.transform.RotateAround(m_HatchModel.transform.position, transform.up, Time.deltaTime * -45.0f);
         }
     }
 
 
-    public bool TriggerAction()
+    bool TriggerAction()
     {
-        switch (cardinal)
+        // Do whatever you need to do when trap is opening
+        Debug.Log($"Exit trap is open now = {transform.position} at {Time.fixedTime}");
+
+        OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
+        OVRScreenFade _screenFadeScript = rig.GetComponent<OVRScreenFade>();
+        if (_screenFadeScript != null)
         {
-            case TheCellGameMgr.CardinalPoint.North:
-                TheCellGameMgr.instance.MoveColumn(true);
-                break;
-            case TheCellGameMgr.CardinalPoint.East:
-                TheCellGameMgr.instance.MoveRow(true);
-                break;
-            case TheCellGameMgr.CardinalPoint.South:
-                TheCellGameMgr.instance.MoveColumn(false);
-                break;
-            case TheCellGameMgr.CardinalPoint.West:
-                TheCellGameMgr.instance.MoveRow(false);
-                break;
+            //_screenFadeScript.SetFadeLevel(fadeLevel * MaxFade);
+            _screenFadeScript.FadeOut();
         }
 
         return true;

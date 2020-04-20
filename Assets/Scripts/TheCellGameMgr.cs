@@ -14,6 +14,7 @@ public class TheCellGameMgr : MonoBehaviour
         Starting,       // just started a new game with new seeds
         Running,        // in a middle of a game
         Finishing,      // just get killed, must respawn in starting cell, don't reset seeds
+        ExitFound,      // Just found the exit
     }
 
 
@@ -85,8 +86,9 @@ public class TheCellGameMgr : MonoBehaviour
 
     private MyHands[] m_hands = new MyHands[2];
 
-    public GameObject m_MiddleCell; // The Exit Room
+    public GameObject m_MiddleCell; // The starting Room
     public GameObject m_GenCellA;   // Generic Room A
+    public GameObject m_ExitModel;  // The Exit Room
     bool m_displayCell_N = false;
     bool m_displayCell_E = false;
     bool m_displayCell_S = false;
@@ -309,7 +311,7 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_EntryCell.SetActive(true);
             m_CentreModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_CentreModels.m_GenCellA.transform.SetParent(m_CentreModels.transform);
-            m_CentreModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_CentreModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_CentreModels.m_ExitCell.transform.SetParent(m_CentreModels.transform);
             SetupLights(m_CentreModels, light_range, light_colour);
 
@@ -318,7 +320,7 @@ public class TheCellGameMgr : MonoBehaviour
             m_NorthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_NorthModels.m_GenCellA.SetActive(true);
             m_NorthModels.m_GenCellA.transform.SetParent(m_NorthModels.transform);
-            m_NorthModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_NorthModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_NorthModels.m_ExitCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_NorthModels.m_EntryCell.transform.SetParent(m_NorthModels.transform);
@@ -330,7 +332,7 @@ public class TheCellGameMgr : MonoBehaviour
             m_EastModels.m_GenCellA.transform.SetParent(m_EastModels.transform);
             m_EastModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_EastModels.m_EntryCell.transform.SetParent(m_EastModels.transform);
-            m_EastModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_EastModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_EastModels.m_ExitCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
             SetupLights(m_EastModels, light_range, light_colour);
@@ -340,7 +342,7 @@ public class TheCellGameMgr : MonoBehaviour
             m_SouthModels.m_GenCellA.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_SouthModels.m_EntryCell.transform.SetParent(m_SouthModels.transform);
-            m_SouthModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_SouthModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_SouthModels.m_ExitCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);
             SetupLights(m_SouthModels, light_range, light_colour);
@@ -350,7 +352,7 @@ public class TheCellGameMgr : MonoBehaviour
             m_WestModels.m_GenCellA.transform.SetParent(m_WestModels.transform);
             m_WestModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_WestModels.m_EntryCell.transform.SetParent(m_WestModels.transform);
-            m_WestModels.m_ExitCell = GameObject.Instantiate(m_MiddleCell);  // to be changed for the exit cell model
+            m_WestModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_WestModels.m_ExitCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
             SetupLights(m_WestModels, light_range, light_colour);
@@ -477,6 +479,8 @@ public class TheCellGameMgr : MonoBehaviour
             InitializeNewGame(System.Environment.TickCount);
         }
 
+        OneCellClass current = GetCurrentCell();
+
         if (Input.GetKeyUp(KeyCode.UpArrow))
         {
             MovePlayerNorth();
@@ -496,25 +500,28 @@ public class TheCellGameMgr : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Keypad6))
         {
             TestGetNorth();
-            MoveRow(true);
+            //MoveRow(true);
+            current.MechanismEast.TriggerAction();
             TestGetNorth();
         }
         if (Input.GetKeyUp(KeyCode.Keypad4))
         {
             TestGetNorth();
-            MoveRow(false);
+            //MoveRow(false);
+            current.MechanismWest.TriggerAction();
             TestGetNorth();
         }
         if (Input.GetKeyUp(KeyCode.Keypad8))
         {
-            MoveColumn(true);
+            //MoveColumn(true);
+            current.MechanismNorth.TriggerAction();
         }
         if (Input.GetKeyUp(KeyCode.Keypad2))
         {
-            MoveColumn(false);
+            //MoveColumn(false);
+            current.MechanismSouth.TriggerAction();
         }
 
-        OneCellClass current = GetCurrentCell();
         GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
         directions.GetComponent<TextMeshProUGUI>().text = $"Counter\n {Time.fixedTime - current.enterTime}s";
 
@@ -558,6 +565,16 @@ public class TheCellGameMgr : MonoBehaviour
         if (current != null)
         {
             playerSphere.transform.position = current.SmallCell.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
+
+            if (current.cellType == CellTypes.Exit)
+            {
+                if (gameState != GameStates.ExitFound)
+                {
+                    gameState = GameStates.ExitFound;
+                    GameObject title = m_basicCanvas.transform.GetChild(0).gameObject;
+                    title.GetComponent<TextMeshProUGUI>().text = $"EXIT found!";
+                }
+            }
         }
     }
 
@@ -684,6 +701,18 @@ public class TheCellGameMgr : MonoBehaviour
             float light_range = 4.0f;
             Color light_colour = new Color(0.9f, 1.0f, 0.9f, 1.0f);
             SetupLights(m_CentreModels, light_range, light_colour);
+
+            //remove the north wall "Trap_1" from south_cell...
+            GameObject southModel = m_SouthModels.GetActiveModel();
+            if (southModel)
+            {
+                GameObject northWall = southModel.transform.Find("Trap_1").gameObject;
+                //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {m_SouthModels.transform.name}, model: {northWall.name}");
+                if (northWall != null)
+                {
+                    northWall.SetActive(false);
+                }
+            }
         }
     }
 

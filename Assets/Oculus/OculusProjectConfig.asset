@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetDeviceTypes: 01000000
   handTrackingSupport: 1
-  colorGamut: 0
+  colorGamut: 4
   disableBackups: 1
   enableNSCConfig: 1
-  focusAware: 0
+  focusAware: 1

@@ -9,5 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/CellScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: de2cc8eef66c88342ab6e3251094abe4,
+      type: 2}
+    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 7b539865cd5345b47a35c830f60e130b,
+      type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 9c40a8437a0bdd14d97094668aea23bc,
       type: 2}

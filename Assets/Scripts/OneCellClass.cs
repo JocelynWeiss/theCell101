@@ -89,6 +89,9 @@ public class OneCellClass : MonoBehaviour
         MeshRenderer renderer = SmallCell.GetComponent<MeshRenderer>();
         renderer.material.color = GetColorByType();
         SmallCell.transform.position = m_MiniGameTranslation;
+
+        // Now we use 3d models for moving lines of cells so set it to null, it will be dynamically assigned
+        MechanismNorth.m_modelSet = false;
     }
 
 
@@ -152,10 +155,16 @@ public class OneCellClass : MonoBehaviour
         SouthDoor.SetActive(false);
         WestDoor.SetActive(false);
         ExitHatch.SetActive(false);
-        MechanismNorth.gameObject.SetActive(false);
-        MechanismEast.gameObject.SetActive(false);
-        MechanismSouth.gameObject.SetActive(false);
-        MechanismWest.gameObject.SetActive(false);
+        /*
+        if (MechanismNorth != null)
+        {
+            Debug.Log($"================> EXIT {transform.name}//{MechanismNorth.gameObject.name}");
+            MechanismNorth.gameObject.SetActive(false);
+            MechanismEast.gameObject.SetActive(false);
+            MechanismSouth.gameObject.SetActive(false);
+            MechanismWest.gameObject.SetActive(false);
+        }
+        //*/
     }
 
 
@@ -168,10 +177,16 @@ public class OneCellClass : MonoBehaviour
         SouthDoor.SetActive(true);
         WestDoor.SetActive(true);
         ExitHatch.SetActive(true);
-        MechanismNorth.gameObject.SetActive(true);
-        MechanismEast.gameObject.SetActive(true);
-        MechanismSouth.gameObject.SetActive(true);
-        MechanismWest.gameObject.SetActive(true);
+        /*
+        if (MechanismNorth != null)
+        {
+            Debug.Log($"================> ENTER {transform.name}//{MechanismNorth.gameObject.name}");
+            MechanismNorth.gameObject.SetActive(true);
+            MechanismEast.gameObject.SetActive(true);
+            MechanismSouth.gameObject.SetActive(true);
+            MechanismWest.gameObject.SetActive(true);
+        }
+        //*/
 
         switch (cellSubType)
         {

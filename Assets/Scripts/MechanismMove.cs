@@ -7,20 +7,84 @@ public class MechanismMove : MonoBehaviour
 {
     // Which orientation is it facing
     public TheCellGameMgr.CardinalPoint cardinal;
+    public float m_BackSpeedFactor = 100.0f;
+    [ViewOnly] public bool m_modelSet = false;
+    [ViewOnly] public bool m_forceActionning = false;   // Will do as if player was actionning the mechanism
     private bool m_actionTriggered = false;
     bool m_rightIndexIn = false;
     bool m_leftIndexIn = false;
+
+
+    private void Awake()
+    {
+        /*
+        //--- attached the instanciated model
+        GameObject genAModel = TheCellGameMgr.instance.m_CentreModels.m_GenCellA.gameObject;
+        GameObject h1 = null;
+        GameObject h2 = null;
+
+        switch (cardinal)
+        {
+            case TheCellGameMgr.CardinalPoint.North:
+                genAModel = TheCellGameMgr.instance.m_NorthModels.m_GenCellA.gameObject;
+                h1 = genAModel.transform.Find("Trap_1").gameObject;
+                h2 = h1.transform.Find("manche_base").gameObject;
+                break;
+            case TheCellGameMgr.CardinalPoint.East:
+                genAModel = TheCellGameMgr.instance.m_EastModels.m_GenCellA.gameObject;
+                h1 = genAModel.transform.Find("trap_3").gameObject;
+                h2 = h1.transform.Find("manche_base 3").gameObject;
+                break;
+            case TheCellGameMgr.CardinalPoint.South:
+                genAModel = TheCellGameMgr.instance.m_SouthModels.m_GenCellA.gameObject;
+                h1 = genAModel.transform.Find("trap_0").gameObject;
+                h2 = h1.transform.Find("manche_base 1").gameObject;
+                break;
+            case TheCellGameMgr.CardinalPoint.West:
+                genAModel = TheCellGameMgr.instance.m_WestModels.m_GenCellA.gameObject;
+                h1 = genAModel.transform.Find("trap_2").gameObject;
+                h2 = h1.transform.Find("manche_base 2").gameObject;
+                break;
+        }
+
+        if (h2 != null)
+        {
+            m_Model = h2;
+            //Debug.Log($"[MechanismMove] Awake. {transform.name}\\{m_Model.name} in {m_Model.transform.position}");
+            Debug.Log($"[MechanismMove] Awake-> {transform.name}\\{transform.parent.name}");
+        }
+        //*/
+
+        //Debug.Log($"[MechanismMove] Awake-> {transform.name}\\{transform.parent.name}");
+        //gameObject.SetActive(false);
+    }
+
+
+    private void OnEnable()
+    {
+    }
+
+
+    private void OnDisable()
+    {
+        //Debug.Log($"{gameObject.name} -> {cardinal}");
+    }
 
 
     // Update is called once per frame
     void Update()
     {
         bool actionning = false;
+        /*
         if (Input.GetKey(KeyCode.A))
         {
-            //Debug.Log($"a = {transform.eulerAngles}");
+            if (cardinal == TheCellGameMgr.CardinalPoint.North)
+            {
+                Debug.Log($"{gameObject.name} euler = {transform.eulerAngles}");
+            }
             actionning = true;
         }
+        */
 
         // Check for hands
         if ((m_leftIndexIn) || (m_rightIndexIn))
@@ -35,9 +99,10 @@ public class MechanismMove : MonoBehaviour
             }
         }
 
-        if (actionning)
+        if ((actionning) || (m_forceActionning))
         {
-            if (transform.rotation.eulerAngles.x > 355.0f)
+            float ex = transform.rotation.eulerAngles.x;
+            if ((ex > 1.0f) && (ex < 280.0f))
             {
                 if (m_actionTriggered)
                 {
@@ -48,7 +113,30 @@ public class MechanismMove : MonoBehaviour
                     m_actionTriggered = TriggerAction();
                 }
             }
+
+            //Debug.Log($"==============-> {transform.name} {transform.rotation.eulerAngles}");
+
             transform.RotateAround(transform.position, transform.right, Time.deltaTime * -90.0f);
+        }
+        else
+        {
+            // Slowly go back in position
+            float ex = transform.rotation.eulerAngles.x;
+            bool inPlace = true;
+            if (ex < 355.0f)
+            {
+                transform.RotateAround(transform.position, transform.right, Time.deltaTime * Mathf.Sqrt(ex * m_BackSpeedFactor));
+                inPlace = false;
+            }
+
+            if ((m_actionTriggered == true) && (inPlace == false))
+            {
+                if (transform.rotation.eulerAngles.x > 355.0f)
+                {
+                    m_actionTriggered = false; // System is back and can be re used
+                    Debug.Log($"[MechanismMove] System back-> {transform.name}\\{transform.parent.name} = {transform.rotation.eulerAngles.x}");
+                }
+            }
         }
     }
 

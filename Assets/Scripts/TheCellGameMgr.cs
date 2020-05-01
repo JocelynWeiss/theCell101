@@ -311,6 +311,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_EntryCell.SetActive(true);
             m_CentreModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_CentreModels.m_GenCellA.transform.SetParent(m_CentreModels.transform);
+            m_CentreModels.m_GenCellA.name = "GenACentre Model";
+            //Debug.Log($"[MgrInit] Awake. {m_CentreModels.m_GenCellA.name}\\{m_CentreModels.m_GenCellA.transform.parent.name} Centre");
             m_CentreModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_CentreModels.m_ExitCell.transform.SetParent(m_CentreModels.transform);
             SetupLights(m_CentreModels, light_range, light_colour);
@@ -320,6 +322,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_NorthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_NorthModels.m_GenCellA.SetActive(true);
             m_NorthModels.m_GenCellA.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_GenCellA.name = "GenANorth Model";
+            //Debug.Log($"[MgrInit] Awake. {m_NorthModels.m_GenCellA.name}\\{m_NorthModels.m_GenCellA.transform.parent.name} m_NorthModels");
             m_NorthModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_NorthModels.m_ExitCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
@@ -330,6 +334,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_EastModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_EastModels.m_GenCellA.SetActive(true);
             m_EastModels.m_GenCellA.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_GenCellA.name = "GenAEast Model";
+            //Debug.Log($"[MgrInit] Awake. {m_EastModels.m_GenCellA.name}\\{m_EastModels.m_GenCellA.transform.parent.name} m_EastModels");
             m_EastModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_EastModels.m_EntryCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
@@ -340,6 +346,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_SouthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_SouthModels.m_GenCellA.SetActive(true);
             m_SouthModels.m_GenCellA.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_GenCellA.name = "GenASouth Model";
+            //Debug.Log($"[MgrInit] Awake. {m_SouthModels.m_GenCellA.name}\\{m_SouthModels.m_GenCellA.transform.parent.name} m_SouthModels");
             m_SouthModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_SouthModels.m_EntryCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
@@ -350,6 +358,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_WestModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_WestModels.m_GenCellA.SetActive(true);
             m_WestModels.m_GenCellA.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_GenCellA.name = "GenAWest Model";
+            //Debug.Log($"[MgrInit] Awake. {m_WestModels.m_GenCellA.name}\\{m_WestModels.m_GenCellA.transform.parent.name} m_WestModels");
             m_WestModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_WestModels.m_EntryCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
@@ -359,6 +369,7 @@ public class TheCellGameMgr : MonoBehaviour
         }
         //--- show models ---
 
+        UpdateCellsModels();
         gameState = GameStates.Running;
         OneCellClass current = GetCurrentCell();
         current.OnPlayerEnter();
@@ -497,29 +508,39 @@ public class TheCellGameMgr : MonoBehaviour
         {
             MovePlayerWest();
         }
-        if (Input.GetKeyUp(KeyCode.Keypad6))
+        if (Input.GetKey(KeyCode.Keypad6))
         {
-            TestGetNorth();
-            //MoveRow(true);
-            current.MechanismEast.TriggerAction();
-            TestGetNorth();
+            current.MechanismEast.m_forceActionning = true;
         }
-        if (Input.GetKeyUp(KeyCode.Keypad4))
+        else
         {
-            TestGetNorth();
-            //MoveRow(false);
-            current.MechanismWest.TriggerAction();
-            TestGetNorth();
+            current.MechanismEast.m_forceActionning = false;
         }
-        if (Input.GetKeyUp(KeyCode.Keypad8))
+        if (Input.GetKey(KeyCode.Keypad4))
+        {
+            current.MechanismWest.m_forceActionning = true;
+        }
+        else
+        {
+            current.MechanismWest.m_forceActionning = false;
+        }
+        if (Input.GetKey(KeyCode.Keypad8))
         {
             //MoveColumn(true);
-            current.MechanismNorth.TriggerAction();
+            //current.MechanismNorth.TriggerAction();
+            current.MechanismNorth.m_forceActionning = true;
         }
-        if (Input.GetKeyUp(KeyCode.Keypad2))
+        else
         {
-            //MoveColumn(false);
-            current.MechanismSouth.TriggerAction();
+            current.MechanismNorth.m_forceActionning = false;
+        }
+        if (Input.GetKey(KeyCode.Keypad2))
+        {
+            current.MechanismSouth.m_forceActionning = true;
+        }
+        else
+        {
+            current.MechanismSouth.m_forceActionning = false;
         }
 
         GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
@@ -711,6 +732,52 @@ public class TheCellGameMgr : MonoBehaviour
                 if (northWall != null)
                 {
                     northWall.SetActive(false);
+                }
+            }
+        }
+
+        // Activate levers for centre model only
+        if (m_CentreModels.m_GenCellA.activeSelf == true)
+        {
+            //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {m_CentreModels.m_GenCellA.name}, MechanismNorth= {current.cellId}");
+            /*
+            GameObject genAModel = m_CentreModels.m_GenCellA.gameObject;
+            GameObject h1 = genAModel.transform.Find("Trap_1").gameObject;
+            GameObject h2 = h1.transform.Find("manche_base").gameObject;
+            GameObject h3 = h2.transform.Find("manche").gameObject;
+            h3.SetActive(true);
+            OneCellClass toto = GetCurrentCell();
+            MechanismMove mec = h3.GetComponentInChildren<MechanismMove>();
+            toto.MechanismNorth = mec;
+            */
+            if (current.MechanismNorth.m_modelSet == false)
+            {
+                MechanismMove[] mecs = m_CentreModels.m_GenCellA.GetComponentsInChildren<MechanismMove>();
+                foreach (MechanismMove mec in mecs)
+                {
+                    mec.enabled = true;
+                    switch (mec.cardinal)
+                    {
+                        case CardinalPoint.North:
+                            current.MechanismNorth = mec;
+                            current.MechanismNorth.m_modelSet = true;
+                            break;
+                        case CardinalPoint.East:
+                            current.MechanismEast = mec;
+                            current.MechanismEast.m_modelSet = true;
+                            break;
+                        case CardinalPoint.South:
+                            current.MechanismSouth = mec;
+                            current.MechanismSouth.m_modelSet = true;
+                            break;
+                        case CardinalPoint.West:
+                            current.MechanismWest = mec;
+                            current.MechanismWest.m_modelSet = true;
+                            break;
+                        default:
+                            Debug.LogWarning($"Wrong cardinal {mec.cardinal} for MechanismMove");
+                            break;
+                    }
                 }
             }
         }

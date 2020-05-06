@@ -29,12 +29,12 @@ Finally, to configure Oculus-specific settings, navigate to the “Oculus” tab
 ---------------------------------------------
 
 ## Install apk
-From the Build folder where the apk is:
-```
-adb install -r TheCell01.apk
-``` 
+From the Build folder where the apk is:  
+``` adb install -r TheCell01.apk ```  
 You can check for the list of connected devices using:  
-``` adb devices ``` 
+``` adb devices ```  
+You can create connections again to check devices:  
+``` adb kill-server ```
 
 ---------------------------------------------  
   

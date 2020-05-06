@@ -99,8 +99,18 @@ public class MechanismMove : MonoBehaviour
             }
         }
 
+        AudioSource snd = TheCellGameMgr.instance.Audio_UseLevers;
         if ((actionning) || (m_forceActionning))
         {
+            //--- Snd ---
+            if ((snd.isPlaying == false) && (m_actionTriggered == false))
+            {
+                snd.transform.SetParent(transform);
+                snd.transform.localPosition = Vector3.zero;
+                snd.Play();
+            }
+            //--- Snd ---
+
             float ex = transform.rotation.eulerAngles.x;
             if ((ex > 1.0f) && (ex < 280.0f))
             {
@@ -110,6 +120,11 @@ public class MechanismMove : MonoBehaviour
                 }
                 else
                 {
+                    if (snd.isPlaying)
+                    {
+                        snd.Stop();
+                    }
+                    
                     m_actionTriggered = TriggerAction();
                 }
             }
@@ -127,6 +142,13 @@ public class MechanismMove : MonoBehaviour
             {
                 transform.RotateAround(transform.position, transform.right, Time.deltaTime * Mathf.Sqrt(ex * m_BackSpeedFactor));
                 inPlace = false;
+            }
+            else
+            {
+                if (snd.isPlaying)
+                {
+                    snd.Stop();
+                }
             }
 
             if ((m_actionTriggered == true) && (inPlace == false))

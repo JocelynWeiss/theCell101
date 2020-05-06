@@ -103,6 +103,9 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject Snd_OpenShutters;
     private AudioSource Audio_OpenShutters;
 
+    public GameObject Snd_UseLevers;
+    [ViewOnly] public AudioSource Audio_UseLevers;
+
 
     void Awake()
     {
@@ -142,6 +145,7 @@ public class TheCellGameMgr : MonoBehaviour
 
         // Sounds
         Audio_OpenShutters = Snd_OpenShutters.GetComponent<AudioSource>();
+        Audio_UseLevers = Snd_UseLevers.GetComponent<AudioSource>();
 
         Debug.Log($"[GameMgr] Start. {gameState}");
     }
@@ -994,8 +998,18 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_N = true;
 
-                        GameObject front = m_CentreModels.m_EntryCell.transform.Find("trap_0").gameObject;
-                        front = front.transform.Find("trape_2").gameObject;
+                        GameObject front = null;
+                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_EntryCell.transform.Find("trap_0").gameObject;
+                            front = front.transform.Find("trape_2").gameObject;
+                        }
+                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_GenCellA.transform.Find("Trap_1").gameObject;
+                            front = front.transform.Find("trape_1").gameObject;
+                        }
+
                         GameObject back = m_NorthModels.m_GenCellA.transform.Find("trap_0").gameObject;
                         back = back.transform.Find("trape_2").gameObject;
                         StartCoroutine(OpenShutters(point, front, back));

@@ -143,14 +143,16 @@ public class MechanismMove : MonoBehaviour
                 transform.RotateAround(transform.position, transform.right, Time.deltaTime * Mathf.Sqrt(ex * m_BackSpeedFactor));
                 inPlace = false;
             }
-            else
+            if ((inPlace == false) && (transform.rotation.eulerAngles.x > 355.0f))
             {
                 if (snd.isPlaying)
                 {
                     snd.Stop();
+                    //Debug.Log($"[MechanismMove] Stop sound-> {transform.name}\\{transform.parent.name} = {snd.name} at {ex}");
                 }
             }
-
+            
+            
             if ((m_actionTriggered == true) && (inPlace == false))
             {
                 if (transform.rotation.eulerAngles.x > 355.0f)

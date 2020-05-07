@@ -107,7 +107,7 @@ public class TheCellGameMgr : MonoBehaviour
     [HideInInspector] public AudioSource Audio_UseLevers;
 
     public GameObject Snd_DeathScream;
-    [HideInInspector] public AudioSource Audio_DeathScream;
+    [HideInInspector] public AudioSource[] Audio_DeathScream;
 
 
     void Awake()
@@ -121,6 +121,13 @@ public class TheCellGameMgr : MonoBehaviour
             playerSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             playerSphere.transform.position = transform.position + new Vector3(0.0f, 0.1f, 0.0f);
             playerSphere.transform.localScale = new Vector3(0.08f, 0.12f, 0.08f);
+
+            Shader sh = Shader.Find("Universal Render Pipeline/Simple Lit");
+            if (sh)
+            {
+                Renderer rend = playerSphere.GetComponent<Renderer>();
+                rend.material = new Material(sh);
+            }
         }
 
         InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
@@ -149,7 +156,8 @@ public class TheCellGameMgr : MonoBehaviour
         // Sounds
         Audio_OpenShutters = Snd_OpenShutters.GetComponent<AudioSource>();
         Audio_UseLevers = Snd_UseLevers.GetComponent<AudioSource>();
-        Audio_DeathScream = Snd_DeathScream.GetComponent<AudioSource>();
+        //Audio_DeathScream = Snd_DeathScream.GetComponent<AudioSource>();
+        Audio_DeathScream = Snd_DeathScream.GetComponents<AudioSource>();
 
         Debug.Log($"[GameMgr] Start. {gameState}");
     }
@@ -822,6 +830,12 @@ public class TheCellGameMgr : MonoBehaviour
     // Move an entire row to the east or west
     void MoveRow(int from, bool onEast)
     {
+        if (from == 10) // same row as the start room = impossible
+        {
+            Audio_DeathScream[1].Play();
+            return;
+        }
+
         if ((from != 0) && (from != 5) && (from != 15) && (from != 20))
         {
             Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] MoveRow should start from the beginning of a row not {from}.");
@@ -897,6 +911,12 @@ public class TheCellGameMgr : MonoBehaviour
     // Move an entire column to the north or south
     void MoveColumn(int from, bool onNorth)
     {
+        if (from == 2) // same column as the start room = impossible
+        {
+            Audio_DeathScream[1].Play();
+            return;
+        }
+
         if ((from != 0) && (from != 1) && (from != 3) && (from != 4))
         {
             Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] MoveColumn should start from the beginning of a column not {from}.");
@@ -1136,6 +1156,7 @@ public class TheCellGameMgr : MonoBehaviour
                             front = front.transform.Find("trape_1").gameObject;
                         }
 
+                        // JowNext: Make sure the back is set considering the right active model as for the front
                         GameObject back = m_NorthModels.m_GenCellA.transform.Find("trap_0").gameObject;
                         back = back.transform.Find("trape_2").gameObject;
                         StartCoroutine(OpenShutters(point, front, back));

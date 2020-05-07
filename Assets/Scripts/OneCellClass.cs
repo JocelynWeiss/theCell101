@@ -158,7 +158,7 @@ public class OneCellClass : MonoBehaviour
         /*
         if (MechanismNorth != null)
         {
-            Debug.Log($"================> EXIT {transform.name}//{MechanismNorth.gameObject.name}");
+            //Debug.Log($"================> EXIT {transform.name}//{MechanismNorth.gameObject.name}");
             MechanismNorth.gameObject.SetActive(false);
             MechanismEast.gameObject.SetActive(false);
             MechanismSouth.gameObject.SetActive(false);
@@ -180,11 +180,14 @@ public class OneCellClass : MonoBehaviour
         /*
         if (MechanismNorth != null)
         {
-            Debug.Log($"================> ENTER {transform.name}//{MechanismNorth.gameObject.name}");
-            MechanismNorth.gameObject.SetActive(true);
-            MechanismEast.gameObject.SetActive(true);
-            MechanismSouth.gameObject.SetActive(true);
-            MechanismWest.gameObject.SetActive(true);
+            //Debug.Log($"================> ENTER {transform.name}//{MechanismNorth.gameObject.name}");
+            if ((cellType == TheCellGameMgr.CellTypes.Safe) || (cellType == TheCellGameMgr.CellTypes.Effect))
+            {
+                MechanismNorth.gameObject.SetActive(true);
+                MechanismEast.gameObject.SetActive(true);
+                MechanismSouth.gameObject.SetActive(true);
+                MechanismWest.gameObject.SetActive(true);
+            }
         }
         //*/
 
@@ -204,7 +207,7 @@ public class OneCellClass : MonoBehaviour
 
     private IEnumerator DelayedDeath()
     {
-        AudioSource snd = TheCellGameMgr.instance.Audio_DeathScream;
+        AudioSource snd = TheCellGameMgr.instance.Audio_DeathScream[0];
         snd.Play();
 
         yield return new WaitForSecondsRealtime(3.0f);

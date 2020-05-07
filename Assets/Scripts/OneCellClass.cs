@@ -204,8 +204,37 @@ public class OneCellClass : MonoBehaviour
 
     private IEnumerator DelayedDeath()
     {
+        AudioSource snd = TheCellGameMgr.instance.Audio_DeathScream;
+        snd.Play();
+
         yield return new WaitForSecondsRealtime(3.0f);
 
         Debug.Log($"[OneCellClass] Kill the player sub {cellSubType}, go back at start. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+
+        OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
+        OVRScreenFade _screenFadeScript = rig.GetComponent<OVRScreenFade>();
+        if (_screenFadeScript != null)
+        {
+            _screenFadeScript.fadeColor = new Color(0.5f, 0.0f, 0.0f);
+            _screenFadeScript.FadeOut();
+        }
+
+        StartCoroutine(TeleportToStart());
+    }
+
+
+    private IEnumerator TeleportToStart()
+    {
+        yield return new WaitForSecondsRealtime(2.0f);
+
+        OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
+        OVRScreenFade _screenFadeScript = rig.GetComponent<OVRScreenFade>();
+        if (_screenFadeScript != null)
+        {
+            _screenFadeScript.OnLevelFinishedLoading(0);
+        }
+
+        Debug.Log($"[OneCellClass] Teleport player back at start. Time = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+        TheCellGameMgr.instance.TeleportToStart();
     }
 }

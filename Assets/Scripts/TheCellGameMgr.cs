@@ -104,7 +104,10 @@ public class TheCellGameMgr : MonoBehaviour
     private AudioSource Audio_OpenShutters;
 
     public GameObject Snd_UseLevers;
-    [ViewOnly] public AudioSource Audio_UseLevers;
+    [HideInInspector] public AudioSource Audio_UseLevers;
+
+    public GameObject Snd_DeathScream;
+    [HideInInspector] public AudioSource Audio_DeathScream;
 
 
     void Awake()
@@ -146,6 +149,7 @@ public class TheCellGameMgr : MonoBehaviour
         // Sounds
         Audio_OpenShutters = Snd_OpenShutters.GetComponent<AudioSource>();
         Audio_UseLevers = Snd_UseLevers.GetComponent<AudioSource>();
+        Audio_DeathScream = Snd_DeathScream.GetComponent<AudioSource>();
 
         Debug.Log($"[GameMgr] Start. {gameState}");
     }
@@ -308,8 +312,6 @@ public class TheCellGameMgr : MonoBehaviour
         //--- show models ---
         if (m_CentreModels.m_EntryCell == null)
         {
-            float light_range = 1.0f;
-            Color light_colour = new Color(1.0f, 1.0f, 0.9f, 1.0f);
             m_CentreModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_CentreModels.m_EntryCell.transform.SetParent(m_CentreModels.transform);
             m_CentreModels.m_EntryCell.SetActive(true);
@@ -319,9 +321,6 @@ public class TheCellGameMgr : MonoBehaviour
             //Debug.Log($"[MgrInit] Awake. {m_CentreModels.m_GenCellA.name}\\{m_CentreModels.m_GenCellA.transform.parent.name} Centre");
             m_CentreModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_CentreModels.m_ExitCell.transform.SetParent(m_CentreModels.transform);
-            SetupLights(m_CentreModels, light_range, light_colour);
-
-            light_colour = Color.red;
 
             m_NorthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_NorthModels.m_GenCellA.SetActive(true);
@@ -333,7 +332,6 @@ public class TheCellGameMgr : MonoBehaviour
             m_NorthModels.m_EntryCell = GameObject.Instantiate(m_MiddleCell);
             m_NorthModels.m_EntryCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
-            SetupLights(m_NorthModels, light_range, light_colour);
 
             m_EastModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_EastModels.m_GenCellA.SetActive(true);
@@ -345,7 +343,6 @@ public class TheCellGameMgr : MonoBehaviour
             m_EastModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_EastModels.m_ExitCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
-            SetupLights(m_EastModels, light_range, light_colour);
 
             m_SouthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_SouthModels.m_GenCellA.SetActive(true);
@@ -357,7 +354,6 @@ public class TheCellGameMgr : MonoBehaviour
             m_SouthModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_SouthModels.m_ExitCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);
-            SetupLights(m_SouthModels, light_range, light_colour);
 
             m_WestModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_WestModels.m_GenCellA.SetActive(true);
@@ -369,9 +365,19 @@ public class TheCellGameMgr : MonoBehaviour
             m_WestModels.m_ExitCell = GameObject.Instantiate(m_ExitModel);
             m_WestModels.m_ExitCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
-            SetupLights(m_WestModels, light_range, light_colour);
         }
         //--- show models ---
+
+        //--- set lighting ---
+        float light_range = 1.0f;
+        Color light_colour = new Color(1.0f, 1.0f, 0.9f, 1.0f);
+        SetupLights(m_CentreModels, light_range, light_colour);
+        light_colour = Color.red;
+        SetupLights(m_NorthModels, light_range, light_colour);
+        SetupLights(m_EastModels, light_range, light_colour);
+        SetupLights(m_SouthModels, light_range, light_colour);
+        SetupLights(m_WestModels, light_range, light_colour);
+        //--- set lighting ---
 
         UpdateCellsModels();
         gameState = GameStates.Running;
@@ -709,7 +715,7 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    // Update cells models to display
+    // Update cells models to display when entering a new room
     void UpdateCellsModels()
     {
         OneCellClass current = GetCurrentCell();
@@ -738,6 +744,10 @@ public class TheCellGameMgr : MonoBehaviour
                     northWall.SetActive(false);
                 }
             }
+        }
+        else if (curType == CellTypes.Deadly)
+        {
+            SetupLightsBySubType(m_CentreModels, current.cellSubType);
         }
 
         // Activate levers for centre model only
@@ -785,6 +795,8 @@ public class TheCellGameMgr : MonoBehaviour
                 }
             }
         }
+
+        SetupAdjacentLights(null, 0.0f, Color.red);
     }
 
 
@@ -954,6 +966,120 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // Sets lighting when entering a deadly room
+    void SetupLightsBySubType(CellsModels model, CellSubTypes subTypes)
+    {
+        float light_range = 3.0f;
+        Color light_colour = new Color(1.0f, 1.0f, 0.9f, 1.0f);
+        switch (subTypes)
+        {
+            case CellSubTypes.Fire:
+                light_colour = new Color(1.0f, 0.6f, 0.3f, 1.0f);
+                break;
+            case CellSubTypes.Gaz:
+                light_colour = new Color(0.6f, 1.0f, 0.3f, 1.0f);
+                break;
+            case CellSubTypes.Water:
+                light_colour = new Color(0.3f, 0.6f, 1.0f, 1.0f);
+                break;
+            case CellSubTypes.Lasers:
+                light_colour = new Color(1.0f, 0.6f, 0.6f, 1.0f);
+                break;
+            case CellSubTypes.Blind:
+            case CellSubTypes.Empty:
+            case CellSubTypes.Illusion:
+            case CellSubTypes.OneLook:
+            case CellSubTypes.Screen:
+            case CellSubTypes.Tunnel:
+            case CellSubTypes.Vortex:
+                break;
+        }
+
+        SetupLights(model, light_range, light_colour);
+    }
+
+
+    void SetupAdjacentLights(CellsModels model, float range, Color colour)
+    {
+        model = m_NorthModels;
+        model.m_light_N.range = 5.0f;
+        model.m_light_N.intensity = 0.5f;
+        model.m_light_N.color = colour;
+        Vector3 pos = model.m_light_N.transform.localPosition;
+        pos.z = 0.5f;
+        model.m_light_N.transform.localPosition = pos;
+
+        model.m_light_E.enabled = false;
+        model.m_light_E.range = range;
+
+        model.m_light_S.enabled = false;
+        model.m_light_S.range = range;
+
+        model.m_light_W.enabled = false;
+        model.m_light_W.range = range;
+
+        // -- south
+        model = m_SouthModels;
+        model.m_light_N.enabled = false;
+        model.m_light_N.range = range;
+
+        model.m_light_E.enabled = false;
+        model.m_light_E.range = range;
+
+        model.m_light_S.range = 5.0f;
+        model.m_light_S.intensity = 0.5f;
+        model.m_light_S.color = colour;
+        pos = model.m_light_S.transform.localPosition;
+        pos.z = -0.5f;
+        model.m_light_S.transform.localPosition = pos;
+
+        model.m_light_W.enabled = false;
+        model.m_light_W.range = range;
+
+        // -- east
+        model = m_EastModels;
+        model.m_light_N.enabled = false;
+        model.m_light_N.range = range;
+
+        model.m_light_E.range = 5.0f;
+        model.m_light_E.intensity = 0.5f;
+        model.m_light_E.color = colour;
+        pos = model.m_light_E.transform.localPosition;
+        pos.x = 0.5f;
+        model.m_light_E.transform.localPosition = pos;
+
+        model.m_light_S.enabled = false;
+        model.m_light_S.range = range;
+
+        model.m_light_W.enabled = false;
+        model.m_light_W.range = range;
+
+        // -- west
+        model = m_WestModels;
+        model.m_light_N.enabled = false;
+        model.m_light_N.range = range;
+
+        model.m_light_E.enabled = false;
+        model.m_light_E.range = range;
+
+        model.m_light_S.enabled = false;
+        model.m_light_S.range = range;
+
+        model.m_light_W.range = 5.0f;
+        model.m_light_W.intensity = 0.5f;
+        model.m_light_W.color = colour;
+        pos = model.m_light_W.transform.localPosition;
+        pos.x = -0.5f;
+        model.m_light_W.transform.localPosition = pos;
+    }
+
+
+    public void TeleportToStart()
+    {
+        InitializeNewGame(startingSeed);
+    }
+
+
     /// <summary>
     /// Gets the hand id associated with the index finger of the collider passed as parameter, if any
     /// </summary>
@@ -1022,8 +1148,18 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_E = true;
 
-                        GameObject front = m_CentreModels.m_EntryCell.transform.Find("trap_2").gameObject;
-                        front = front.transform.Find("trape_2 1").gameObject;
+                        GameObject front = null;
+                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_EntryCell.transform.Find("trap_2").gameObject;
+                            front = front.transform.Find("trape_2 1").gameObject;
+                        }
+                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_GenCellA.transform.Find("trap_3").gameObject;
+                            front = front.transform.Find("trape_2 2").gameObject;
+                        }
+
                         GameObject back = m_EastModels.m_GenCellA.transform.Find("trap_2").gameObject;
                         back = back.transform.Find("trape_2 1").gameObject;
                         StartCoroutine(OpenShutters(point, front, back));
@@ -1036,8 +1172,18 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_S = true;
 
-                        GameObject front = m_CentreModels.m_EntryCell.transform.Find("Trap_1").gameObject;
-                        front = front.transform.Find("trape_1").gameObject;
+                        GameObject front = null;
+                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_EntryCell.transform.Find("Trap_1").gameObject;
+                            front = front.transform.Find("trape_1").gameObject;
+                        }
+                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_GenCellA.transform.Find("trap_0").gameObject;
+                            front = front.transform.Find("trape_2").gameObject;
+                        }
+
                         GameObject back = m_SouthModels.m_GenCellA.transform.Find("Trap_1").gameObject;
                         back = back.transform.Find("trape_1").gameObject;
                         StartCoroutine(OpenShutters(point, front, back));
@@ -1050,8 +1196,18 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_W = true;
 
-                        GameObject front = m_CentreModels.m_EntryCell.transform.Find("trap_3").gameObject;
-                        front = front.transform.Find("trape_2 2").gameObject;
+                        GameObject front = null;
+                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_EntryCell.transform.Find("trap_3").gameObject;
+                            front = front.transform.Find("trape_2 2").gameObject;
+                        }
+                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_GenCellA.transform.Find("trap_3").gameObject;
+                            front = front.transform.Find("trape_2 2").gameObject;
+                        }
+
                         GameObject back = m_WestModels.m_GenCellA.transform.Find("trap_3").gameObject;
                         back = back.transform.Find("trape_2 2").gameObject;
                         StartCoroutine(OpenShutters(point, front, back));

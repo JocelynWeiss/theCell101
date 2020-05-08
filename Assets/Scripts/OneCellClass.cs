@@ -87,7 +87,8 @@ public class OneCellClass : MonoBehaviour
         //transform.localScale = new Vector3(8.0f, 8.0f, 8.0f);
 
         MeshRenderer renderer = SmallCell.GetComponent<MeshRenderer>();
-        renderer.material.color = GetColorByType();
+        renderer.material.SetColor("_BaseColor", GetColorByType() * 0.75f);
+
         SmallCell.transform.position = m_MiniGameTranslation;
 
         // Now we use 3d models for moving lines of cells so set it to null, it will be dynamically assigned
@@ -132,6 +133,7 @@ public class OneCellClass : MonoBehaviour
     // Draw gizmos in editor view
     protected void OnDrawGizmos()
     {
+        /*
         Gizmos.color = GetColorByType();
 
         float size = 1.0f;
@@ -144,6 +146,7 @@ public class OneCellClass : MonoBehaviour
         {
             Gizmos.DrawCube(SmallCell.transform.position, SmallCell.transform.localScale * size);
         }
+        */
     }
 
 
@@ -165,6 +168,8 @@ public class OneCellClass : MonoBehaviour
             MechanismWest.gameObject.SetActive(false);
         }
         //*/
+
+        TheCellGameMgr.instance.Audio_DeathScream[2].Play();
     }
 
 
@@ -172,11 +177,30 @@ public class OneCellClass : MonoBehaviour
     public void OnPlayerEnter()
     {
         enterTime = Time.fixedTime;
-        NorthDoor.SetActive(true);
-        EastDoor.SetActive(true);
-        SouthDoor.SetActive(true);
-        WestDoor.SetActive(true);
-        ExitHatch.SetActive(true);
+
+        if (TheCellGameMgr.instance.GetNorthType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        {
+            NorthDoor.SetActive(true);
+        }
+        if (TheCellGameMgr.instance.GetEastType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        {
+            EastDoor.SetActive(true);
+        }
+        if (TheCellGameMgr.instance.GetSouthType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        {
+            SouthDoor.SetActive(true);
+        }
+        if (TheCellGameMgr.instance.GetWestType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        {
+            WestDoor.SetActive(true);
+        }
+
+        if (cellType == TheCellGameMgr.CellTypes.Exit)
+        {
+            SouthDoor.SetActive(false);
+            ExitHatch.SetActive(true);
+        }
+
         /*
         if (MechanismNorth != null)
         {

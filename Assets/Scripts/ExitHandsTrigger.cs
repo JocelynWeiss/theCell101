@@ -22,6 +22,10 @@ public class ExitHandsTrigger : MonoBehaviour
             m_HatchModel = hatch;
             Debug.Log($"[ExitHandsTrigger] Awake. {transform.name}, model: {m_HatchModel.name} in {m_HatchModel.transform.position}");
         }
+        else
+        {
+            Debug.LogWarning($"[ExitHandsTrigger] Awake. {transform.name}, model: {m_HatchModel.name} couldn't be found...");
+        }
     }
 
 

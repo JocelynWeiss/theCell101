@@ -601,6 +601,25 @@ public class TheCellGameMgr : MonoBehaviour
         {
             ScanTriggerAction(CardinalPoint.West);
         }
+
+        // Test fader
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
+            OVRScreenFade fader = rig.GetComponent<OVRScreenFade>();
+            if (fader != null)
+            {
+                float a = fader.currentAlpha;
+                if (a > 0.0f)
+                {
+                    fader.OnLevelFinishedLoading(0);
+                }
+                else
+                {
+                    fader.FadeOut();
+                }
+            }
+        }
     }
 
 
@@ -1152,7 +1171,17 @@ public class TheCellGameMgr : MonoBehaviour
                 {
                     if (m_displayCell_N == false)
                     {
-                        m_displayCell_N = true;
+                        OneCellClass current = GetCurrentCell();
+                        if (current.LookRemaining <= 0)
+                        {
+                            Audio_DeathScream[3].Play();
+                            return;
+                        }
+                        else
+                        {
+                            m_displayCell_N = true;
+                            current.LookRemaining--;
+                        }
 
                         GameObject front = null;
                         if (m_CentreModels.m_EntryCell.activeSelf == true)
@@ -1166,7 +1195,6 @@ public class TheCellGameMgr : MonoBehaviour
                             front = front.transform.Find("trape_1").gameObject;
                         }
 
-                        // JowNext: Make sure the back is set considering the right active model as for the front
                         GameObject back = m_NorthModels.GetActiveModel();
                         if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.Entry)
                         {
@@ -1187,7 +1215,17 @@ public class TheCellGameMgr : MonoBehaviour
                 {
                     if (m_displayCell_E == false)
                     {
-                        m_displayCell_E = true;
+                        OneCellClass current = GetCurrentCell();
+                        if (current.LookRemaining <= 0)
+                        {
+                            Audio_DeathScream[3].Play();
+                            return;
+                        }
+                        else
+                        {
+                            m_displayCell_E = true;
+                            current.LookRemaining--;
+                        }
 
                         GameObject front = null;
                         if (m_CentreModels.m_EntryCell.activeSelf == true)
@@ -1227,7 +1265,17 @@ public class TheCellGameMgr : MonoBehaviour
                 {
                     if (m_displayCell_S == false)
                     {
-                        m_displayCell_S = true;
+                        OneCellClass current = GetCurrentCell();
+                        if (current.LookRemaining <= 0)
+                        {
+                            Audio_DeathScream[3].Play();
+                            return;
+                        }
+                        else
+                        {
+                            m_displayCell_S = true;
+                            current.LookRemaining--;
+                        }
 
                         GameObject front = null;
                         if (m_CentreModels.m_EntryCell.activeSelf == true)
@@ -1261,7 +1309,17 @@ public class TheCellGameMgr : MonoBehaviour
                 {
                     if (m_displayCell_W == false)
                     {
-                        m_displayCell_W = true;
+                        OneCellClass current = GetCurrentCell();
+                        if (current.LookRemaining <= 0)
+                        {
+                            Audio_DeathScream[3].Play();
+                            return;
+                        }
+                        else
+                        {
+                            m_displayCell_W = true;
+                            current.LookRemaining--;
+                        }
 
                         GameObject front = null;
                         if (m_CentreModels.m_EntryCell.activeSelf == true)

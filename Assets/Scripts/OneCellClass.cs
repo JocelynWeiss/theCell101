@@ -23,6 +23,8 @@ public class OneCellClass : MonoBehaviour
 
     public Vector3 m_MiniGameTranslation;
 
+    [ViewOnly] public int LookRemaining = 2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -93,6 +95,11 @@ public class OneCellClass : MonoBehaviour
 
         // Now we use 3d models for moving lines of cells so set it to null, it will be dynamically assigned
         MechanismNorth.m_modelSet = false;
+
+        if (cellSubType == TheCellGameMgr.CellSubTypes.OneLook)
+        {
+            LookRemaining = 1;
+        }
     }
 
 

@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 3582550924
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 42581b5e500129d3d07c6efa66a0ec61
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b54f4a46abac5a8beb9b7058f4603027
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 72
+  Script: {instanceID: 0}
+- Class: 2058629509
+  Script: {instanceID: 0}
+Assets:
+- Assets/Shaders/VfxTestA.vfx
+Dependencies:
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_tga0

@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 3739102372
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ddb867bfb91d99fce1f80178bec9c3cb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 21c99c86a43ad817b2cb7f65458ae090
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Oculus/SampleFramework/Usage/Locomotion/Materials/MAT_metal_02.mat
+- Assets/Oculus/SampleFramework/Usage/Locomotion/Materials/MAT_grid_01_light.mat
+- Assets/Materials/SimpleUnlit.mat
+- Assets/Oculus/SampleFramework/Core/CustomHands/Materials/Hands_solid.mat
+- Assets/Oculus/SampleFramework/Core/Locomotion/Materials/ColumnGlow.mat
+- Assets/Oculus/VR/Materials/BasicHandMaterial.mat
+- Assets/Materials/DefaultURPNoTexture.mat
+- Assets/Materials/SimpleLit.mat
+- Assets/Materials/SolGenA.mat
+- Assets/Oculus/SampleFramework/Usage/DistanceGrab/Materials/SportsBottleMetalWithOutline.mat
+Dependencies:
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_tga0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_shader0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png0

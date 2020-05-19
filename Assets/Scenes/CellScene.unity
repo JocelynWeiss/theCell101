@@ -3720,6 +3720,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: cube_safe
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 61e550b81b6ad4d4abfa632c3a528d8e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -502908896630588422, guid: 61e550b81b6ad4d4abfa632c3a528d8e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

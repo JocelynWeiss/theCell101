@@ -14,13 +14,21 @@ public class CellsModels : MonoBehaviour
         Entry,
         GenA,
         GenB,
-        Exit
+        Exit,
+        BlindM,
+        IllusionM,
+        WaterM,
+        LaserM,
     }
 
     [ViewOnly] public GameObject m_EntryCell;  // The starting room
     [ViewOnly] public GameObject m_GenCellA;   // Generic Room A
     [ViewOnly] public GameObject m_GenCellB;   // Generic Room B
     [ViewOnly] public GameObject m_ExitCell;   // The exit room
+    [ViewOnly] public GameObject m_BlindCell;  // The blind cell model
+    [ViewOnly] public GameObject m_IllusionCell;  // The illusion cell model
+    [ViewOnly] public GameObject m_WaterCell;  // The water cell model
+    [ViewOnly] public GameObject m_LaserCell;  // The laser cell model
     [ViewOnly] public Light m_light_N;
     [ViewOnly] public Light m_light_E;
     [ViewOnly] public Light m_light_S;
@@ -60,13 +68,25 @@ public class CellsModels : MonoBehaviour
             case CellsModelsType.Exit:
                 obj = m_ExitCell;
                 break;
+            case CellsModelsType.BlindM:
+                obj = m_BlindCell;
+                break;
+            case CellsModelsType.IllusionM:
+                obj = m_IllusionCell;
+                break;
+            case CellsModelsType.WaterM:
+                obj = m_WaterCell;
+                break;
+            case CellsModelsType.LaserM:
+                obj = m_LaserCell;
+                break;
         }
 
         return obj;
     }
 
 
-    public void SetActiveModel(TheCellGameMgr.CellTypes cellType)
+    public void SetActiveModel(TheCellGameMgr.CellTypes cellType, TheCellGameMgr.CellSubTypes subType)
     {
         switch (cellType)
         {
@@ -82,8 +102,33 @@ public class CellsModels : MonoBehaviour
             case TheCellGameMgr.CellTypes.Deadly:
             case TheCellGameMgr.CellTypes.Effect:
             case TheCellGameMgr.CellTypes.Safe:
-                SetActiveModel(CellsModelsType.GenA);
-                break;
+                {
+                    switch (subType)
+                    {
+                        case TheCellGameMgr.CellSubTypes.Blind:
+                            SetActiveModel(CellsModelsType.BlindM);
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Illusion:
+                            SetActiveModel(CellsModelsType.IllusionM);
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Vortex:
+                            SetActiveModel(CellsModelsType.IllusionM);
+                            break;
+                        case TheCellGameMgr.CellSubTypes.OneLook:
+                            SetActiveModel(CellsModelsType.BlindM);
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Water:
+                            SetActiveModel(CellsModelsType.WaterM);
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Lasers:
+                            SetActiveModel(CellsModelsType.LaserM);
+                            break;
+                        default:
+                            SetActiveModel(CellsModelsType.GenA);
+                            break;
+                    }
+                    break;
+                }
         }
     }
 
@@ -102,6 +147,14 @@ public class CellsModels : MonoBehaviour
             m_GenCellB.SetActive(false);
         if (m_ExitCell)
             m_ExitCell.SetActive(false);
+        if (m_BlindCell)
+            m_BlindCell.SetActive(false);
+        if (m_IllusionCell)
+            m_IllusionCell.SetActive(false);
+        if (m_WaterCell)
+            m_WaterCell.SetActive(false);
+        if (m_LaserCell)
+            m_LaserCell.SetActive(false);
 
         switch (newType)
         {
@@ -118,6 +171,18 @@ public class CellsModels : MonoBehaviour
                 break;
             case CellsModelsType.Exit:
                 m_ExitCell.SetActive(true);
+                break;
+            case CellsModelsType.BlindM:
+                m_BlindCell.SetActive(true);
+                break;
+            case CellsModelsType.IllusionM:
+                m_IllusionCell.SetActive(true);
+                break;
+            case CellsModelsType.WaterM:
+                m_WaterCell.SetActive(true);
+                break;
+            case CellsModelsType.LaserM:
+                m_LaserCell.SetActive(true);
                 break;
             default:
                 Debug.LogWarning($"Wrong model type in SetActiveModel: {newType}");

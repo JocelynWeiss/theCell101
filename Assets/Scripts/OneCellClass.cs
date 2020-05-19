@@ -217,10 +217,10 @@ public class OneCellClass : MonoBehaviour
 
         switch (cellSubType)
         {
-            case TheCellGameMgr.CellSubTypes.Lasers:
+            //case TheCellGameMgr.CellSubTypes.Lasers: //JowTodo: Put back
             case TheCellGameMgr.CellSubTypes.Fire:
             case TheCellGameMgr.CellSubTypes.Gaz:
-            case TheCellGameMgr.CellSubTypes.Water:
+            //case TheCellGameMgr.CellSubTypes.Water:  //JowTodo: Put back
                 StartCoroutine(DelayedDeath());
                 break;
             default:

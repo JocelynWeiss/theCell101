@@ -51,5 +51,6 @@ Code is in HandScanTrigger.cs
 There is big handles floating in the air at the moment, one on each cardinal point. They push the row forward.  
 To activate them, the thumb and the index must be pinching inside the trigger while the lever is going down.  
 The action take place at the end of the mouvement. Code is in the CellInteract group on the game object Mechanism_N for instance.
+hello
 
 ---------------------------------------------  

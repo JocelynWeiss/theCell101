@@ -563,7 +563,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c2a79178530397e4bbd8fd6813759e22, type: 2}
+      objectReference: {fileID: 2100000, guid: 90a86ce38c81f624b8c05ec058a347d0, type: 2}
     - target: {fileID: -1213327726502981072, guid: 05beae3f159b7884b9e2f1d7087d4a6c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -573,6 +573,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: cube_gaz
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 05beae3f159b7884b9e2f1d7087d4a6c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -502908896630588422, guid: 05beae3f159b7884b9e2f1d7087d4a6c,
         type: 3}
@@ -3717,12 +3722,12 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 0794b8d3adf0103409304ad3f3f8e42e,
         type: 3}
       propertyPath: m_Name
-      value: cube_02
+      value: cube_start
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 0794b8d3adf0103409304ad3f3f8e42e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -502908896630588422, guid: 0794b8d3adf0103409304ad3f3f8e42e,
         type: 3}

@@ -98,6 +98,8 @@ public class TheCellGameMgr : MonoBehaviour
     bool m_displayCell_S = false;
     bool m_displayCell_W = false;
 
+    public GameObject m_codes;  // The 4 codes on each wall
+
     public CellsModels m_CentreModels;
     public CellsModels m_NorthModels;
     public CellsModels m_EastModels;
@@ -445,6 +447,8 @@ public class TheCellGameMgr : MonoBehaviour
         gameState = GameStates.Running;
         OneCellClass current = GetCurrentCell();
         current.OnPlayerEnter();
+
+        ChangeCodes();
     }
 
 
@@ -1634,5 +1638,100 @@ public class TheCellGameMgr : MonoBehaviour
                     break;
                 }
         }
+    }
+
+
+    // Set codes
+    public void ChangeCodes()
+    {
+        // Load materials
+        //Material newMat = Resources.Load("lavabo", typeof(Material)) as Material;
+        Material newMat = Resources.Load("Elem_1", typeof(Material)) as Material;
+        if (newMat == null)
+        {
+            Debug.LogError("Could not load materials, place it in Resources Folder!");
+        }
+        Material[] mats = new Material[4];
+        mats[0] = Resources.Load("Elem_1", typeof(Material)) as Material;
+        mats[1] = Resources.Load("Elem_2", typeof(Material)) as Material;
+        mats[2] = Resources.Load("Elem_3", typeof(Material)) as Material;
+        mats[3] = Resources.Load("Elem_4", typeof(Material)) as Material;
+
+        ChangeCodesSection("code_N", mats);
+        ChangeCodesSection("code_E", mats);
+        ChangeCodesSection("code_S", mats);
+        ChangeCodesSection("code_W", mats);
+
+        /*
+        GameObject section = m_codes.transform.Find("code_N").gameObject;
+
+        GameObject c1 = section.transform.Find("code_1").gameObject;
+        MeshRenderer renderer = c1.GetComponent<MeshRenderer>();
+        //renderer.material = newMat;
+        //renderer.material.SetColor("_BaseColor", Color.red);
+        renderer.material = m1;
+
+        GameObject c2 = section.transform.Find("code_2").gameObject;
+        renderer = c2.GetComponent<MeshRenderer>();
+        //renderer.material = newMat;
+        //renderer.material.SetColor("_BaseColor", Color.green);
+        renderer.material = m2;
+
+        GameObject c3 = section.transform.Find("code_3").gameObject;
+        renderer = c3.GetComponent<MeshRenderer>();
+        //renderer.material = newMat;
+        //renderer.material.SetColor("_BaseColor", Color.blue);
+        renderer.material = m3;
+
+        GameObject c4 = section.transform.Find("code_4").gameObject;
+        renderer = c4.GetComponent<MeshRenderer>();
+        //renderer.material = newMat;
+        //renderer.material.SetColor("_BaseColor", Color.yellow);
+        renderer.material = m4;
+
+
+        section = m_codes.transform.Find("code_E").gameObject;
+
+        c1 = section.transform.Find("code_1").gameObject;
+        renderer = c1.GetComponent<MeshRenderer>();
+        renderer.material = newMat;
+        renderer.material.SetColor("_BaseColor", Color.red);
+
+        c2 = section.transform.Find("code_2").gameObject;
+        renderer = c2.GetComponent<MeshRenderer>();
+        renderer.material = newMat;
+        renderer.material.SetColor("_BaseColor", Color.green);
+
+        c3 = section.transform.Find("code_3").gameObject;
+        renderer = c3.GetComponent<MeshRenderer>();
+        renderer.material = newMat;
+        renderer.material.SetColor("_BaseColor", Color.blue);
+
+        c4 = section.transform.Find("code_4").gameObject;
+        renderer = c4.GetComponent<MeshRenderer>();
+        renderer.material = newMat;
+        renderer.material.SetColor("_BaseColor", Color.yellow);
+        */
+    }
+
+
+    void ChangeCodesSection(string cardinalName, Material[] mats)
+    {
+        GameObject section = m_codes.transform.Find(cardinalName).gameObject;
+        GameObject code = section.transform.Find("code_1").gameObject;
+        MeshRenderer renderer = code.GetComponent<MeshRenderer>();
+        renderer.material = mats[0];
+
+        code = section.transform.Find("code_2").gameObject;
+        renderer = code.GetComponent<MeshRenderer>();
+        renderer.material = mats[1];
+
+        code = section.transform.Find("code_3").gameObject;
+        renderer = code.GetComponent<MeshRenderer>();
+        renderer.material = mats[2];
+
+        code = section.transform.Find("code_4").gameObject;
+        renderer = code.GetComponent<MeshRenderer>();
+        renderer.material = mats[3];
     }
 }

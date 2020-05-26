@@ -57,6 +57,27 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // Our 4 Elements in the game
+    public enum Elements
+    {
+        Earth,
+        Water,
+        Air,
+        Fire
+    }
+    // 3 sequences of code depending on the danger level
+    public enum CodeLevels
+    {
+        Safe,
+        Danger,
+        Deadly
+    }
+    Elements[] m_CodeSafe = new Elements[4];
+    Elements[] m_CodeDanger = new Elements[4];
+    Elements[] m_CodeDeath = new Elements[4];
+    Material[] m_ElementsMats = new Material[4];
+
+
     public struct MyHands
     {
         public OVRHand.Hand handType;
@@ -145,6 +166,8 @@ public class TheCellGameMgr : MonoBehaviour
                 */
             }
         }
+
+        LoadElementsMats();
 
         InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //InitializeNewGame(System.Environment.TickCount);
@@ -333,6 +356,9 @@ public class TheCellGameMgr : MonoBehaviour
             }
         }
 
+        // Randomize code sequence
+        ChangeCodes();
+
         //--- show models ---
         if (m_CentreModels.m_EntryCell == null)
         {
@@ -447,8 +473,6 @@ public class TheCellGameMgr : MonoBehaviour
         gameState = GameStates.Running;
         OneCellClass current = GetCurrentCell();
         current.OnPlayerEnter();
-
-        ChangeCodes();
     }
 
 
@@ -792,40 +816,48 @@ public class TheCellGameMgr : MonoBehaviour
         if (cell != null)
         {
             m_NorthModels.SetActiveModel(cell.cellType, cell.cellSubType);
+            UpdateCodesSections(CardinalPoint.North, cell.cellType);
         }
         else
         {
             m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+            UpdateCodesSections(CardinalPoint.North, CellTypes.Undefined);
         }
 
         cell = GetEast(curId);
         if (cell != null)
         {
             m_EastModels.SetActiveModel(cell.cellType, cell.cellSubType);
+            UpdateCodesSections(CardinalPoint.East, cell.cellType);
         }
         else
         {
             m_EastModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+            UpdateCodesSections(CardinalPoint.East, CellTypes.Undefined);
         }
 
         cell = GetSouth(curId);
         if (cell != null)
         {
             m_SouthModels.SetActiveModel(cell.cellType, cell.cellSubType);
+            UpdateCodesSections(CardinalPoint.South, cell.cellType);
         }
         else
         {
             m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+            UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
         }
 
         cell = GetWest(curId);
         if (cell != null)
         {
             m_WestModels.SetActiveModel(cell.cellType, cell.cellSubType);
+            UpdateCodesSections(CardinalPoint.West, cell.cellType);
         }
         else
         {
             m_WestModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+            UpdateCodesSections(CardinalPoint.West, CellTypes.Undefined);
         }
 
         if (curType == CellTypes.Exit)
@@ -1223,7 +1255,7 @@ public class TheCellGameMgr : MonoBehaviour
 
     public void TeleportToStart()
     {
-        InitializeNewGame(startingSeed);
+        InitializeNewGame(startingSeed); // Restart the game with the same previous seed
     }
 
 
@@ -1641,46 +1673,147 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    // Set codes
-    public void ChangeCodes()
+    // Load Elements materials
+    void LoadElementsMats()
     {
-        // Load materials
-        Material newMat = Resources.Load("Elem_1", typeof(Material)) as Material;
-        if (newMat == null)
+        m_ElementsMats[0] = Resources.Load("Elem_1", typeof(Material)) as Material;
+        if (m_ElementsMats[0] == null)
         {
             Debug.LogError("Could not load materials, place it in Resources Folder!");
         }
-        Material[] mats = new Material[4];
-        mats[0] = Resources.Load("Elem_1", typeof(Material)) as Material;
-        mats[1] = Resources.Load("Elem_2", typeof(Material)) as Material;
-        mats[2] = Resources.Load("Elem_3", typeof(Material)) as Material;
-        mats[3] = Resources.Load("Elem_4", typeof(Material)) as Material;
 
-        ChangeCodesSection("code_N", mats);
-        ChangeCodesSection("code_E", mats);
-        ChangeCodesSection("code_S", mats);
-        ChangeCodesSection("code_W", mats);
+        m_ElementsMats[1] = Resources.Load("Elem_2", typeof(Material)) as Material;
+        if (m_ElementsMats[1] == null)
+        {
+            Debug.LogError("Could not load materials, place it in Resources Folder!");
+        }
+
+        m_ElementsMats[2] = Resources.Load("Elem_3", typeof(Material)) as Material;
+        if (m_ElementsMats[2] == null)
+        {
+            Debug.LogError("Could not load materials, place it in Resources Folder!");
+        }
+
+        m_ElementsMats[3] = Resources.Load("Elem_4", typeof(Material)) as Material;
+        if (m_ElementsMats[3] == null)
+        {
+            Debug.LogError("Could not load materials, place it in Resources Folder!");
+        }
+    }
+
+
+    // Set new random codes
+    public void ChangeCodes()
+    {
+        for (int i=0; i <4; ++i)
+        {
+            m_CodeSafe[i] = (Elements)Random.Range(0, 4);
+            m_CodeDanger[i] = (Elements)Random.Range(0, 4);
+            m_CodeDeath[i] = (Elements)Random.Range(0, 4);
+        }
+        Debug.Log($"codeSafe: {m_CodeSafe[0]} - {m_CodeSafe[1]} - {m_CodeSafe[2]} - {m_CodeSafe[3]}");
+        Debug.Log($"codeDanger: {m_CodeDanger[0]} - {m_CodeDanger[1]} - {m_CodeDanger[2]} - {m_CodeDanger[3]}");
+        Debug.Log($"codeDeath: {m_CodeDeath[0]} - {m_CodeDeath[1]} - {m_CodeDeath[2]} - {m_CodeDeath[3]}");
+
+        // For testing purpose we just set one of each
+        /*
+        ChangeCodesSection("code_N", m_CodeSafe);
+        ChangeCodesSection("code_E", m_CodeDanger);
+        ChangeCodesSection("code_S", m_CodeDeath);
+        ChangeCodesSection("code_W", m_CodeSafe);
+        */
     }
 
 
     // Initialize code materials with default sequence
-    void ChangeCodesSection(string cardinalName, Material[] mats)
+    void ChangeCodesSection(string cardinalName, Elements[] mats)
     {
         GameObject section = m_codes.transform.Find(cardinalName).gameObject;
         GameObject code = section.transform.Find("code_1").gameObject;
         MeshRenderer renderer = code.GetComponent<MeshRenderer>();
-        renderer.material = mats[0];
+        if (mats == null)
+        {
+            code.SetActive(false);
+        }
+        else
+        {
+            renderer.material = m_ElementsMats[(int)mats[0]];
+            code.SetActive(true);
+        }
 
         code = section.transform.Find("code_2").gameObject;
         renderer = code.GetComponent<MeshRenderer>();
-        renderer.material = mats[1];
+        if (mats == null)
+        {
+            code.SetActive(false);
+        }
+        else
+        {
+            renderer.material = m_ElementsMats[(int)mats[1]];
+            code.SetActive(true);
+        }
 
         code = section.transform.Find("code_3").gameObject;
         renderer = code.GetComponent<MeshRenderer>();
-        renderer.material = mats[2];
+        if (mats == null)
+        {
+            code.SetActive(false);
+        }
+        else
+        {
+            renderer.material = m_ElementsMats[(int)mats[2]];
+            code.SetActive(true);
+        }
 
         code = section.transform.Find("code_4").gameObject;
         renderer = code.GetComponent<MeshRenderer>();
-        renderer.material = mats[3];
+        if (mats == null)
+        {
+            code.SetActive(false);
+        }
+        else
+        {
+            renderer.material = m_ElementsMats[(int)mats[3]];
+            code.SetActive(true);
+        }
+    }
+
+
+    // Set proper codes depending on neighbour cells
+    void UpdateCodesSections(CardinalPoint cardinal, CellTypes cellType)
+    {
+        string goName = "";
+
+        switch (cardinal)
+        {
+            case CardinalPoint.North:
+                goName = "code_N";
+                break;
+            case CardinalPoint.East:
+                goName = "code_E";
+                break;
+            case CardinalPoint.South:
+                goName = "code_S";
+                break;
+            case CardinalPoint.West:
+                goName = "code_W";
+                break;
+        }
+
+        switch (cellType)
+        {
+            case CellTypes.Deadly:
+                ChangeCodesSection(goName, m_CodeDeath);
+                break;
+            case CellTypes.Effect:
+                ChangeCodesSection(goName, m_CodeDanger);
+                break;
+            case CellTypes.Undefined:
+                ChangeCodesSection(goName, null);
+                break;
+            default:
+                ChangeCodesSection(goName, m_CodeSafe);
+                break;
+        }
     }
 }

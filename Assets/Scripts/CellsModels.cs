@@ -19,6 +19,7 @@ public class CellsModels : MonoBehaviour
         IllusionM,
         WaterM,
         LaserM,
+        GazM,
     }
 
     [ViewOnly] public GameObject m_EntryCell;  // The starting room
@@ -28,7 +29,8 @@ public class CellsModels : MonoBehaviour
     [ViewOnly] public GameObject m_BlindCell;  // The blind cell model
     [ViewOnly] public GameObject m_IllusionCell;  // The illusion cell model
     [ViewOnly] public GameObject m_WaterCell;  // The water cell model
-    [ViewOnly] public GameObject m_LaserCell;  // The laser cell model
+    [ViewOnly] public GameObject m_LaserCell;   // The laser cell model
+    [ViewOnly] public GameObject m_GazCell;     // The gaz cell model
     [ViewOnly] public Light m_light_N;
     [ViewOnly] public Light m_light_E;
     [ViewOnly] public Light m_light_S;
@@ -80,6 +82,9 @@ public class CellsModels : MonoBehaviour
             case CellsModelsType.LaserM:
                 obj = m_LaserCell;
                 break;
+            case CellsModelsType.GazM:
+                obj = m_GazCell;
+                    break;
         }
 
         return obj;
@@ -123,6 +128,9 @@ public class CellsModels : MonoBehaviour
                         case TheCellGameMgr.CellSubTypes.Lasers:
                             SetActiveModel(CellsModelsType.LaserM);
                             break;
+                        case TheCellGameMgr.CellSubTypes.Gaz:
+                            SetActiveModel(CellsModelsType.GazM);
+                            break;
                         default:
                             SetActiveModel(CellsModelsType.GenA);
                             break;
@@ -155,6 +163,8 @@ public class CellsModels : MonoBehaviour
             m_WaterCell.SetActive(false);
         if (m_LaserCell)
             m_LaserCell.SetActive(false);
+        if (m_GazCell)
+            m_GazCell.SetActive(false);
 
         switch (newType)
         {
@@ -183,6 +193,9 @@ public class CellsModels : MonoBehaviour
                 break;
             case CellsModelsType.LaserM:
                 m_LaserCell.SetActive(true);
+                break;
+            case CellsModelsType.GazM:
+                m_GazCell.SetActive(true);
                 break;
             default:
                 Debug.LogWarning($"Wrong model type in SetActiveModel: {newType}");

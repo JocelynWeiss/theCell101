@@ -1370,6 +1370,7 @@ MonoBehaviour:
   m_IllusionCellModel: {fileID: 1663188072}
   m_WaterCellModel: {fileID: 263691235}
   m_LaserCellModel: {fileID: 1182380305}
+  m_GazCellModel: {fileID: 1220126682}
   m_codes: {fileID: 1822356710}
   m_CentreModels: {fileID: 459828590}
   m_NorthModels: {fileID: 899402537}
@@ -2685,6 +2686,7 @@ MonoBehaviour:
   m_IllusionCell: {fileID: 0}
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
+  m_GazCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -2852,6 +2854,7 @@ MonoBehaviour:
   m_IllusionCell: {fileID: 0}
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
+  m_GazCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -3628,6 +3631,7 @@ MonoBehaviour:
   m_IllusionCell: {fileID: 0}
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
+  m_GazCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -5019,6 +5023,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 306829084}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1220126682 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 05beae3f159b7884b9e2f1d7087d4a6c,
+    type: 3}
+  m_PrefabInstance: {fileID: 77251884}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1230799992
 GameObject:
   m_ObjectHideFlags: 0
@@ -5362,6 +5372,7 @@ MonoBehaviour:
   m_IllusionCell: {fileID: 0}
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
+  m_GazCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -7917,6 +7928,7 @@ MonoBehaviour:
   m_IllusionCell: {fileID: 0}
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
+  m_GazCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}

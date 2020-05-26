@@ -1364,7 +1364,7 @@ MonoBehaviour:
   allCells: []
   lookupTab: 
   m_MiddleCell: {fileID: 424605799}
-  m_GenCellA: {fileID: 311076926}
+  m_GenCellA: {fileID: 625703002}
   m_ExitModel: {fileID: 959561149}
   m_BlindCellModel: {fileID: 783384206}
   m_IllusionCellModel: {fileID: 1663188072}
@@ -1934,12 +1934,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3a9292392f9f9f343bb22a2491d6d365, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db5ddd5302c8d2f4e903e67115abb9b8, type: 3}
---- !u!1 &311076926 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: db5ddd5302c8d2f4e903e67115abb9b8,
-    type: 3}
-  m_PrefabInstance: {fileID: 311076925}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &351256523
 GameObject:
   m_ObjectHideFlags: 0
@@ -2973,6 +2967,12 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &625703002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 61e550b81b6ad4d4abfa632c3a528d8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 953533105}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3821,7 +3821,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 0794b8d3adf0103409304ad3f3f8e42e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -502908896630588422, guid: 0794b8d3adf0103409304ad3f3f8e42e,
         type: 3}

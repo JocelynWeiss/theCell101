@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
-
+using OculusSampleFramework;
 
 public class TheCellGameMgr : MonoBehaviour
 {
@@ -103,7 +102,7 @@ public class TheCellGameMgr : MonoBehaviour
     public List<int> lookupTab = new List<int>(25); // lookup table, hold a map of cell's id
     int playerCellId = 12; // in which place on the chess the player is. Match the lookup table.
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
-    Canvas m_basicCanvas = null;
+    [ViewOnly] public Canvas m_basicCanvas = null;
 
     private MyHands[] m_hands = new MyHands[2];
 
@@ -136,6 +135,16 @@ public class TheCellGameMgr : MonoBehaviour
 
     public GameObject Snd_DeathScream;
     [HideInInspector] public AudioSource[] Audio_DeathScream;
+
+
+    //--- Grabbables ---
+    ColorGrabbable CubeA;
+    ColorGrabbable CubeB;
+    ColorGrabbable CubeC;
+    GameObject m_ElementPrefab;
+    private List<GameObject> m_ElemCubes = new List<GameObject>();
+    public int m_ElemCubeNb = 16;
+    //--- Grabbables ---
 
 
     void Awake()
@@ -172,6 +181,26 @@ public class TheCellGameMgr : MonoBehaviour
 
         InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //InitializeNewGame(System.Environment.TickCount);
+
+        //CubeA = GameObject.Find("GroupElements/CubeGrabA").GetComponent<ColorGrabbable>();
+        //CubeB = GameObject.Find("GroupElements/CubeGrabB").GetComponent<ColorGrabbable>();
+        //CubeC = GameObject.Find("GroupElements/CubeGrabC").GetComponent<ColorGrabbable>();
+        m_ElementPrefab = GameObject.Find("GroupElements/element_exit").gameObject;
+        m_ElementPrefab.transform.Find("air").gameObject.SetActive(false);
+        m_ElementPrefab.transform.Find("eau").gameObject.SetActive(false);
+        m_ElementPrefab.transform.Find("Feu").gameObject.SetActive(false);
+        m_ElementPrefab.transform.Find("terre").gameObject.SetActive(false);
+
+        for (int i=0; i < m_ElemCubeNb; ++i)
+        {
+            GameObject obj = GameObject.Instantiate(m_ElementPrefab);
+            obj.name = $"Elem_{i}";
+            Vector3 pos = new Vector3(Random.Range(-1.0f, 1.0f), 0.0f, Random.Range(-1.0f, 1.0f));
+            pos.y = Random.Range(1.0f, 2.0f);
+            obj.transform.SetPositionAndRotation(pos, Quaternion.identity);
+            obj.transform.Find("air").gameObject.SetActive(true);
+            m_ElemCubes.Add(obj);
+        }
     }
 
 
@@ -198,6 +227,15 @@ public class TheCellGameMgr : MonoBehaviour
         Audio_UseLevers = Snd_UseLevers.GetComponent<AudioSource>();
         //Audio_DeathScream = Snd_DeathScream.GetComponent<AudioSource>();
         Audio_DeathScream = Snd_DeathScream.GetComponents<AudioSource>();
+
+        n = 1;
+        foreach (GameObject obj in m_ElemCubes)
+        {
+            ElemCubeClass elem = obj.GetComponent<ElemCubeClass>();
+            elem.ChangeType((Elements)(n%4), m_ElementsMats);
+            obj.transform.Find("air").gameObject.SetActive(true);
+            n++;
+        }
 
         Debug.Log($"[GameMgr] Start. {gameState}");
     }
@@ -1655,8 +1693,8 @@ public class TheCellGameMgr : MonoBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
         {
-            front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.25f;
-            back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.25f;
+            front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
+            back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is open.");
@@ -1676,8 +1714,8 @@ public class TheCellGameMgr : MonoBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
         {
-            front.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.25f;
-            back.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.25f;
+            front.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.3f;
+            back.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.3f;
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is closed.");

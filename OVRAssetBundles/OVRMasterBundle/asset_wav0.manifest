@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 2472538696
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7c955ca0d118c433e652b337462d1fb5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/Sounds/ScreamsShouts2_Humans_Male_Scream_032.wav
+- Assets/Sounds/TrappeOpenAmbi.wav
+- Assets/Sounds/JustImpacts-Extension2_Metal_Hit_Crash_200.wav
+- Assets/Sounds/CHT2_Cinematic_Transition_101.wav
+- Assets/Sounds/ElectricTypeWriters_3006_Hammer-Mechanism_Random-Strokes_01.wav
+- Assets/Sounds/Windmill_Rotate_Slow_Loop.wav
+Dependencies: []

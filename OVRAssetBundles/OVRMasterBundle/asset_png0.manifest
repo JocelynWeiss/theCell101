@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 1381312971
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b051911c67a2c9d193222a9baf5d59b1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Textures/Start/top_Nrm.png
+- Assets/Textures/Start/rules_col.png
+- Assets/Textures/Start/wall_col.png
+- Assets/Textures/exit/ground_plaque_col.png
+- Assets/Textures/mask/mask_met.png
+- Assets/Textures/Start/rules_Nrm.png
+- Assets/Textures/Start/teleporteur_col.png
+- Assets/Textures/Start/lavabo_col.png
+- Assets/Textures/gaz/ground_col.png
+- Assets/Textures/exit/Exit_panel_Emi.png
+- Assets/Textures/Safe/wall_col.png
+- Assets/Textures/Start/WC_col.png
+- Assets/Textures/Start/chair_col.png
+- Assets/Textures/aveugle/ground_aveugle_col.png
+- Assets/Textures/water/top_water_col.png
+- Assets/Textures/Illusion/ground_Nrm.png
+- Assets/Textures/water/manche_water_col.png
+- Assets/Textures/Laser/ground_laser_Met.png
+- Assets/Textures/water/ground_water_Met.png
+- Assets/Textures/Start/ventilation_Met.png
+- Assets/Textures/Start/ground_col.png
+- Assets/Textures/Start/Id_Nrm.png
+- Assets/Textures/water/hand_scaner_all_water_col.png
+- Assets/Textures/water/lock_wheel_water_Met.png
+- Assets/Textures/Start/ventilation_Nrm.png
+- Assets/Textures/Start/console_element_Nrm.png
+- Assets/Textures/water/teleporteur_water_col.png
+- Assets/Textures/Start/teleporteur_Met.png
+- Assets/Textures/water/water_Nrm.png
+- Assets/Textures/gaz/ground_Met.png
+Dependencies: []

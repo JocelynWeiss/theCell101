@@ -98,9 +98,16 @@ namespace OculusSampleFramework
                 for (int j = 0; j < meshRenderer.materials.Length; ++j)
                 {
                     Material meshMaterial = meshRenderer.materials[j];
-                    meshMaterial.color = color;
+                    //meshMaterial.color = color; //Jow: Does nothing...
+                    meshMaterial.SetColor("_BaseColor", color);
                 }
             }
+        }
+
+
+        public void Deactivate()
+        {
+            this.m_allowOffhandGrab = false;
         }
     }
 }

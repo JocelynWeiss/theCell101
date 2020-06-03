@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 736376013
+CRC: 3257848161
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4463e7b7bf38d640296e0c3aca08744c
+    Hash: 4bcaedac1f95ad371711e31e162f24b7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b63de7114531e35d1b795acefe4990e2
+    Hash: ccc11033c0c425354dff707019e56f55
 HashAppended: 0
 ClassTypes:
 - Class: 21
@@ -20,6 +20,8 @@ ClassTypes:
 - Class: 109
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: bf2edee5c58d82540a51f03df9d42094, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 572910c10080c0945a0ef731ccedc739, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: de640fe3d0db1804a85f9fc8f5cadab6, type: 3}
@@ -27,8 +29,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: ad074644ff568a14187a3690cfbd7534, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: bf2edee5c58d82540a51f03df9d42094, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: b3d881e962d099f4a8eb492ef7e9a8c0, type: 3}
 - Class: 114
@@ -61,6 +61,7 @@ Assets:
 - Assets/Oculus/Avatar/Resources/Materials/Version1.5/Avatar_Mobile_Loader.shader
 - Assets/TextMesh Pro/Resources/Shaders/TMP_Bitmap-Custom-Atlas.shader
 - Assets/Oculus/VR/Resources/Cubemap Blit.shader
+- Assets/Resources/OVRPlatformToolSettings.asset
 - Assets/Oculus/VR/Resources/OVRMRUnlit.shader
 - Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat
 - Assets/Oculus/Avatar/Resources/Materials/AvatarSurfaceShaderSelfOccluding.shader

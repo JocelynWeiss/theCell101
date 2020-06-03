@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3900699862
+CRC: 1123508184
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d2aa306d677de0fd26d2eb48571b2e6f
+    Hash: c01b4fa487aff9f982c753284f617a5c
   TypeTreeHash:
     serializedVersion: 2
     Hash: 8217c8368c414b8909ed481d83841351
@@ -40,9 +40,9 @@ Assets:
 - Assets/cube_water.fbx
 - Assets/cube_aveugle.fbx
 - Assets/cube_laser.fbx
-- Assets/element_exit.fbx
 - Assets/Oculus/SampleFramework/Core/TouchControllers/NewTouchControllers/controller_l.fbx
 - Assets/cube_gaz.fbx
+- Assets/Mesh/element_exit_B.fbx
 - Assets/cube_illusion.fbx
 Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_mat0

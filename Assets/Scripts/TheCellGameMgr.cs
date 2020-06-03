@@ -100,7 +100,7 @@ public class TheCellGameMgr : MonoBehaviour
     public OneCellClass cellClassPrefab;
     public List<OneCellClass> allCells; // All the cells as they are distributed
     public List<int> lookupTab = new List<int>(25); // lookup table, hold a map of cell's id
-    int playerCellId = 12; // in which place on the chess the player is. Match the lookup table.
+    [ViewOnly] public int playerCellId = 12; // in which place on the chess the player is. Match the lookup table.
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
     [ViewOnly] public Canvas m_basicCanvas = null;
 
@@ -138,9 +138,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     //--- Grabbables ---
-    ColorGrabbable CubeA;
-    ColorGrabbable CubeB;
-    ColorGrabbable CubeC;
+    GameObject m_GroupElements;
     GameObject m_ElementPrefab;
     private List<GameObject> m_ElemCubes = new List<GameObject>();
     public int m_ElemCubeNb = 16;
@@ -179,28 +177,26 @@ public class TheCellGameMgr : MonoBehaviour
 
         LoadElementsMats();
 
-        InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
-        //InitializeNewGame(System.Environment.TickCount);
+        // --- Elements init ---
+        m_GroupElements = GameObject.Find("GroupElements").gameObject;
+        m_ElementPrefab = GameObject.Find("GroupElements/element_exit_B").gameObject;
+        m_ElementPrefab.SetActive(false);
 
-        //CubeA = GameObject.Find("GroupElements/CubeGrabA").GetComponent<ColorGrabbable>();
-        //CubeB = GameObject.Find("GroupElements/CubeGrabB").GetComponent<ColorGrabbable>();
-        //CubeC = GameObject.Find("GroupElements/CubeGrabC").GetComponent<ColorGrabbable>();
-        m_ElementPrefab = GameObject.Find("GroupElements/element_exit").gameObject;
-        m_ElementPrefab.transform.Find("air").gameObject.SetActive(false);
-        m_ElementPrefab.transform.Find("eau").gameObject.SetActive(false);
-        m_ElementPrefab.transform.Find("Feu").gameObject.SetActive(false);
-        m_ElementPrefab.transform.Find("terre").gameObject.SetActive(false);
-
-        for (int i=0; i < m_ElemCubeNb; ++i)
+        for (int i = 0; i < m_ElemCubeNb; ++i)
         {
-            GameObject obj = GameObject.Instantiate(m_ElementPrefab);
+            //GameObject obj = GameObject.Instantiate(m_ElementPrefab);
+            GameObject obj = GameObject.Instantiate(m_ElementPrefab, m_GroupElements.transform);
             obj.name = $"Elem_{i}";
             Vector3 pos = new Vector3(Random.Range(-1.0f, 1.0f), 0.0f, Random.Range(-1.0f, 1.0f));
             pos.y = Random.Range(1.0f, 2.0f);
-            obj.transform.SetPositionAndRotation(pos, Quaternion.identity);
-            obj.transform.Find("air").gameObject.SetActive(true);
+            obj.transform.SetPositionAndRotation(pos, Quaternion.Euler(pos * 360.0f));
+            obj.SetActive(true);
             m_ElemCubes.Add(obj);
         }
+        m_GroupElements.SetActive(false); // Need to activate it in exit room
+
+        InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
+        //InitializeNewGame(System.Environment.TickCount);
     }
 
 
@@ -233,7 +229,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             ElemCubeClass elem = obj.GetComponent<ElemCubeClass>();
             elem.ChangeType((Elements)(n%4), m_ElementsMats);
-            obj.transform.Find("air").gameObject.SetActive(true);
+            //obj.transform.Find("air").gameObject.SetActive(true);
             n++;
         }
 
@@ -861,7 +857,11 @@ public class TheCellGameMgr : MonoBehaviour
         CellTypes curType = current.cellType;
         int curId = current.cellId;
         m_CentreModels.SetActiveModel(curType, current.cellSubType);
-        OneCellClass cell = GetNorth(curId);
+
+        // DeActivate elements
+        m_GroupElements.SetActive(false);
+
+        OneCellClass cell = GetNorth(playerCellId);
         if (cell != null)
         {
             m_NorthModels.SetActiveModel(cell.cellType, cell.cellSubType);
@@ -873,7 +873,7 @@ public class TheCellGameMgr : MonoBehaviour
             UpdateCodesSections(CardinalPoint.North, CellTypes.Undefined);
         }
 
-        cell = GetEast(curId);
+        cell = GetEast(playerCellId);
         if (cell != null)
         {
             m_EastModels.SetActiveModel(cell.cellType, cell.cellSubType);
@@ -885,7 +885,7 @@ public class TheCellGameMgr : MonoBehaviour
             UpdateCodesSections(CardinalPoint.East, CellTypes.Undefined);
         }
 
-        cell = GetSouth(curId);
+        cell = GetSouth(playerCellId);
         if (cell != null)
         {
             m_SouthModels.SetActiveModel(cell.cellType, cell.cellSubType);
@@ -897,7 +897,7 @@ public class TheCellGameMgr : MonoBehaviour
             UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
         }
 
-        cell = GetWest(curId);
+        cell = GetWest(playerCellId);
         if (cell != null)
         {
             m_WestModels.SetActiveModel(cell.cellType, cell.cellSubType);
@@ -926,6 +926,11 @@ public class TheCellGameMgr : MonoBehaviour
                     northWall.SetActive(false);
                 }
             }
+
+            UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
+
+            // Activate elements
+            m_GroupElements.SetActive(true);
         }
         else if (curType == CellTypes.Deadly)
         {
@@ -1085,6 +1090,9 @@ public class TheCellGameMgr : MonoBehaviour
 
         // reposition the player
         SetPlayerLookupId(currentCellId);
+
+        // Update cells models to display
+        UpdateCellsModels();
     }
 
 
@@ -1166,6 +1174,9 @@ public class TheCellGameMgr : MonoBehaviour
 
         // reposition the player
         SetPlayerLookupId(currentCellId);
+
+        // Update cells models to display
+        UpdateCellsModels();
     }
 
 
@@ -1374,7 +1385,7 @@ public class TheCellGameMgr : MonoBehaviour
                             front = front.transform.Find("trape_1").gameObject;
                         }
 
-                        // JowNext: Make sure the back is set considering the right active model as for the front
+                        // Jow: Make sure the back is set considering the right active model as for the front
                         GameObject back = m_NorthModels.GetActiveModel();
                         if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.Entry)
                         {

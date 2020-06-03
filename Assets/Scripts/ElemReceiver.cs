@@ -47,6 +47,7 @@ public class ElemReceiver : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         m_LastCollider = null;
+        m_renderer.material.SetColor("_BaseColor", Color.grey);
     }
 
 
@@ -62,95 +63,6 @@ public class ElemReceiver : MonoBehaviour
     }
 
 
-    // Don't use OnTriggerStay as it mess up with hands grabber
-#if _test_
-    private void OnTriggerStay(Collider other)
-    {
-        if (other == null)
-        {
-            return;
-        }
-
-        if (m_Validated)
-        {
-            return;
-        }
-
-        if (other.tag == "ElementsCube")
-        {
-            Deactivate(other);
-
-            /*
-            //Check type first
-            TheCellGameMgr.Elements type = other.gameObject.GetComponent<ElemCubeClass>().m_ElemType;
-            if (type != m_ElementType)
-            {
-                return;
-            }
-
-            Vector3 dist = transform.position - other.transform.position;
-            float length = dist.magnitude;
-            Color color = Color.red * length;
-
-            m_renderer.material.SetColor("_BaseColor", color);
-
-            GameObject t2 = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(2).gameObject;
-            t2.GetComponent<TextMeshProUGUI>().text = $"d: {length}";
-
-            if (length < 0.025f)
-            {
-                ColorGrabbable grabbable = other.GetComponent<ColorGrabbable>();
-                if (grabbable != null)
-                {
-                    grabbable.Deactivate();
-                }
-                else
-                {
-                    t2.GetComponent<TextMeshProUGUI>().text = $"Can't find ColorGrabbable {Time.fixedTime}s";
-                    return;
-                }
-
-                OVRGrabber grabber = grabbable.grabbedBy;
-                if (grabber != null)
-                {
-                    grabber.ForceRelease(grabbable);
-                    grabbable.enabled = false;
-                    t2.GetComponent<TextMeshProUGUI>().text = $"Released by '{grabbable.grabbedBy.name} at {Time.fixedTime}s'";
-                    other.enabled = false;
-                    // Deactivate this receiver, it's feeded.
-                    BoxCollider bc = this.GetComponent<BoxCollider>();
-                    if (bc != null)
-                    {
-                        bc.isTrigger = false;
-                        bc.enabled = false;
-                    }
-                    else
-                    {
-                        t2.GetComponent<TextMeshProUGUI>().text = $"Can't find boxcollider {Time.fixedTime}s'";
-                    }
-                    m_Validated = true;
-                }
-                else
-                {
-                    t2.GetComponent<TextMeshProUGUI>().text = $"Can't find the grabber at {Time.fixedTime}s'";
-                }
-
-                // Snap the object and reset physics
-                other.transform.SetPositionAndRotation(transform.position, transform.rotation);
-                Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.velocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
-                }
-                
-            }
-            */
-        }
-    }
-#endif
-
-
     void Deactivate(Collider other)
     {
         //Check type first
@@ -162,7 +74,7 @@ public class ElemReceiver : MonoBehaviour
 
         Vector3 dist = transform.position - other.transform.position;
         float length = dist.magnitude;
-        Color color = Color.red * length;
+        Color color = Color.red * (length * 10.0f);
 
         m_renderer.material.SetColor("_BaseColor", color);
 
@@ -182,6 +94,13 @@ public class ElemReceiver : MonoBehaviour
             if (grabber == null)
             {
                 t2.GetComponent<TextMeshProUGUI>().text = $"Can't find the grabber at {Time.fixedTime}s'";
+                /*
+                if (!m_Validated)
+                {
+                    m_Validated = true;
+                    transform.localScale *= 0.75f;
+                }
+                */
                 return;
             }
             grabber.ForceRelease(grabbable);
@@ -197,9 +116,13 @@ public class ElemReceiver : MonoBehaviour
             {
                 t2.GetComponent<TextMeshProUGUI>().text = $"Can't find boxcollider {Time.fixedTime}s'";
             }
+            if (!m_Validated)
+            {
+                transform.localScale *= 0.75f;
+            }
+
             m_Validated = true;
 
-            //grabbable.enabled = false;
             t2.GetComponent<TextMeshProUGUI>().text = $"Released by '{grabber.name} at {Time.fixedTime}s'";
             other.enabled = false;
                 

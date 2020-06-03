@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 1779085043
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ab468a3a39b63cda83343b86e195ee72
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Textures/Illusion/manche_col.png
+- Assets/Textures/Safe/ground_col.png
+- Assets/Textures/Laser/teleporteur_laser_Met.png
+- Assets/Textures/water/console_element_water_col.png
+- Assets/Textures/Illusion/wall_illu_col.png
+- Assets/Textures/Start/hand_scaner_col.png
+- Assets/Textures/water/top_water_Met.png
+- Assets/Textures/water/water_toy_col.png
+- Assets/Textures/water/hand_scaner_all_water_nrm.png
+- Assets/Textures/Start/top_col.png
+- Assets/Textures/Illusion/caisson_cable_Met.png
+- Assets/Textures/water/manche_water_Met.png
+- Assets/Textures/water/lock_wheel_water_Nrm.png
+- Assets/Textures/Start/light_Nrm.png
+- Assets/Textures/Start/ventilation_col.png
+- Assets/Textures/gaz/wall_0_mat_Nrm.png
+- Assets/Textures/Safe/ground_Nrm.png
+- Assets/Textures/Start/trap_Met.png
+- Assets/Textures/exit/walll_exit_col.png
+- Assets/Textures/Illusion/caisson_cable_col.png
+- Assets/Textures/Start/light_Met.png
+- Assets/Textures/exit/door_exit_col.png
+- Assets/Textures/Start/rules_Met.png
+- Assets/Textures/Illusion/manche_Emi.png
+- Assets/Textures/Start/light_col.png
+- Assets/Textures/aveugle/wall_aveugle_Met.png
+- Assets/Textures/Start/teleporteur_Nrm.png
+- Assets/Textures/Start/WC_Nrm.png
+- Assets/Textures/Start/trap_col.png
+- Assets/Textures/exit/ground_Nrm.png
+Dependencies: []

@@ -1,0 +1,56 @@
+ManifestFileVersion: 0
+CRC: 1789660882
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b5a862af609cf398841d668e4a2fe27e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 21c99c86a43ad817b2cb7f65458ae090
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Materials/wall_safe.mat
+- Assets/Materials/top_water.mat
+- Assets/Materials/wall_illusion.mat
+- Assets/Materials/handscanner.mat
+- Assets/Materials/trap_water.mat
+- Assets/Materials/manche_water.mat
+- Assets/Textures/mask/Materials/mask_col.mat
+- Assets/Materials/teleporteur_water.mat
+- Assets/Materials/wall.mat
+- Assets/Materials/casiion_cable.mat
+- Assets/Materials/top.mat
+- Assets/Materials/lavabo.mat
+- Assets/Materials/exit_door.mat
+- Assets/Materials/console_element_water.mat
+- Assets/Materials/pipe_water.mat
+- Assets/Materials/lock_wheel.mat
+- Assets/Materials/ground_exit.mat
+- Assets/Materials/Rules.mat
+- Assets/Materials/console_element.mat
+- Assets/Materials/pipe.mat
+- Assets/Materials/teleporteur.mat
+- Assets/Materials/wall_laser.mat
+- Assets/Materials/wall_gaz.mat
+- Assets/Materials/wc.mat
+- Assets/Materials/toy_water.mat
+- Assets/Oculus/SampleFramework/Usage/Locomotion/Materials/MAT_grid_01_light.mat
+- Assets/Materials/wall_water.mat
+- Assets/Materials/wall_exit.mat
+- Assets/Materials/light.mat
+- Assets/Materials/wall_aveugle.mat
+Dependencies:
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png1
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png2
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png3
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png4
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png5
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_shader0

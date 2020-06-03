@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 1516415738
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 89090a9c0df9d907f8fea1cf7f7c705c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Textures/Start/hand_scaner_Nrm.png
+- Assets/Textures/Start/wall_Met.png
+- Assets/Textures/water/trap_water_col.png
+- Assets/Textures/Start/lavabo_Met.png
+- Assets/Textures/water/ground_water_Nrm.png
+- Assets/Textures/Start/pipe_col.png
+- Assets/Textures/Illusion/wall_illu_Nrm.png
+- Assets/Textures/Safe/wall_Met.png
+- Assets/Textures/Illusion/manche_Met.png
+- Assets/Textures/Start/wall_Nrm.png
+- Assets/Textures/exit/ground_plaque_Nrm.png
+- Assets/Textures/Safe/wall_Nrm.png
+- Assets/Textures/Safe/ground_Met.png
+- Assets/Textures/water/ventilation_water_col.png
+- Assets/Textures/Start/console_element_Emi.png
+- Assets/Textures/Start/chair_Nrm.png
+- Assets/Textures/aveugle/wall_aveugle_Nrm.png
+- Assets/Textures/Start/lock_wheel_col.png
+- Assets/Textures/Start/top_Met.png
+- Assets/Textures/gaz/ground_Nrm.png
+- Assets/Textures/exit/ground_plaque_Met.png
+- Assets/Textures/Laser/wall_laser_col.png
+- Assets/Textures/Start/pipe_Nrm.png
+- Assets/Textures/Start/ground_Met.png
+- Assets/Textures/water/trap_water_Met.png
+- Assets/Textures/aveugle/ground_aveugle_Met.png
+- Assets/Textures/Laser/teleporteur_laser_Nrm.png
+- Assets/Textures/exit/Exit_panel_Met.png
+- Assets/Textures/water/water_Met.png
+- Assets/Oculus/SampleFramework/Usage/SharedAssets/Textures/metal_brushed_01_dif.png
+Dependencies: []

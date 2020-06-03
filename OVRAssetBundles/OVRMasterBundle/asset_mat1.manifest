@@ -1,0 +1,54 @@
+ManifestFileVersion: 0
+CRC: 4242822571
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3a63dd402f549451d5905baa571d3eb0
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 21c99c86a43ad817b2cb7f65458ae090
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Materials/SimpleUnlit.mat
+- Assets/Materials/trap.mat
+- Assets/Materials/lock_wheel_water.mat
+- Assets/Materials/ground_aveugle.mat
+- Assets/Oculus/SampleFramework/Core/Locomotion/Materials/ColumnGlow.mat
+- Assets/Oculus/VR/Materials/BasicHandMaterial.mat
+- Assets/Materials/chair.mat
+- Assets/Materials/ground.mat
+- Assets/Materials/water.mat
+- Assets/Materials/ground_water.mat
+- Assets/Materials/ground_illusion.mat
+- Assets/Materials/wall_exit_2.mat
+- Assets/Materials/exitpanel.mat
+- Assets/Materials/ground_laser.mat
+- Assets/Materials/ID.mat
+- Assets/Materials/lock_exit.mat
+- Assets/Materials/teleporteur_laser.mat
+- Assets/Materials/ventilation_water.mat
+- Assets/Materials/SimpleLit.mat
+- Assets/Materials/handscanner_water.mat
+- Assets/Materials/ground_safe.mat
+- Assets/Materials/ground_gaz.mat
+- Assets/Materials/ground_exit_plaque.mat
+- Assets/Textures/Start/Materials/wall_col.mat
+- Assets/Materials/ventilation.mat
+- Assets/Materials/SolGenA.mat
+- Assets/Oculus/SampleFramework/Usage/DistanceGrab/Materials/SportsBottleMetalWithOutline.mat
+- Assets/Materials/manche.mat
+Dependencies:
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png1
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png2
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png3
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png4
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png5
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_shader0

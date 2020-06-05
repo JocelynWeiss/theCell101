@@ -14,6 +14,7 @@ public class TheCellGameMgr : MonoBehaviour
         Running,        // in a middle of a game
         Finishing,      // just get killed, must respawn in starting cell, don't reset seeds
         ExitFound,      // Just found the exit
+        CodeAllSet,     // All elements have been placed
     }
 
 
@@ -75,6 +76,7 @@ public class TheCellGameMgr : MonoBehaviour
     Elements[] m_CodeDanger = new Elements[4];
     Elements[] m_CodeDeath = new Elements[4];
     Material[] m_ElementsMats = new Material[4];
+    [ViewOnly] public uint m_CodeFinalSet = 0; //bitfield specifying wich receiver has been feeded
 
 
     public struct MyHands
@@ -739,6 +741,22 @@ public class TheCellGameMgr : MonoBehaviour
                     gameState = GameStates.ExitFound;
                     GameObject title = m_basicCanvas.transform.GetChild(0).gameObject;
                     title.GetComponent<TextMeshProUGUI>().text = $"EXIT found!";
+                }
+                else
+                {
+                    if (gameState != GameStates.CodeAllSet)
+                    {
+                        // Check if all code receiver have been feeded
+                        if (m_CodeFinalSet == 16)
+                        {
+                            //endgame, open door
+                            //count code points
+                            int codePoints = CountCodePoints();
+                            GameObject txt2 = m_basicCanvas.transform.GetChild(2).gameObject;
+                            txt2.GetComponent<TextMeshProUGUI>().text = $"code: {codePoints}";
+                            gameState = GameStates.CodeAllSet;
+                        }
+                    }
                 }
             }
         }
@@ -1899,5 +1917,46 @@ public class TheCellGameMgr : MonoBehaviour
                 ChangeCodesSection(goName, m_CodeSafe);
                 break;
         }
+    }
+
+
+    // All receivers have been feeded, count points
+    int CountCodePoints()
+    {
+        ElemReceiver rA = m_GroupElements.transform.Find("CubeFeedA").GetComponent<ElemReceiver>();
+        ElemReceiver rB = m_GroupElements.transform.Find("CubeFeedB").GetComponent<ElemReceiver>();
+        ElemReceiver rC = m_GroupElements.transform.Find("CubeFeedC").GetComponent<ElemReceiver>();
+        ElemReceiver rD = m_GroupElements.transform.Find("CubeFeedD").GetComponent<ElemReceiver>();
+
+        int points = 0;
+        // Safe code value 600
+        if ((rA.m_ElementType == (Elements)m_CodeSafe[0])
+            && (rB.m_ElementType == (Elements)m_CodeSafe[1])
+            && (rC.m_ElementType == (Elements)m_CodeSafe[2])
+            && (rD.m_ElementType == (Elements)m_CodeSafe[3]))
+        {
+            points += 600;
+        }
+
+        // Danger code value 300
+        if ((rA.m_ElementType == (Elements)m_CodeDanger[0])
+            && (rB.m_ElementType == (Elements)m_CodeDanger[1])
+            && (rC.m_ElementType == (Elements)m_CodeDanger[2])
+            && (rD.m_ElementType == (Elements)m_CodeDanger[3]))
+        {
+            points += 300;
+        }
+
+        // Dealdly code value 100
+        if ((rA.m_ElementType == (Elements)m_CodeDeath[0])
+            && (rB.m_ElementType == (Elements)m_CodeDeath[1])
+            && (rC.m_ElementType == (Elements)m_CodeDeath[2])
+            && (rD.m_ElementType == (Elements)m_CodeDeath[3]))
+        {
+            points += 100;
+        }
+
+        Debug.Log($"------ Your code points is {points}.");
+        return points;
     }
 }

@@ -6,8 +6,9 @@ using OculusSampleFramework;
 
 public class ElemReceiver : MonoBehaviour
 {
-    public TheCellGameMgr.Elements m_ElementType; // Element type it needs to be validated
-
+    [Tooltip("UID of this receiver, from 1 to 4.")]
+    [Range(1,4)] public int m_ReceiverId; // Uniq receiver ID
+    [ViewOnly] public TheCellGameMgr.Elements m_ElementType; // Element type it needs to be validated
     [ViewOnly] public bool m_Validated = false;
 
     private MeshRenderer m_renderer;
@@ -59,19 +60,17 @@ public class ElemReceiver : MonoBehaviour
             return;
         }
 
+        if (m_Validated)
+        {
+            return;
+        }
+        
         Deactivate(m_LastCollider);
     }
 
 
     void Deactivate(Collider other)
     {
-        //Check type first
-        TheCellGameMgr.Elements type = other.gameObject.GetComponent<ElemCubeClass>().m_ElemType;
-        if (type != m_ElementType)
-        {
-            return;
-        }
-
         Vector3 dist = transform.position - other.transform.position;
         float length = dist.magnitude;
         Color color = Color.red * (length * 10.0f);
@@ -121,7 +120,10 @@ public class ElemReceiver : MonoBehaviour
                 transform.localScale *= 0.75f;
             }
 
+            TheCellGameMgr.Elements type = other.gameObject.GetComponent<ElemCubeClass>().m_ElemType;
+            m_ElementType = type;
             m_Validated = true;
+            CodeUtils.BitfieldSet(m_ReceiverId, true, ref TheCellGameMgr.instance.m_CodeFinalSet);
 
             t2.GetComponent<TextMeshProUGUI>().text = $"Released by '{grabber.name} at {Time.fixedTime}s'";
             other.enabled = false;

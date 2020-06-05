@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using OculusSampleFramework;
+using System;
 
 public class TheCellGameMgr : MonoBehaviour
 {
@@ -98,7 +99,8 @@ public class TheCellGameMgr : MonoBehaviour
     public static GameStates gameState { get; private set; }
 
     static int startingSeed = 1966;
-    static float startingTime = 0; // Time since the start of a new game in sec
+    static float startingTime = 0.0f; // Time since the start of a new game in sec
+    float m_EndGameTime = 0.0f; // Time to compute score when the player end the game in sec
     public OneCellClass cellClassPrefab;
     public List<OneCellClass> allCells; // All the cells as they are distributed
     public List<int> lookupTab = new List<int>(25); // lookup table, hold a map of cell's id
@@ -136,6 +138,12 @@ public class TheCellGameMgr : MonoBehaviour
     [HideInInspector] public AudioSource Audio_UseLevers;
 
     public GameObject Snd_DeathScream;
+    //0 Death scream
+    //1 Cannot move row or column
+    //2 On Player exit room
+    //3 Element placement
+    //4 Hand scanner fail
+    //5 Open hatch
     [HideInInspector] public AudioSource[] Audio_DeathScream;
 
 
@@ -189,8 +197,8 @@ public class TheCellGameMgr : MonoBehaviour
             //GameObject obj = GameObject.Instantiate(m_ElementPrefab);
             GameObject obj = GameObject.Instantiate(m_ElementPrefab, m_GroupElements.transform);
             obj.name = $"Elem_{i}";
-            Vector3 pos = new Vector3(Random.Range(-1.0f, 1.0f), 0.0f, Random.Range(-1.0f, 1.0f));
-            pos.y = Random.Range(1.0f, 2.0f);
+            Vector3 pos = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-1.0f, 1.0f));
+            pos.y = UnityEngine.Random.Range(1.0f, 2.0f);
             obj.transform.SetPositionAndRotation(pos, Quaternion.Euler(pos * 360.0f));
             obj.SetActive(true);
             m_ElemCubes.Add(obj);
@@ -270,9 +278,9 @@ public class TheCellGameMgr : MonoBehaviour
         gameState = GameStates.Starting;
 
         startingSeed = gameSeed;
-        Random.InitState(startingSeed);
+        UnityEngine.Random.InitState(startingSeed);
 
-        int firstRandom = (int)(Random.value * 100.0f);
+        int firstRandom = (int)(UnityEngine.Random.value * 100.0f);
         startingTime = Time.fixedTime;
         Debug.Log($"[GameMgr][{startingTime}] new game initialized with seed {startingSeed}, first random {firstRandom}/19.");
 
@@ -282,7 +290,7 @@ public class TheCellGameMgr : MonoBehaviour
         List<int> deadly = new List<int>(deadlyCellNb);
         while (deadly.Count < deadlyCellNb)
         {
-            int id = (int)(Random.value * 24.0f);
+            int id = (int)(UnityEngine.Random.value * 24.0f);
             if ((deadly.Contains(id)) || (id == 12) || (id == reserveExit))
             {
                 continue;
@@ -301,7 +309,7 @@ public class TheCellGameMgr : MonoBehaviour
         List<int> effectCells = new List<int>(effectCellNb);
         while (effectCells.Count < effectCellNb)
         {
-            int id = (int)(Random.value * 24.0f);
+            int id = (int)(UnityEngine.Random.value * 24.0f);
             if ((id == 12) || deadly.Contains(id) || effectCells.Contains(id) || (id == reserveExit))
             {
                 continue;
@@ -349,7 +357,7 @@ public class TheCellGameMgr : MonoBehaviour
                 float z = i;
                 float x = j;
                 cell.m_MiniGameTranslation = new Vector3(x * 0.1f, 0.0f, z * -0.1f) + transform.position;
-                float aRndNb = Random.value;
+                float aRndNb = UnityEngine.Random.value;
 
                 if ((i == 2) && (j == 2))
                 {
@@ -690,8 +698,11 @@ public class TheCellGameMgr : MonoBehaviour
             current.MechanismSouth.m_forceActionning = false;
         }
 
-        GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
-        directions.GetComponent<TextMeshProUGUI>().text = $"Counter\n {Time.fixedTime - current.enterTime}s";
+        if (gameState != GameStates.CodeAllSet)
+        {
+            GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
+            directions.GetComponent<TextMeshProUGUI>().text = $"Counter\n {Time.fixedTime - current.enterTime}s";
+        }
 
         //*
         if (m_CentreModels.m_light_N.range < 5.0f)
@@ -720,6 +731,11 @@ public class TheCellGameMgr : MonoBehaviour
         {
             ScanTriggerAction(CardinalPoint.West);
         }
+
+        if (Input.GetKeyUp(KeyCode.End))
+        {
+            FakeFeedReceivers();
+        }
     }
 
 
@@ -736,7 +752,7 @@ public class TheCellGameMgr : MonoBehaviour
 
             if (current.cellType == CellTypes.Exit)
             {
-                if (gameState != GameStates.ExitFound)
+                if ((gameState != GameStates.ExitFound) && (gameState != GameStates.CodeAllSet))
                 {
                     gameState = GameStates.ExitFound;
                     GameObject title = m_basicCanvas.transform.GetChild(0).gameObject;
@@ -747,14 +763,23 @@ public class TheCellGameMgr : MonoBehaviour
                     if (gameState != GameStates.CodeAllSet)
                     {
                         // Check if all code receiver have been feeded
-                        if (m_CodeFinalSet == 16)
+                        if (m_CodeFinalSet == 15)
                         {
                             //endgame, open door
+                            m_EndGameTime = Time.fixedTime;
+                            float gameDur = m_EndGameTime - startingTime;
+                            float brutScore = Math.Max(0.0f, 1800.0f - gameDur);
+
+                            GameObject txt1 = m_basicCanvas.transform.GetChild(1).gameObject;
+                            txt1.GetComponent<TextMeshProUGUI>().text = $"Time: {gameDur}\nBrutScore: {brutScore}";
                             //count code points
                             int codePoints = CountCodePoints();
                             GameObject txt2 = m_basicCanvas.transform.GetChild(2).gameObject;
                             txt2.GetComponent<TextMeshProUGUI>().text = $"code: {codePoints}";
                             gameState = GameStates.CodeAllSet;
+                            Debug.Log($"\tBrutScore: {brutScore}. Total: {brutScore + codePoints}");
+
+                            StartCoroutine(OpenExitHatch());
                         }
                     }
                 }
@@ -937,12 +962,15 @@ public class TheCellGameMgr : MonoBehaviour
             GameObject southModel = m_SouthModels.GetActiveModel();
             if (southModel)
             {
+                /*
                 GameObject northWall = southModel.transform.Find("Trap_1").gameObject;
                 //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {m_SouthModels.transform.name}, model: {northWall.name}");
                 if (northWall != null)
                 {
                     northWall.SetActive(false);
                 }
+                */
+                m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             }
 
             UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
@@ -1450,6 +1478,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_N = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -1534,6 +1567,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_E = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -1612,6 +1650,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_S = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -1696,6 +1739,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_W = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -1809,9 +1857,9 @@ public class TheCellGameMgr : MonoBehaviour
     {
         for (int i=0; i <4; ++i)
         {
-            m_CodeSafe[i] = (Elements)Random.Range(0, 4);
-            m_CodeDanger[i] = (Elements)Random.Range(0, 4);
-            m_CodeDeath[i] = (Elements)Random.Range(0, 4);
+            m_CodeSafe[i] = (Elements)UnityEngine.Random.Range(0, 4);
+            m_CodeDanger[i] = (Elements)UnityEngine.Random.Range(0, 4);
+            m_CodeDeath[i] = (Elements)UnityEngine.Random.Range(0, 4);
         }
         Debug.Log($"codeSafe: {m_CodeSafe[0]} - {m_CodeSafe[1]} - {m_CodeSafe[2]} - {m_CodeSafe[3]}");
         Debug.Log($"codeDanger: {m_CodeDanger[0]} - {m_CodeDanger[1]} - {m_CodeDanger[2]} - {m_CodeDanger[3]}");
@@ -1958,5 +2006,59 @@ public class TheCellGameMgr : MonoBehaviour
 
         Debug.Log($"------ Your code points is {points}.");
         return points;
+    }
+
+
+    // Fake feeding all 4 receivers
+    void FakeFeedReceivers()
+    {
+        ElemReceiver rA = m_GroupElements.transform.Find("CubeFeedA").GetComponent<ElemReceiver>();
+        ElemReceiver rB = m_GroupElements.transform.Find("CubeFeedB").GetComponent<ElemReceiver>();
+        ElemReceiver rC = m_GroupElements.transform.Find("CubeFeedC").GetComponent<ElemReceiver>();
+        ElemReceiver rD = m_GroupElements.transform.Find("CubeFeedD").GetComponent<ElemReceiver>();
+
+        List<ElemCubeClass> cubes = new List<ElemCubeClass>(4);
+        // Pick 4 elements randomly
+        for (int i = 0; i < 4; ++i)
+        {
+            int rnd = UnityEngine.Random.Range(0, m_ElemCubes.Count);
+            ElemCubeClass c = m_ElemCubes[rnd].GetComponent<ElemCubeClass>();
+            cubes.Add(c);
+        }
+        
+        cubes[0].transform.SetPositionAndRotation(rA.transform.position, rA.transform.rotation);
+        cubes[1].transform.SetPositionAndRotation(rB.transform.position, rB.transform.rotation);
+        cubes[2].transform.SetPositionAndRotation(rC.transform.position, rC.transform.rotation);
+        cubes[3].transform.SetPositionAndRotation(rD.transform.position, rD.transform.rotation);
+    }
+
+
+    private IEnumerator OpenExitHatch()
+    {
+        GameObject hatchModel = null;
+        GameObject hatch = m_CentreModels.m_ExitCell.transform.Find("trap_exit/door_exit").gameObject;
+        if (hatch != null)
+        {
+            hatchModel = hatch;
+            Debug.Log($"[ExitHandsTrigger] Awake. {transform.name}, model: {hatchModel.name} in {hatchModel.transform.position}");
+        }
+        else
+        {
+            Debug.LogWarning($"[ExitHandsTrigger] Awake. {transform.name}, model: {hatchModel.name} couldn't be found...");
+            yield return 0;
+        }
+
+        //--- Snd ---
+        Audio_DeathScream[5].transform.SetParent(hatchModel.transform);
+        Audio_DeathScream[5].Play();
+        //--- Snd ---
+
+        float startTime = Time.time;
+        while (Time.time - startTime < 3.5f)
+        {
+            hatchModel.transform.RotateAround(hatchModel.transform.position, transform.up, Time.deltaTime * -35.0f);
+            yield return new WaitForFixedUpdate();
+        }
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {hatchModel.name} is open.");
     }
 }

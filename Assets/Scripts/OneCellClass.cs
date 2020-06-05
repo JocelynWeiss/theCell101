@@ -198,7 +198,8 @@ public class OneCellClass : MonoBehaviour
         if (cellType == TheCellGameMgr.CellTypes.Exit)
         {
             SouthDoor.SetActive(false);
-            ExitHatch.SetActive(true);
+            //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
+            //But it's on the wheel
         }
 
         /*

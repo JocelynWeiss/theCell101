@@ -6,8 +6,8 @@ using OculusSampleFramework;
 
 public class ElemReceiver : MonoBehaviour
 {
-    [Tooltip("UID of this receiver, from 1 to 4.")]
-    [Range(1,4)] public int m_ReceiverId; // Uniq receiver ID
+    [Tooltip("UID of this receiver, from 0 to 3.")]
+    [Range(0,3)] public int m_ReceiverId; // Uniq receiver ID
     [ViewOnly] public TheCellGameMgr.Elements m_ElementType; // Element type it needs to be validated
     [ViewOnly] public bool m_Validated = false;
 
@@ -90,19 +90,17 @@ public class ElemReceiver : MonoBehaviour
             }
 
             OVRGrabber grabber = grabbable.grabbedBy;
+            string grabberName = "";
             if (grabber == null)
             {
                 t2.GetComponent<TextMeshProUGUI>().text = $"Can't find the grabber at {Time.fixedTime}s'";
-                /*
-                if (!m_Validated)
-                {
-                    m_Validated = true;
-                    transform.localScale *= 0.75f;
-                }
-                */
-                return;
+                //return; // Should we return here ? We need it commented when testing on Windows
             }
-            grabber.ForceRelease(grabbable);
+            else
+            {
+                grabberName = grabber.name;
+                grabber.ForceRelease(grabbable);
+            }
 
             // Deactivate this receiver, it's feeded.
             BoxCollider bc = this.GetComponent<BoxCollider>();
@@ -125,7 +123,7 @@ public class ElemReceiver : MonoBehaviour
             m_Validated = true;
             CodeUtils.BitfieldSet(m_ReceiverId, true, ref TheCellGameMgr.instance.m_CodeFinalSet);
 
-            t2.GetComponent<TextMeshProUGUI>().text = $"Released by '{grabber.name} at {Time.fixedTime}s'";
+            t2.GetComponent<TextMeshProUGUI>().text = $"Released by '{grabberName} at {Time.fixedTime}s'";
             other.enabled = false;
                 
             // Snap the object and reset physics
@@ -140,7 +138,7 @@ public class ElemReceiver : MonoBehaviour
             grabbable.Deactivate();
 
             m_LastCollider = null;
-
+            TheCellGameMgr.instance.Audio_DeathScream[3].Play();
         }
     }
 }

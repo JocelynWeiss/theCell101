@@ -138,6 +138,12 @@ public class TheCellGameMgr : MonoBehaviour
     [HideInInspector] public AudioSource Audio_UseLevers;
 
     public GameObject Snd_DeathScream;
+    //0 Death scream
+    //1 Cannot move row or column
+    //2 On Player exit room
+    //3 Element placement
+    //4 Hand scanner fail
+    //5 Open hatch
     [HideInInspector] public AudioSource[] Audio_DeathScream;
 
 
@@ -771,6 +777,9 @@ public class TheCellGameMgr : MonoBehaviour
                             GameObject txt2 = m_basicCanvas.transform.GetChild(2).gameObject;
                             txt2.GetComponent<TextMeshProUGUI>().text = $"code: {codePoints}";
                             gameState = GameStates.CodeAllSet;
+                            Debug.Log($"\tBrutScore: {brutScore}. Total: {brutScore + codePoints}");
+
+                            StartCoroutine(OpenExitHatch());
                         }
                     }
                 }
@@ -1469,6 +1478,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_N = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -1553,6 +1567,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_E = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -1631,6 +1650,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_S = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -1715,6 +1739,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_W = false;
+                            AudioSource snd = Audio_DeathScream[4];
+                            if (snd.isPlaying == false)
+                            {
+                                snd.Play();
+                            }
                         }
                     }
                     break;
@@ -2001,5 +2030,35 @@ public class TheCellGameMgr : MonoBehaviour
         cubes[1].transform.SetPositionAndRotation(rB.transform.position, rB.transform.rotation);
         cubes[2].transform.SetPositionAndRotation(rC.transform.position, rC.transform.rotation);
         cubes[3].transform.SetPositionAndRotation(rD.transform.position, rD.transform.rotation);
+    }
+
+
+    private IEnumerator OpenExitHatch()
+    {
+        GameObject hatchModel = null;
+        GameObject hatch = m_CentreModels.m_ExitCell.transform.Find("trap_exit/door_exit").gameObject;
+        if (hatch != null)
+        {
+            hatchModel = hatch;
+            Debug.Log($"[ExitHandsTrigger] Awake. {transform.name}, model: {hatchModel.name} in {hatchModel.transform.position}");
+        }
+        else
+        {
+            Debug.LogWarning($"[ExitHandsTrigger] Awake. {transform.name}, model: {hatchModel.name} couldn't be found...");
+            yield return 0;
+        }
+
+        //--- Snd ---
+        Audio_DeathScream[5].transform.SetParent(hatchModel.transform);
+        Audio_DeathScream[5].Play();
+        //--- Snd ---
+
+        float startTime = Time.time;
+        while (Time.time - startTime < 3.5f)
+        {
+            hatchModel.transform.RotateAround(hatchModel.transform.position, transform.up, Time.deltaTime * -35.0f);
+            yield return new WaitForFixedUpdate();
+        }
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {hatchModel.name} is open.");
     }
 }

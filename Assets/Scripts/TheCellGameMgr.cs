@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using OculusSampleFramework;
 using System;
 
 public class TheCellGameMgr : MonoBehaviour
 {
+    // Game language
+    public enum GameLanguages
+    {
+        Undefined = 0,
+        English,
+        French,
+    }
+
+
     // Game States
     public enum GameStates
     {
@@ -95,8 +103,15 @@ public class TheCellGameMgr : MonoBehaviour
     public static TheCellGameMgr instance { get; private set; }
 
 
-    // Gets the singleton instance.
+    // Current Game state
     public static GameStates gameState { get; private set; }
+
+
+    // Current Game language
+    [ViewOnly] public static GameLanguages m_Language = GameLanguages.Undefined;
+    public Canvas m_AllNotes = null;
+    public Dictionary<string, string> m_LocalizedText;
+
 
     static int startingSeed = 1966;
     static float startingTime = 0.0f; // Time since the start of a new game in sec
@@ -205,6 +220,12 @@ public class TheCellGameMgr : MonoBehaviour
         }
         m_GroupElements.SetActive(false); // Need to activate it in exit room
 
+        m_AllNotes = GameObject.Find("AllNotes/LocText").gameObject.GetComponent<Canvas>();
+        LoadLocalizedText("localized_fr.json");
+        GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
+        //intro.GetComponent<TextMeshProUGUI>().text = $"{m_LocalizedText["entry_room_1"]}";
+        intro.GetComponent<TextMeshProUGUI>().text = $"{m_LocalizedText["about"]}";
+
         InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //InitializeNewGame(System.Environment.TickCount);
     }
@@ -276,6 +297,17 @@ public class TheCellGameMgr : MonoBehaviour
     {
         instance = this;
         gameState = GameStates.Starting;
+
+        if (m_Language == GameLanguages.Undefined)
+        {
+            // Set default language to French
+            m_Language = GameLanguages.French;
+        }
+        else
+        {
+            // Load language from file
+        }
+        m_AllNotes = GameObject.Find("AllNotes/LocText").gameObject.GetComponent<Canvas>();
 
         startingSeed = gameSeed;
         UnityEngine.Random.InitState(startingSeed);
@@ -2060,5 +2092,49 @@ public class TheCellGameMgr : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {hatchModel.name} is open.");
+    }
+
+    
+    //
+    public void LoadLocalizedText(string fileName)
+    {
+        m_LocalizedText = new Dictionary<string, string>();
+        string filePath;
+        filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
+        /*
+#if UNITY_ANDROID
+
+        filePath = Path.Combine(Application.streamingAssetsPath, fileName);
+        WWW reader = new WWW(filePath);
+        while (!reader.isDone) { }
+
+        filePath = Path.Combine(Application.persistentDataPath, fileName);
+        File.WriteAllBytes(filePath, reader.bytes);
+        reader.Dispose();
+
+#else
+        filePath = Path.Combine(Application.streamingAssetsPath, fileName);
+#endif
+        */
+
+        if (System.IO.File.Exists(filePath))
+        {
+            string dataAsJson = System.IO.File.ReadAllText(filePath);
+            LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
+
+            for (int i = 0; i < loadedData.items.Length; i++)
+            {
+                m_LocalizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
+            }
+
+            Debug.Log ($"Localization dictionary loaded: {m_LocalizedText.Count} entries.");
+        }
+        else
+        {
+            //Debug.LogError ("Cannot find file! Loading english translation.");
+            LoadLocalizedText("localized_en.json");
+        }
+
+        //isReady = true;
     }
 }

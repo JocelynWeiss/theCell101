@@ -170,6 +170,11 @@ public class OneCellClass : MonoBehaviour
         //*/
 
         TheCellGameMgr.instance.Audio_DeathScream[2].Play();
+
+        if (cellType == TheCellGameMgr.CellTypes.Start)
+        {
+            TheCellGameMgr.instance.m_AllNotes.enabled = false;
+        }
     }
 
 
@@ -200,6 +205,10 @@ public class OneCellClass : MonoBehaviour
             SouthDoor.SetActive(false);
             //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
             //But it's on the wheel
+        }
+        else if (cellType == TheCellGameMgr.CellTypes.Start)
+        {
+            TheCellGameMgr.instance.m_AllNotes.enabled = true;
         }
 
         /*

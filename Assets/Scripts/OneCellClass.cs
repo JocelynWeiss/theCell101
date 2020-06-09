@@ -171,9 +171,22 @@ public class OneCellClass : MonoBehaviour
 
         TheCellGameMgr.instance.Audio_DeathScream[2].Play();
 
-        if (cellType == TheCellGameMgr.CellTypes.Start)
+        switch (cellType)
         {
-            TheCellGameMgr.instance.m_AllNotes.enabled = false;
+            case TheCellGameMgr.CellTypes.Start:
+                TheCellGameMgr.instance.m_AllNotes.enabled = false;
+                break;
+            default:
+                break;
+        }
+
+        switch (cellSubType)
+        {
+            case TheCellGameMgr.CellSubTypes.Blind:
+                TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
+                break;
+            default:
+                break;
         }
     }
 
@@ -200,15 +213,17 @@ public class OneCellClass : MonoBehaviour
             WestDoor.SetActive(true);
         }
 
-        if (cellType == TheCellGameMgr.CellTypes.Exit)
+        switch (cellType)
         {
-            SouthDoor.SetActive(false);
-            //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
-            //But it's on the wheel
-        }
-        else if (cellType == TheCellGameMgr.CellTypes.Start)
-        {
-            TheCellGameMgr.instance.m_AllNotes.enabled = true;
+            case TheCellGameMgr.CellTypes.Exit:
+                SouthDoor.SetActive(false);
+                //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
+                break;
+            case TheCellGameMgr.CellTypes.Start:
+                TheCellGameMgr.instance.m_AllNotes.enabled = true;
+                break;
+            default:
+                break;
         }
 
         /*
@@ -232,6 +247,9 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellSubTypes.Gaz:
             //case TheCellGameMgr.CellSubTypes.Water:  //JowTodo: Put back
                 StartCoroutine(DelayedDeath());
+                break;
+            case TheCellGameMgr.CellSubTypes.Blind:
+                TheCellGameMgr.instance.m_StopHandScaner.SetActive(true);
                 break;
             default:
                 break;

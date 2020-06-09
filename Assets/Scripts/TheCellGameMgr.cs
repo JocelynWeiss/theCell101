@@ -140,6 +140,7 @@ public class TheCellGameMgr : MonoBehaviour
     bool m_displayCell_W = false;
 
     public GameObject m_codes;  // The 4 codes on each wall
+    public GameObject m_StopHandScaner; // Object showing no hands scanner availability.
 
     public CellsModels m_CentreModels;
     public CellsModels m_NorthModels;

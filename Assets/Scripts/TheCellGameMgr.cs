@@ -133,6 +133,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_WaterCellModel;
     public GameObject m_LaserCellModel;
     public GameObject m_GazCellModel;
+    public GameObject m_PlanCellModel; // The screen cell model
     bool m_displayCell_N = false;
     bool m_displayCell_E = false;
     bool m_displayCell_S = false;
@@ -457,6 +458,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_LaserCell.transform.SetParent(m_CentreModels.transform);
             m_CentreModels.m_GazCell = GameObject.Instantiate(m_GazCellModel);
             m_CentreModels.m_GazCell.transform.SetParent(m_CentreModels.transform);
+            m_CentreModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
+            m_CentreModels.m_PlanCell.transform.SetParent(m_CentreModels.transform);
 
             m_NorthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_NorthModels.m_GenCellA.SetActive(true);
@@ -477,6 +480,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_NorthModels.m_LaserCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.m_GazCell = GameObject.Instantiate(m_GazCellModel);
             m_NorthModels.m_GazCell.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
+            m_NorthModels.m_PlanCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.transform.position = new Vector3(0.0f, 0.0f, 2.9f);            
 
             m_EastModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -498,6 +503,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_EastModels.m_LaserCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.m_GazCell = GameObject.Instantiate(m_GazCellModel);
             m_EastModels.m_GazCell.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
+            m_EastModels.m_PlanCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.transform.position = new Vector3(2.9f, 0.0f, 0.0f);            
 
             m_SouthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -519,6 +526,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_SouthModels.m_LaserCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.m_GazCell = GameObject.Instantiate(m_GazCellModel);
             m_SouthModels.m_GazCell.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
+            m_SouthModels.m_PlanCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);            
 
             m_WestModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -540,6 +549,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_WestModels.m_LaserCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.m_GazCell = GameObject.Instantiate(m_GazCellModel);
             m_WestModels.m_GazCell.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
+            m_WestModels.m_PlanCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);            
         }
         //--- show models ---
@@ -1461,6 +1472,11 @@ public class TheCellGameMgr : MonoBehaviour
                             front = m_CentreModels.m_BlindCell.transform.Find("Trap_1").gameObject;
                             front = front.transform.Find("trape_1").gameObject;
                         }
+                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_PlanCell.transform.Find("Trap_1").gameObject;
+                            front = front.transform.Find("trape_1").gameObject;
+                        }
 
                         // Jow: Make sure the back is set considering the right active model as for the front
                         GameObject back = m_NorthModels.GetActiveModel();
@@ -1506,6 +1522,12 @@ public class TheCellGameMgr : MonoBehaviour
                             back = back.transform.Find("trape_2").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
                         }
+                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
+                        {
+                            back = back.transform.Find("trap_0").gameObject;
+                            back = back.transform.Find("trape_2").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
                         else
                         {
                             m_displayCell_N = false;
@@ -1543,6 +1565,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else if (m_CentreModels.m_BlindCell.activeSelf == true)
                         {
                             front = m_CentreModels.m_BlindCell.transform.Find("trap_3").gameObject;
+                            front = front.transform.Find("trape_2 2").gameObject;
+                        }
+                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_PlanCell.transform.Find("trap_3").gameObject;
                             front = front.transform.Find("trape_2 2").gameObject;
                         }
 
@@ -1595,6 +1622,12 @@ public class TheCellGameMgr : MonoBehaviour
                             back = back.transform.Find("trape_2 1").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
                         }
+                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
+                        {
+                            back = back.transform.Find("trap_2").gameObject;
+                            back = back.transform.Find("trape_2 1").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
                         else
                         {
                             m_displayCell_E = false;
@@ -1632,6 +1665,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else if (m_CentreModels.m_BlindCell.activeSelf == true)
                         {
                             front = m_CentreModels.m_BlindCell.transform.Find("trap_0").gameObject;
+                            front = front.transform.Find("trape_2").gameObject;
+                        }
+                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_PlanCell.transform.Find("trap_0").gameObject;
                             front = front.transform.Find("trape_2").gameObject;
                         }
 
@@ -1678,6 +1716,12 @@ public class TheCellGameMgr : MonoBehaviour
                             back = back.transform.Find("trape_1").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
                         }
+                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
+                        {
+                            back = back.transform.Find("Trap_1").gameObject;
+                            back = back.transform.Find("trape_1").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
                         else
                         {
                             m_displayCell_S = false;
@@ -1715,6 +1759,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else if (m_CentreModels.m_BlindCell.activeSelf == true)
                         {
                             front = m_CentreModels.m_BlindCell.transform.Find("trap_2").gameObject;
+                            front = front.transform.Find("trape_2 1").gameObject;
+                        }
+                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_PlanCell.transform.Find("trap_2").gameObject;
                             front = front.transform.Find("trape_2 1").gameObject;
                         }
 
@@ -1762,6 +1811,12 @@ public class TheCellGameMgr : MonoBehaviour
                             StartCoroutine(OpenShutters(point, front, back));
                         }
                         else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.GazM)
+                        {
+                            back = back.transform.Find("trap_3").gameObject;
+                            back = back.transform.Find("trape_2 2").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
+                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
                         {
                             back = back.transform.Find("trap_3").gameObject;
                             back = back.transform.Find("trape_2 2").gameObject;

@@ -154,7 +154,7 @@ Transform:
   - {fileID: 1357504660}
   - {fileID: 495148715}
   m_Father: {fileID: 0}
-  m_RootOrder: 32
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &28120397
 PrefabInstance:
@@ -1534,6 +1534,12 @@ CapsuleCollider:
   m_Height: 0.4
   m_Direction: 1
   m_Center: {x: -0.00000002142042, y: 0.16935106, z: 0.08203038}
+--- !u!1 &122479338 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 97b72fb4bf1c45b43a79c61bd6013555,
+    type: 3}
+  m_PrefabInstance: {fileID: 100618887}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &134533243
 GameObject:
   m_ObjectHideFlags: 0
@@ -2065,6 +2071,7 @@ MonoBehaviour:
   m_WaterCellModel: {fileID: 263691235}
   m_LaserCellModel: {fileID: 1182380305}
   m_GazCellModel: {fileID: 1220126682}
+  m_PlanCellModel: {fileID: 122479338}
   m_codes: {fileID: 1822356710}
   m_CentreModels: {fileID: 459828590}
   m_NorthModels: {fileID: 899402537}
@@ -3873,6 +3880,7 @@ MonoBehaviour:
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
   m_GazCell: {fileID: 0}
+  m_PlanCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -4079,6 +4087,7 @@ MonoBehaviour:
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
   m_GazCell: {fileID: 0}
+  m_PlanCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -5097,6 +5106,7 @@ MonoBehaviour:
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
   m_GazCell: {fileID: 0}
+  m_PlanCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -6851,7 +6861,7 @@ Transform:
   m_Children:
   - {fileID: 1464243465}
   m_Father: {fileID: 0}
-  m_RootOrder: 32
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1169672172
 PrefabInstance:
@@ -7327,7 +7337,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 30ffd912df476d0448ce906f00794b0a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 31
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 30ffd912df476d0448ce906f00794b0a,
         type: 3}
@@ -7494,6 +7504,7 @@ MonoBehaviour:
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
   m_GazCell: {fileID: 0}
+  m_PlanCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}
@@ -10642,7 +10653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 5d44b47caf0eb824bade785d78f776f3, type: 3}
       propertyPath: m_RootOrder
-      value: 30
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: 5d44b47caf0eb824bade785d78f776f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11218,6 +11229,7 @@ MonoBehaviour:
   m_WaterCell: {fileID: 0}
   m_LaserCell: {fileID: 0}
   m_GazCell: {fileID: 0}
+  m_PlanCell: {fileID: 0}
   m_light_N: {fileID: 0}
   m_light_E: {fileID: 0}
   m_light_S: {fileID: 0}

@@ -20,6 +20,7 @@ public class CellsModels : MonoBehaviour
         WaterM,
         LaserM,
         GazM,
+        PlanM,
     }
 
     [ViewOnly] public GameObject m_EntryCell;  // The starting room
@@ -31,6 +32,7 @@ public class CellsModels : MonoBehaviour
     [ViewOnly] public GameObject m_WaterCell;  // The water cell model
     [ViewOnly] public GameObject m_LaserCell;   // The laser cell model
     [ViewOnly] public GameObject m_GazCell;     // The gaz cell model
+    [ViewOnly] public GameObject m_PlanCell;    // The screen cell model
     [ViewOnly] public Light m_light_N;
     [ViewOnly] public Light m_light_E;
     [ViewOnly] public Light m_light_S;
@@ -84,7 +86,10 @@ public class CellsModels : MonoBehaviour
                 break;
             case CellsModelsType.GazM:
                 obj = m_GazCell;
-                    break;
+                break;
+            case CellsModelsType.PlanM:
+                obj = m_PlanCell;
+                break;
         }
 
         return obj;
@@ -131,6 +136,9 @@ public class CellsModels : MonoBehaviour
                         case TheCellGameMgr.CellSubTypes.Gaz:
                             SetActiveModel(CellsModelsType.GazM);
                             break;
+                        case TheCellGameMgr.CellSubTypes.Screen:
+                            SetActiveModel(CellsModelsType.PlanM);
+                            break;
                         default:
                             SetActiveModel(CellsModelsType.GenA);
                             break;
@@ -165,6 +173,8 @@ public class CellsModels : MonoBehaviour
             m_LaserCell.SetActive(false);
         if (m_GazCell)
             m_GazCell.SetActive(false);
+        if (m_PlanCell)
+            m_PlanCell.SetActive(false);
 
         switch (newType)
         {
@@ -196,6 +206,9 @@ public class CellsModels : MonoBehaviour
                 break;
             case CellsModelsType.GazM:
                 m_GazCell.SetActive(true);
+                break;
+            case CellsModelsType.PlanM:
+                m_PlanCell.SetActive(true);
                 break;
             default:
                 Debug.LogWarning($"Wrong model type in SetActiveModel: {newType}");

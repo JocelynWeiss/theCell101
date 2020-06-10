@@ -23,18 +23,6 @@ public class OneCellClass : MonoBehaviour
 
     public Vector3 m_MiniGameTranslation;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     // Initialize the cell
     public void InitCell(TheCellGameMgr.CellTypes type, int subId, float rnd)

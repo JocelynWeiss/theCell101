@@ -39,19 +39,8 @@ public class CellsModels : MonoBehaviour
     [ViewOnly] public Light m_light_W;
     [ViewOnly] public CellsModelsType m_CurrentType = CellsModelsType.None;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
+    // ---
     public GameObject GetActiveModel()
     {
         GameObject obj = null;

@@ -5,6 +5,9 @@ using UnityEngine;
 public class StartButtonScript : MonoBehaviour
 {
     MeshRenderer m_Renderer;
+    public bool m_Clickable = false;
+    public bool m_IsReady = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -13,33 +16,46 @@ public class StartButtonScript : MonoBehaviour
 
         if (m_Renderer)
         {
-            m_Renderer.material.SetColor("_BaseColor", Color.cyan);
+            m_Renderer.material.SetColor("_BaseColor", Color.red);
         }
 
+        transform.gameObject.GetComponent<BoxCollider>().enabled = false;
+        transform.gameObject.GetComponent<BoxCollider>().isTrigger = false;
     }
 
 
+    // Set the button as clickable
+    public void SetClickable()
+    {
+        if (m_Renderer)
+        {
+            m_Renderer.material.SetColor("_BaseColor", Color.green);
+            m_Clickable = true;
+            transform.gameObject.GetComponent<BoxCollider>().enabled = true;
+            transform.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+        }
+    }
+
+
+    // ---
     private void OnTriggerEnter(Collider other)
     {
         if (m_Renderer)
         {
-            m_Renderer.material.SetColor("_BaseColor", Color.red);
+            m_Renderer.material.SetColor("_BaseColor", Color.yellow);
+            StartCoroutine(LaunchGame());
         }
     }
 
 
-    private void OnTriggerExit(Collider other)
+    // ---
+    IEnumerator LaunchGame()
     {
-        if (m_Renderer)
-        {
-            m_Renderer.material.SetColor("_BaseColor", Color.cyan);
-        }
-    }
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false; // No force applied
+        rb.useGravity = true;
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        yield return new WaitForSecondsRealtime(2.0f);
+        m_IsReady = true;
     }
 }

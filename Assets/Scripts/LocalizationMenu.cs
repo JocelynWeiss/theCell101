@@ -1,45 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LocalizationMenu : MonoBehaviour
 {
-    public GameObject m_StartButton;
-    //public GameObject m_FlagFr;
-    //public GameObject m_FlagUk;
+    public StartButtonScript m_StartButton;
     public Flags m_FlagFr;
     public Flags m_FlagUk;
 
 
     // ---
-    private void Awake()
-    {
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-
-    // ---
     private void FixedUpdate()
     {
-        /*
-        if (m_FlagFr.m_IsSelected)
+        if (m_StartButton != null)
         {
-            if (m_FlagUk.m_IsSelected)
+            if (m_StartButton.m_IsReady)
             {
+                switch (TheCellGameMgr.m_Language)
+                {
+                    case TheCellGameMgr.GameLanguages.English:
+                        TheCellGameMgr.instance.LoadLocalizedText("localized_en.json");
+                        break;
+                    case TheCellGameMgr.GameLanguages.French:
+                    default:
+                        TheCellGameMgr.instance.LoadLocalizedText("localized_fr.json");
+                        break;
+                }
 
+                TheCellGameMgr.instance.TeleportToStart();
+                m_StartButton.m_IsReady = false;
+                GameObject.Find("LocalizationMenu").gameObject.SetActive(false); // Hide loc
+                TheCellGameMgr.instance.m_codes.SetActive(true);
             }
-        }        
-        */
+        }
     }
 
 
-    public void SwitchLanguage(Flags newFlag)
+    // Highlight the flag and set startButton to clickable
+    public void ChangeLanguageSelection(Flags newFlag)
     {
         if (m_FlagFr.m_IsSelected && newFlag != m_FlagFr)
         {
@@ -54,6 +50,8 @@ public class LocalizationMenu : MonoBehaviour
         if (newFlag.m_IsSelected == false)
         {
             newFlag.SetOnOff(true);
+            TheCellGameMgr.m_Language = newFlag.m_Language;
+            m_StartButton.SetClickable();
         }
     }
 }

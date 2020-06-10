@@ -229,7 +229,7 @@ public class TheCellGameMgr : MonoBehaviour
         GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
         intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
 
-        InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
+        //InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //InitializeNewGame(System.Environment.TickCount);
     }
 
@@ -268,9 +268,17 @@ public class TheCellGameMgr : MonoBehaviour
         Debug.Log($"[GameMgr] Start. {gameState}");
 
         // Go to the localization phase
-        //gameState = GameStates.Localization;
-        GameObject allLoc = GameObject.Find("LocalizationMenu").gameObject;
-        allLoc.SetActive(false);
+        gameState = GameStates.Localization;
+        //GameObject.Find("code_00").gameObject.SetActive(false);
+        m_codes.SetActive(false);
+
+        // Start the game without the loc panel
+        //*
+        gameState = GameStates.Undefined;
+        GameObject.Find("LocalizationMenu").gameObject.SetActive(false); // Hide loc
+        m_codes.SetActive(true);
+        InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
+        //*/
     }
 
 
@@ -808,6 +816,7 @@ public class TheCellGameMgr : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.KeypadPlus))
         {
+            /*
             if (m_Language == GameLanguages.French)
             {
                 m_Language = GameLanguages.English;
@@ -818,9 +827,9 @@ public class TheCellGameMgr : MonoBehaviour
                 m_Language = GameLanguages.French;
                 LoadLocalizedText("localized_fr.json");
             }
-
-            GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
-            intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
+            */
+            m_LocMenu.ChangeLanguageSelection(m_LocMenu.m_FlagUk);
+            m_LocMenu.m_StartButton.m_IsReady = true;
         }
     }
 
@@ -2230,7 +2239,11 @@ public class TheCellGameMgr : MonoBehaviour
                 m_LocalizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
             }
 
-            Debug.Log($"Localization dictionary loaded with {m_LocalizedText.Count} entries.");
+            Debug.Log($"Localization dictionary {fileName} loaded with {m_LocalizedText.Count} entries.");
+
+            // Just update the starting text but shouldn't need it here
+            GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
+            intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
         }
         else
         {

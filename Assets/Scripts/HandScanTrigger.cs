@@ -12,20 +12,7 @@ public class HandScanTrigger : MonoBehaviour
     bool m_leftPinkyIn = false;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    // 
+    // ---
     private void FixedUpdate()
     {
         if ((m_leftIndexIn && m_leftPinkyIn) || (m_rightIndexIn && m_RightPinkyIn))

@@ -1989,7 +1989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46bcd83c1942bd44083eb07d3af0a391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartButton: {fileID: 185960965}
+  m_StartButton: {fileID: 185960972}
   m_FlagFr: {fileID: 372619411}
   m_FlagUk: {fileID: 2077427681}
 --- !u!1 &185960965
@@ -2004,7 +2004,6 @@ GameObject:
   - component: {fileID: 185960969}
   - component: {fileID: 185960968}
   - component: {fileID: 185960967}
-  - component: {fileID: 185960970}
   - component: {fileID: 185960971}
   - component: {fileID: 185960972}
   m_Layer: 0
@@ -2036,8 +2035,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185960965}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
+  m_IsTrigger: 0
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2088,23 +2087,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185960965}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &185960970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185960965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c470fb7e491d744eb9c02e6920182d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_allowOffhandGrab: 1
-  m_snapPosition: 0
-  m_snapOrientation: 0
-  m_snapOffset: {fileID: 0}
-  m_grabPoints: []
 --- !u!54 &185960971
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2133,6 +2115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be809fcdce3c97848a89e8e6d8caaae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Clickable: 0
+  m_IsReady: 0
 --- !u!1 &192699198 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4367663367671286082, guid: 12d5672b737d1fb4ca88a58349acbfa4,

@@ -23,25 +23,14 @@ public class Flags : MonoBehaviour
     }
 
 
+    // ---
     private void OnTriggerEnter(Collider other)
     {
-        /*
-        if (m_IsSelected == false)
-        {
-            m_IsSelected = true;
-            m_Renderer.material.SetColor("_BaseColor", m_ColSelected);
-        }
-        */
-
-        TheCellGameMgr.instance.m_LocMenu.SwitchLanguage(this);
+        TheCellGameMgr.instance.m_LocMenu.ChangeLanguageSelection(this);
     }
 
 
-    private void OnTriggerExit(Collider other)
-    {
-    }
-
-
+    // ---
     public void SetOnOff(bool switchOn)
     {
         if (switchOn)
@@ -60,11 +49,5 @@ public class Flags : MonoBehaviour
                 m_Renderer.material.SetColor("_BaseColor", m_ColUnselected);
             }
         }
-    }
-
-
-    // ---
-    private void FixedUpdate()
-    {
     }
 }

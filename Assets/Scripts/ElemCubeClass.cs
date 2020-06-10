@@ -14,13 +14,7 @@ public class ElemCubeClass : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-
+    // ---
     public void ChangeType(TheCellGameMgr.Elements newType, Material[] mats)
     {
         m_ElemType = newType;

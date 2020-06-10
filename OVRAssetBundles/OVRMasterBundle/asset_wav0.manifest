@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2472538696
+CRC: 2882241860
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7c955ca0d118c433e652b337462d1fb5
+    Hash: 5e37ab812aeb73ad1d3a4cc761142436
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
@@ -13,9 +13,12 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Sounds/ScreamsShouts2_Humans_Male_Scream_032.wav
+- Assets/Sounds/GlitchFX_01_Dirt_SFX_019.wav
+- Assets/Sounds/GlitchFX_01_Dirt_SFX_016.wav
 - Assets/Sounds/TrappeOpenAmbi.wav
 - Assets/Sounds/JustImpacts-Extension2_Metal_Hit_Crash_200.wav
 - Assets/Sounds/CHT2_Cinematic_Transition_101.wav
+- Assets/Sounds/JustMetal_Squeaks-and-Moans_050.wav
 - Assets/Sounds/ElectricTypeWriters_3006_Hammer-Mechanism_Random-Strokes_01.wav
 - Assets/Sounds/Windmill_Rotate_Slow_Loop.wav
 Dependencies: []

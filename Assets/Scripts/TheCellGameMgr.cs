@@ -142,6 +142,7 @@ public class TheCellGameMgr : MonoBehaviour
 
     public GameObject m_codes;  // The 4 codes on each wall
     public GameObject m_StopHandScaner; // Object showing no hands scanner availability.
+    public LocalizationMenu m_LocMenu;
 
     public CellsModels m_CentreModels;
     public CellsModels m_NorthModels;
@@ -226,9 +227,9 @@ public class TheCellGameMgr : MonoBehaviour
         m_AllNotes = GameObject.Find("AllNotes/LocText").gameObject.GetComponent<Canvas>();
         LoadLocalizedText("localized_fr.json");
         GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
-        intro.GetComponent<TextMeshProUGUI>().text = $"{m_LocalizedText["entry_room_1"]}";
+        intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
 
-        //InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
+        InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //InitializeNewGame(System.Environment.TickCount);
     }
 
@@ -267,7 +268,9 @@ public class TheCellGameMgr : MonoBehaviour
         Debug.Log($"[GameMgr] Start. {gameState}");
 
         // Go to the localization phase
-        gameState = GameStates.Localization;
+        //gameState = GameStates.Localization;
+        GameObject allLoc = GameObject.Find("LocalizationMenu").gameObject;
+        allLoc.SetActive(false);
     }
 
 
@@ -801,6 +804,23 @@ public class TheCellGameMgr : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Home))
         {
             InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
+        }
+
+        if (Input.GetKeyUp(KeyCode.KeypadPlus))
+        {
+            if (m_Language == GameLanguages.French)
+            {
+                m_Language = GameLanguages.English;
+                LoadLocalizedText("localized_en.json");
+            }
+            else
+            {
+                m_Language = GameLanguages.French;
+                LoadLocalizedText("localized_fr.json");
+            }
+
+            GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
+            intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
         }
     }
 
@@ -2186,6 +2206,11 @@ public class TheCellGameMgr : MonoBehaviour
     //
     public void LoadLocalizedText(string fileName)
     {
+        if (m_LocalizedText != null)
+        {
+            m_LocalizedText.Clear();
+        }
+
         m_LocalizedText = new Dictionary<string, string>();
         string filePath;
         filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
@@ -2211,27 +2236,5 @@ public class TheCellGameMgr : MonoBehaviour
         {
             Debug.LogError($"Cannot find file {filePath}.");
         }
-
-        /*
-        if (System.IO.File.Exists(filePath))
-        {
-            string dataAsJson = System.IO.File.ReadAllText(filePath);
-            LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
-
-            for (int i = 0; i < loadedData.items.Length; i++)
-            {
-                m_LocalizedText.Add(loadedData.items[i].key, loadedData.items[i].value);
-            }
-
-            Debug.Log ($"Localization dictionary loaded: {m_LocalizedText.Count} entries.");
-        }
-        else
-        {
-            //Debug.LogError ("Cannot find file! Loading english translation.");
-            LoadLocalizedText("localized_en.json");
-        }
-        */
-
-        //isReady = true;
     }
 }

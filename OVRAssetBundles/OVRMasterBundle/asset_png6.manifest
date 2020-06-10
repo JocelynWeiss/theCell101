@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 531366924
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6588c0f30f193b01f5251641307146d7
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Textures/ecran/bloc_Nrm.png
+- Assets/Textures/regard 1X/ground_col.png
+- Assets/Textures/exit/wall_Nrm.png
+- Assets/Textures/regard 1X/ground_Nrm.png
+- Assets/Textures/Start/Id_Met.png
+- Assets/Textures/Illusion/wall_illu_Met.png
+Dependencies: []

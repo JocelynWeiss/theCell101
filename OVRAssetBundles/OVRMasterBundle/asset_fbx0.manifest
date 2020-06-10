@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1123508184
+CRC: 2064288151
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c01b4fa487aff9f982c753284f617a5c
+    Hash: c27f593b98d6c750c172d97398dfc9ce
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8217c8368c414b8909ed481d83841351
+    Hash: 3c831659204dc4c5bde96d5c5f627bb7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
 - Class: 90
   Script: {instanceID: 0}
 - Class: 95
@@ -30,20 +32,27 @@ ClassTypes:
 - Class: 137
   Script: {instanceID: 0}
 Assets:
+- Assets/Oculus/SampleFramework/Core/CustomHands/Models/l_hand_skeletal_lowres.fbx
 - Assets/Mesh/code_00.fbx
-- Assets/cube_generic.fbx
-- Assets/cube_start.fbx
+- Assets/Prefabs/cube_generic.fbx
+- Assets/Prefabs/cube_start.fbx
 - Assets/Oculus/SampleFramework/Usage/Locomotion/Models/Cube_1x1.fbx
-- Assets/EXIT_00.fbx
+- Assets/Prefabs/cube_feu.fbx
+- Assets/Prefabs/EXIT_00.fbx
+- Assets/Prefabs/cube_ecran.fbx
 - Assets/Mesh/mask_00.fbx
-- Assets/cube_safe.fbx
-- Assets/cube_water.fbx
-- Assets/cube_aveugle.fbx
-- Assets/cube_laser.fbx
+- Assets/Prefabs/stop_handscane.fbx
+- Assets/Prefabs/cube_safe.fbx
+- Assets/Mesh/game_over.fbx
+- Assets/Prefabs/cube_water.fbx
+- Assets/Prefabs/cube_aveugle.fbx
+- Assets/Prefabs/cube_vortex.fbx
+- Assets/Prefabs/cube_regard.fbx
+- Assets/Prefabs/cube_laser.fbx
 - Assets/Oculus/SampleFramework/Core/TouchControllers/NewTouchControllers/controller_l.fbx
-- Assets/cube_gaz.fbx
+- Assets/Prefabs/cube_gaz.fbx
 - Assets/Mesh/element_exit_B.fbx
-- Assets/cube_illusion.fbx
+- Assets/Prefabs/cube_illusion.fbx
 Dependencies:
-- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_mat0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_mat1
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_shader0

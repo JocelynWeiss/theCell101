@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2793669417
+CRC: 956231365
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7d3aac0ffb9f0d6dac02c16c81589b48
+    Hash: 2120f1cd4f2e3bfa60425b38ce0b94b4
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
@@ -12,6 +12,25 @@ ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 Assets:
+- Assets/Textures/gaz/wall_0_mat_Nrm.png
+- Assets/Textures/feu/ground_Met.png
+- Assets/Textures/Safe/ground_Nrm.png
+- Assets/Textures/Start/trap_Met.png
+- Assets/Textures/exit/walll_exit_col.png
+- Assets/Textures/Illusion/caisson_cable_col.png
+- Assets/Textures/Start/light_Met.png
+- Assets/Textures/exit/door_exit_col.png
+- Assets/Textures/Start/rules_Met.png
+- Assets/Textures/Illusion/manche_Emi.png
+- Assets/Textures/Start/light_col.png
+- Assets/Textures/aveugle/wall_aveugle_Met.png
+- Assets/Textures/Start/teleporteur_Nrm.png
+- Assets/Textures/Start/WC_Nrm.png
+- Assets/Textures/Start/trap_col.png
+- Assets/Textures/ecran/ecran_Nrm.png
+- Assets/Textures/regard 1X/wall_Met.png
+- Assets/Textures/feu/wall_0_mat_Nrm.png
+- Assets/Textures/exit/ground_Nrm.png
 - Assets/Textures/water/lock_wheel_water_col.png
 - Assets/Textures/water/wall_water_Nrm.png
 - Assets/Textures/Start/Id_col.png
@@ -22,24 +41,5 @@ Assets:
 - Assets/Textures/exit/wall_col.png
 - Assets/Textures/Laser/teleporteur_laser_col.png
 - Assets/Textures/exit/walll_exit_Met.png
-- Assets/Textures/exit/ground_col.png
-- Assets/Textures/Start/pipe_Met.png
-- Assets/Textures/water/hand_scaner_all_water_Met.png
-- Assets/Textures/Start/console_element_col.png
-- Assets/Textures/water/ventilation_water_Nrm.png
-- Assets/Textures/Start/teleporteur_Emi.png
-- Assets/Textures/exit/walll_exit_Nrm.png
-- Assets/Textures/Start/hand_scaner_Emi.png
-- Assets/Textures/Start/lock_wheel_Met.png
-- Assets/Textures/Illusion/manche_Nrm.png
-- Assets/Textures/Start/hand_scaner_Met.png
-- Assets/Textures/water/trap_water_Nrm.png
-- Assets/Textures/mask/mask_col.png
-- Assets/Textures/Start/lavabo_Nrm.png
-- Assets/Textures/exit/door_exit_Met.png
-- Assets/Textures/water/console_element_water_Nrm.png
-- Assets/Textures/Illusion/ground_Met.png
-- Assets/Textures/exit/ground_Met.png
-- Assets/Textures/Start/lock_wheel_Nrm.png
-- Assets/Textures/exit/Exit_panel_Nrm.png
+- Assets/Textures/ecran/wallt_Nrm.png
 Dependencies: []

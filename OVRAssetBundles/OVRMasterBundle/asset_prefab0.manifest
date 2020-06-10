@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1515024056
+CRC: 3756656649
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ed6cd7269630bc77282fb6a3f2d32020
+    Hash: dc8904aeb581ab3c756cc37648e10d9f
   TypeTreeHash:
     serializedVersion: 2
     Hash: e56a03c8ff1e073e930fce8c25fd5677
@@ -53,3 +53,4 @@ Assets:
 - Assets/Prefabs/MiniCube.prefab
 Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_mat1
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_fbx0

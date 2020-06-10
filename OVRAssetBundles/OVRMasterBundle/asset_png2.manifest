@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1779085043
+CRC: 1365675648
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ab468a3a39b63cda83343b86e195ee72
+    Hash: e83cd2a0b9e42ec1adb7485ac18e6967
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
@@ -12,11 +12,25 @@ ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 Assets:
+- Assets/Textures/Laser/wall_laser_col.png
+- Assets/Textures/Start/pipe_Nrm.png
+- Assets/Textures/Start/ground_Met.png
+- Assets/Textures/water/trap_water_Met.png
+- Assets/Textures/aveugle/ground_aveugle_Met.png
+- Assets/Textures/Laser/teleporteur_laser_Nrm.png
+- Assets/Textures/ecran/ground_Met.png
+- Assets/Textures/exit/console_exit_col.png
+- Assets/Textures/exit/Exit_panel_Met.png
+- Assets/Textures/ecran/ecran_Met.png
+- Assets/Textures/water/water_Met.png
+- Assets/Oculus/SampleFramework/Usage/SharedAssets/Textures/metal_brushed_01_dif.png
 - Assets/Textures/Illusion/manche_col.png
 - Assets/Textures/Safe/ground_col.png
+- Assets/Textures/regard 1X/ground_Met.png
 - Assets/Textures/Laser/teleporteur_laser_Met.png
 - Assets/Textures/water/console_element_water_col.png
 - Assets/Textures/Illusion/wall_illu_col.png
+- Assets/Textures/ecran/bloc_Met.png
 - Assets/Textures/Start/hand_scaner_col.png
 - Assets/Textures/water/top_water_Met.png
 - Assets/Textures/water/water_toy_col.png
@@ -24,22 +38,8 @@ Assets:
 - Assets/Textures/Start/top_col.png
 - Assets/Textures/Illusion/caisson_cable_Met.png
 - Assets/Textures/water/manche_water_Met.png
+- Assets/Textures/regard 1X/wall_col.png
 - Assets/Textures/water/lock_wheel_water_Nrm.png
 - Assets/Textures/Start/light_Nrm.png
 - Assets/Textures/Start/ventilation_col.png
-- Assets/Textures/gaz/wall_0_mat_Nrm.png
-- Assets/Textures/Safe/ground_Nrm.png
-- Assets/Textures/Start/trap_Met.png
-- Assets/Textures/exit/walll_exit_col.png
-- Assets/Textures/Illusion/caisson_cable_col.png
-- Assets/Textures/Start/light_Met.png
-- Assets/Textures/exit/door_exit_col.png
-- Assets/Textures/Start/rules_Met.png
-- Assets/Textures/Illusion/manche_Emi.png
-- Assets/Textures/Start/light_col.png
-- Assets/Textures/aveugle/wall_aveugle_Met.png
-- Assets/Textures/Start/teleporteur_Nrm.png
-- Assets/Textures/Start/WC_Nrm.png
-- Assets/Textures/Start/trap_col.png
-- Assets/Textures/exit/ground_Nrm.png
 Dependencies: []

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4242822571
+CRC: 689802524
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3a63dd402f549451d5905baa571d3eb0
+    Hash: 16f03ebce9e5762110480ff3cc3ebc96
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21c99c86a43ad817b2cb7f65458ae090
@@ -16,34 +16,36 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
+- Assets/Materials/wall_gaz.mat
+- Assets/Materials/wc.mat
+- Assets/Materials/toy_water.mat
+- Assets/Oculus/SampleFramework/Usage/Locomotion/Materials/MAT_grid_01_light.mat
+- Assets/Materials/wall_water.mat
+- Assets/Materials/wall_exit.mat
+- Assets/Materials/light.mat
+- Assets/Materials/wall_aveugle.mat
+- Assets/Materials/bloc.mat
 - Assets/Materials/SimpleUnlit.mat
+- Assets/Materials/ground_regard.mat
+- Assets/Oculus/SampleFramework/Core/CustomHands/Materials/Hands_solid.mat
 - Assets/Materials/trap.mat
 - Assets/Materials/lock_wheel_water.mat
 - Assets/Materials/ground_aveugle.mat
 - Assets/Oculus/SampleFramework/Core/Locomotion/Materials/ColumnGlow.mat
+- Assets/Materials/wall_regard.mat
 - Assets/Oculus/VR/Materials/BasicHandMaterial.mat
+- Assets/Materials/ground_ecran_plaque.mat
 - Assets/Materials/chair.mat
+- Assets/Materials/ground_feu.mat
 - Assets/Materials/ground.mat
 - Assets/Materials/water.mat
+- Assets/Materials/wall_ecran.mat
 - Assets/Materials/ground_water.mat
 - Assets/Materials/ground_illusion.mat
 - Assets/Materials/wall_exit_2.mat
 - Assets/Materials/exitpanel.mat
 - Assets/Materials/ground_laser.mat
 - Assets/Materials/ID.mat
-- Assets/Materials/lock_exit.mat
-- Assets/Materials/teleporteur_laser.mat
-- Assets/Materials/ventilation_water.mat
-- Assets/Materials/SimpleLit.mat
-- Assets/Materials/handscanner_water.mat
-- Assets/Materials/ground_safe.mat
-- Assets/Materials/ground_gaz.mat
-- Assets/Materials/ground_exit_plaque.mat
-- Assets/Textures/Start/Materials/wall_col.mat
-- Assets/Materials/ventilation.mat
-- Assets/Materials/SolGenA.mat
-- Assets/Oculus/SampleFramework/Usage/DistanceGrab/Materials/SportsBottleMetalWithOutline.mat
-- Assets/Materials/manche.mat
 Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png0
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png1
@@ -51,4 +53,5 @@ Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png3
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png4
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png5
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png6
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_shader0

@@ -1,0 +1,43 @@
+ManifestFileVersion: 0
+CRC: 1349209795
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 22c8d2964cc502a99267c1421ea6c86a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 21c99c86a43ad817b2cb7f65458ae090
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Materials/lock_exit.mat
+- Assets/Materials/teleporteur_laser.mat
+- Assets/Materials/ventilation_water.mat
+- Assets/Materials/SimpleLit.mat
+- Assets/Materials/handscanner_water.mat
+- Assets/Materials/ground_safe.mat
+- Assets/Materials/ground_gaz.mat
+- Assets/Materials/ground_exit_plaque.mat
+- Assets/Textures/Start/Materials/wall_col.mat
+- Assets/Materials/console_exit.mat
+- Assets/Materials/wall_feu.mat
+- Assets/Materials/ventilation.mat
+- Assets/Materials/Flag-FR.mat
+- Assets/Materials/SolGenA.mat
+- Assets/Oculus/SampleFramework/Usage/DistanceGrab/Materials/SportsBottleMetalWithOutline.mat
+- Assets/Materials/manche.mat
+Dependencies:
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png1
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png2
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png3
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png4
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png5
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_shader0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_jpg0

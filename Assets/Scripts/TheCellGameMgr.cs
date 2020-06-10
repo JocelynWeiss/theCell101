@@ -19,6 +19,7 @@ public class TheCellGameMgr : MonoBehaviour
     public enum GameStates
     {
         Undefined = 0,  // not initialized
+        Localization,   // In the localization phase
         Starting,       // just started a new game with new seeds
         Running,        // in a middle of a game
         Finishing,      // just get killed, must respawn in starting cell, don't reset seeds
@@ -227,7 +228,7 @@ public class TheCellGameMgr : MonoBehaviour
         GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
         intro.GetComponent<TextMeshProUGUI>().text = $"{m_LocalizedText["entry_room_1"]}";
 
-        InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
+        //InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //InitializeNewGame(System.Environment.TickCount);
     }
 
@@ -240,8 +241,6 @@ public class TheCellGameMgr : MonoBehaviour
         m_basicCanvas = GameObject.FindObjectOfType<Canvas>();
         int n = m_basicCanvas.transform.childCount;
         GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
-        string toto = directions.GetComponent<TextMeshProUGUI>().text;
-        Debug.Log($"----------------- {toto}");
         directions.GetComponent<TextMeshProUGUI>().text = $"Bonne journée\n {Time.fixedTime}s";
 
         // Init hands
@@ -266,6 +265,9 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         Debug.Log($"[GameMgr] Start. {gameState}");
+
+        // Go to the localization phase
+        gameState = GameStates.Localization;
     }
 
 
@@ -681,6 +683,17 @@ public class TheCellGameMgr : MonoBehaviour
             Debug.Log($"[GameMgr] not initialized ! {instance}.");
         }
 
+        if (gameState == GameStates.Undefined)
+        {
+            return;
+        }
+
+        if (gameState == GameStates.Localization)
+        {
+            LocalizationUpdate();
+            return;
+        }
+
         if (Input.GetKeyUp(KeyCode.Backspace))
         {
             //Cleanup();
@@ -782,10 +795,30 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // Update while in localization phase
+    void LocalizationUpdate()
+    {
+        if (Input.GetKeyUp(KeyCode.Home))
+        {
+            InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
+        }
+    }
+
+
     // called once per fixed framerate
     private void FixedUpdate()
     {
         //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s]");
+
+        if (gameState == GameStates.Undefined)
+        {
+            return;
+        }
+
+        if (gameState == GameStates.Localization)
+        {
+            return;
+        }
 
         // always update the player pos
         OneCellClass current = GetCurrentCell();

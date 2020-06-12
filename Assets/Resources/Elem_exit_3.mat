@@ -78,7 +78,7 @@ Material:
     - _QueueOffset: 50
     - _ReceiveShadows: 0
     - _Shininess: 0
-    - _Smoothness: 1
+    - _Smoothness: 0.571
     - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
     - _SpecSource: 0
@@ -91,4 +91,4 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
-    - _SpecColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 0.571}

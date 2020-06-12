@@ -86,6 +86,7 @@ public class TheCellGameMgr : MonoBehaviour
     Elements[] m_CodeDanger = new Elements[4];
     Elements[] m_CodeDeath = new Elements[4];
     Material[] m_ElementsMats = new Material[4];
+    Material[] m_CubesElemMats = new Material[4];
     [ViewOnly] public uint m_CodeFinalSet = 0; //bitfield specifying wich receiver has been feeded
 
 
@@ -142,6 +143,7 @@ public class TheCellGameMgr : MonoBehaviour
 
     public GameObject m_codes;  // The 4 codes on each wall
     public GameObject m_StopHandScaner; // Object showing no hands scanner availability.
+    public GameObject m_PlayaModel;
     public LocalizationMenu m_LocMenu;
 
     public CellsModels m_CentreModels;
@@ -150,6 +152,7 @@ public class TheCellGameMgr : MonoBehaviour
     public CellsModels m_SouthModels;
     public CellsModels m_WestModels;
 
+    public AudioSource m_Ambiance;
     public GameObject Snd_OpenShutters;
     private AudioSource Audio_OpenShutters;
 
@@ -260,7 +263,7 @@ public class TheCellGameMgr : MonoBehaviour
         foreach (GameObject obj in m_ElemCubes)
         {
             ElemCubeClass elem = obj.GetComponent<ElemCubeClass>();
-            elem.ChangeType((Elements)(n%4), m_ElementsMats);
+            elem.ChangeType((Elements)(n%4), m_CubesElemMats);
             //obj.transform.Find("air").gameObject.SetActive(true);
             n++;
         }
@@ -271,14 +274,32 @@ public class TheCellGameMgr : MonoBehaviour
         gameState = GameStates.Localization;
         //GameObject.Find("code_00").gameObject.SetActive(false);
         m_codes.SetActive(false);
+        m_PlayaModel.transform.Rotate(Vector3.up, 180.0f);
 
+        // --- Debug init ---
         // Start the game without the loc panel
-        //*
+        /*
         gameState = GameStates.Undefined;
         GameObject.Find("LocalizationMenu").gameObject.SetActive(false); // Hide loc
         m_codes.SetActive(true);
         InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //*/
+
+        // To debug: Place feeders in front at start and render them (in Exit room)
+        /*
+        ElemReceiver rA = m_GroupElements.transform.Find("CubeFeedA").GetComponent<ElemReceiver>();
+        rA.transform.localPosition = new Vector3(-0.1f, 0.0f, 0.3f);
+        rA.transform.GetComponent<MeshRenderer>().enabled = true;
+        ElemReceiver rB = m_GroupElements.transform.Find("CubeFeedB").GetComponent<ElemReceiver>();
+        rB.transform.localPosition = new Vector3(0.1f, 0.0f, 0.3f);
+        rB.transform.GetComponent<MeshRenderer>().enabled = true;
+        ElemReceiver rC = m_GroupElements.transform.Find("CubeFeedC").GetComponent<ElemReceiver>();
+        rC.transform.localPosition = new Vector3(0.3f, 0.0f, 0.3f);
+        rC.transform.GetComponent<MeshRenderer>().enabled = true;
+        ElemReceiver rD = m_GroupElements.transform.Find("CubeFeedD").GetComponent<ElemReceiver>();
+        rD.transform.localPosition = new Vector3(-0.3f, 0.0f, 0.3f);
+        rD.transform.GetComponent<MeshRenderer>().enabled = true;
+        */
     }
 
 
@@ -322,6 +343,8 @@ public class TheCellGameMgr : MonoBehaviour
             // Load language from file
         }
         m_AllNotes = GameObject.Find("AllNotes/LocText").gameObject.GetComponent<Canvas>();
+
+        m_PlayaModel.transform.rotation = Quaternion.identity;
 
         startingSeed = gameSeed;
         UnityEngine.Random.InitState(startingSeed);
@@ -584,6 +607,11 @@ public class TheCellGameMgr : MonoBehaviour
         gameState = GameStates.Running;
         OneCellClass current = GetCurrentCell();
         current.OnPlayerEnter();
+
+        if (m_Ambiance.isPlaying == false)
+        {
+            m_Ambiance.Play();
+        }
     }
 
 
@@ -1998,6 +2026,11 @@ public class TheCellGameMgr : MonoBehaviour
         {
             Debug.LogError("Could not load materials, place it in Resources Folder!");
         }
+
+        m_CubesElemMats[0] = Resources.Load("Elem_exit_1", typeof(Material)) as Material;
+        m_CubesElemMats[1] = Resources.Load("Elem_exite_2", typeof(Material)) as Material;
+        m_CubesElemMats[2] = Resources.Load("Elem_exit_3", typeof(Material)) as Material;
+        m_CubesElemMats[3] = Resources.Load("Elem_exit_4", typeof(Material)) as Material;
     }
 
 

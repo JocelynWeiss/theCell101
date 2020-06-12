@@ -10,6 +10,7 @@ public class ElemReceiver : MonoBehaviour
     [Range(0,3)] public int m_ReceiverId; // Uniq receiver ID
     [ViewOnly] public TheCellGameMgr.Elements m_ElementType; // Element type it needs to be validated
     [ViewOnly] public bool m_Validated = false;
+    public float m_SnapDist = 0.05f;
 
     private MeshRenderer m_renderer;
     private Collider m_LastCollider = null;
@@ -80,7 +81,7 @@ public class ElemReceiver : MonoBehaviour
         GameObject t2 = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(2).gameObject;
         t2.GetComponent<TextMeshProUGUI>().text = $"d: {length}";
 
-        if (length < 0.025f)
+        if (length < m_SnapDist)
         {
             ColorGrabbable grabbable = other.gameObject.GetComponent<ColorGrabbable>();
             if (grabbable == null)

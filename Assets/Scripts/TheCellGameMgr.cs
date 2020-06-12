@@ -152,21 +152,22 @@ public class TheCellGameMgr : MonoBehaviour
     public CellsModels m_SouthModels;
     public CellsModels m_WestModels;
 
-    public AudioSource m_Ambiance;
     public GameObject Snd_OpenShutters;
     private AudioSource Audio_OpenShutters;
 
     public GameObject Snd_UseLevers;
     [HideInInspector] public AudioSource Audio_UseLevers;
 
-    public GameObject Snd_DeathScream;
+    public GameObject Snd_SoundBank;
     //0 Death scream
     //1 Cannot move row or column
     //2 On Player exit room
     //3 Element placement
     //4 Hand scanner fail
     //5 Open hatch
-    [HideInInspector] public AudioSource[] Audio_DeathScream;
+    //6 Genaral ambiance
+    //7 Beach ambiance
+    [HideInInspector] public AudioSource[] Audio_Bank;
 
 
     //--- Grabbables ---
@@ -206,6 +207,7 @@ public class TheCellGameMgr : MonoBehaviour
                 */
             }
         }
+        playerSphere.SetActive(false);
 
         LoadElementsMats();
 
@@ -256,8 +258,7 @@ public class TheCellGameMgr : MonoBehaviour
         // Sounds
         Audio_OpenShutters = Snd_OpenShutters.GetComponent<AudioSource>();
         Audio_UseLevers = Snd_UseLevers.GetComponent<AudioSource>();
-        //Audio_DeathScream = Snd_DeathScream.GetComponent<AudioSource>();
-        Audio_DeathScream = Snd_DeathScream.GetComponents<AudioSource>();
+        Audio_Bank = Snd_SoundBank.GetComponents<AudioSource>();
 
         n = 1;
         foreach (GameObject obj in m_ElemCubes)
@@ -608,10 +609,17 @@ public class TheCellGameMgr : MonoBehaviour
         OneCellClass current = GetCurrentCell();
         current.OnPlayerEnter();
 
-        if (m_Ambiance.isPlaying == false)
+        if (Audio_Bank[7].isPlaying)
         {
-            m_Ambiance.Play();
+            Audio_Bank[7].Stop();
         }
+
+        if (Audio_Bank[6].isPlaying == false)
+        {
+            Audio_Bank[6].Play();
+        }
+
+        playerSphere.SetActive(true);
     }
 
 
@@ -1224,7 +1232,7 @@ public class TheCellGameMgr : MonoBehaviour
     {
         if (from == 10) // same row as the start room = impossible
         {
-            Audio_DeathScream[1].Play();
+            Audio_Bank[1].Play();
             return;
         }
 
@@ -1308,7 +1316,7 @@ public class TheCellGameMgr : MonoBehaviour
     {
         if (from == 2) // same column as the start room = impossible
         {
-            Audio_DeathScream[1].Play();
+            Audio_Bank[1].Play();
             return;
         }
 
@@ -1622,7 +1630,7 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_N = false;
-                            AudioSource snd = Audio_DeathScream[4];
+                            AudioSource snd = Audio_Bank[4];
                             if (snd.isPlaying == false)
                             {
                                 snd.Play();
@@ -1722,7 +1730,7 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_E = false;
-                            AudioSource snd = Audio_DeathScream[4];
+                            AudioSource snd = Audio_Bank[4];
                             if (snd.isPlaying == false)
                             {
                                 snd.Play();
@@ -1816,7 +1824,7 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_S = false;
-                            AudioSource snd = Audio_DeathScream[4];
+                            AudioSource snd = Audio_Bank[4];
                             if (snd.isPlaying == false)
                             {
                                 snd.Play();
@@ -1916,7 +1924,7 @@ public class TheCellGameMgr : MonoBehaviour
                         else
                         {
                             m_displayCell_W = false;
-                            AudioSource snd = Audio_DeathScream[4];
+                            AudioSource snd = Audio_Bank[4];
                             if (snd.isPlaying == false)
                             {
                                 snd.Play();
@@ -2231,8 +2239,8 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         //--- Snd ---
-        Audio_DeathScream[5].transform.SetParent(hatchModel.transform);
-        Audio_DeathScream[5].Play();
+        Audio_Bank[5].transform.SetParent(hatchModel.transform);
+        Audio_Bank[5].Play();
         //--- Snd ---
 
         float startTime = Time.time;

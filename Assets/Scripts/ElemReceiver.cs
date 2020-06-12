@@ -139,7 +139,7 @@ public class ElemReceiver : MonoBehaviour
             grabbable.Deactivate();
 
             m_LastCollider = null;
-            TheCellGameMgr.instance.Audio_DeathScream[3].Play();
+            TheCellGameMgr.instance.Audio_Bank[3].Play();
         }
     }
 }

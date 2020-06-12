@@ -157,7 +157,7 @@ public class OneCellClass : MonoBehaviour
         }
         //*/
 
-        TheCellGameMgr.instance.Audio_DeathScream[2].Play();
+        TheCellGameMgr.instance.Audio_Bank[2].Play();
 
         switch (cellType)
         {
@@ -247,7 +247,7 @@ public class OneCellClass : MonoBehaviour
 
     private IEnumerator DelayedDeath()
     {
-        AudioSource snd = TheCellGameMgr.instance.Audio_DeathScream[0];
+        AudioSource snd = TheCellGameMgr.instance.Audio_Bank[0];
         snd.Play();
 
         yield return new WaitForSecondsRealtime(3.0f);

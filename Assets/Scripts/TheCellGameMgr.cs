@@ -124,6 +124,7 @@ public class TheCellGameMgr : MonoBehaviour
     [ViewOnly] public int playerCellId = 12; // in which place on the chess the player is. Match the lookup table.
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
     [ViewOnly] public Canvas m_basicCanvas = null;
+	System.Random m_RandomBis = new System.Random();
 
     private MyHands[] m_hands = new MyHands[2];
 
@@ -620,6 +621,7 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         playerSphere.SetActive(true);
+		InvokeRepeating("CheckLightState", 3.0f, 2.0f);											   
     }
 
 
@@ -920,6 +922,9 @@ public class TheCellGameMgr : MonoBehaviour
                             gameState = GameStates.CodeAllSet;
                             Debug.Log($"\tBrutScore: {brutScore}. Total: {brutScore + codePoints}");
 
+							// Change exit colour					 
+                            MeshRenderer exitRender = m_CentreModels.m_ExitCell.transform.Find("trap_exit/exit_panel").gameObject.GetComponent<MeshRenderer>();
+                            exitRender.material.SetColor("_EmissionColor", Color.green * 2.0f);
                             StartCoroutine(OpenExitHatch());
                         }
                     }
@@ -1041,7 +1046,7 @@ public class TheCellGameMgr : MonoBehaviour
         CellTypes curType = current.cellType;
         int curId = current.cellId;
         m_CentreModels.SetActiveModel(curType, current.cellSubType);
-        Debug.Log($"UpdateCellsModels: {current}, type: {curType}, id: {curId}, playerCellId: {playerCellId}");
+        //Debug.Log($"UpdateCellsModels: {current}, type: {curType}, id: {curId}, playerCellId: {playerCellId}");
 
         // DeActivate elements
         m_GroupElements.SetActive(false);
@@ -1100,6 +1105,9 @@ public class TheCellGameMgr : MonoBehaviour
             Color light_colour = new Color(0.9f, 1.0f, 0.9f, 1.0f);
             SetupLights(m_CentreModels, light_range, light_colour);
 
+			// Change exit panel colour
+            MeshRenderer exitRender = m_CentreModels.m_ExitCell.transform.Find("trap_exit/exit_panel").gameObject.GetComponent<MeshRenderer>();
+            exitRender.material.SetColor("_EmissionColor", Color.red);
             //remove the north wall "Trap_1" from south_cell...
             GameObject southModel = m_SouthModels.GetActiveModel();
             if (southModel)
@@ -2255,7 +2263,44 @@ public class TheCellGameMgr : MonoBehaviour
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {hatchModel.name} is open.");
     }
 
-    
+
+    // Should be called every x sec to check if a light is going off
+    void CheckLightState()
+    {
+        int c = instance.m_RandomBis.Next(99);
+        if (c < 33)
+        {
+            Light light = null;
+            int r = (int)instance.m_RandomBis.Next(3);
+            if (r == 0)
+                light = m_CentreModels.m_light_N;
+            else if (r == 1)
+                light = m_CentreModels.m_light_E;
+            else if (r == 2)
+                light = m_CentreModels.m_light_S;
+            else if (r == 3)
+                light = m_CentreModels.m_light_W;
+
+            if (light != null)
+            {
+                light.intensity = 0.0f;
+                StartCoroutine(SwitchLightOn(0.1f, light));
+            }
+            else
+            {
+                Debug.LogError($"Pb random = {r}");
+            }
+        }
+    }
+
+
+    // Switch light back on in x seconds
+    private IEnumerator SwitchLightOn(float xSec, Light light)
+    {
+        yield return new WaitForSeconds(xSec);
+        light.intensity = 0.5f;
+    }
+
     //
     public void LoadLocalizedText(string fileName)
     {

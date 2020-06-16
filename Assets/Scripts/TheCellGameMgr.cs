@@ -176,6 +176,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_FxFlame;
     public GameObject m_FxGaz;
 
+    List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
     //--- Grabbables ---
     GameObject m_GroupElements;
@@ -340,6 +341,17 @@ public class TheCellGameMgr : MonoBehaviour
     {
         instance = this;
         gameState = GameStates.Starting;
+
+#if UNITY_EDITOR
+        GameObject cam = GameObject.Find("OVRCameraRig").gameObject;
+        cam.transform.position = new Vector3(0.0f, 0.5f, -0.2f);
+#endif
+
+        if (m_ScreenCard != null)
+        {
+            m_ScreenCard.Clear();
+            m_ScreenCard = null;
+        }
 
         if (m_Language == GameLanguages.Undefined)
         {
@@ -932,6 +944,12 @@ public class TheCellGameMgr : MonoBehaviour
                             MeshRenderer exitRender = m_CentreModels.m_ExitCell.transform.Find("trap_exit/exit_panel").gameObject.GetComponent<MeshRenderer>();
                             exitRender.material.SetColor("_EmissionColor", Color.green * 2.0f);
                             StartCoroutine(OpenExitHatch());
+
+                            OneCellClass exitCell = GetCurrentCell();
+                            exitCell.NorthDoor.SetActive(false);
+                            exitCell.EastDoor.SetActive(false);
+                            exitCell.SouthDoor.SetActive(false);
+                            exitCell.WestDoor.SetActive(false);
                         }
                     }
                 }
@@ -1219,6 +1237,11 @@ public class TheCellGameMgr : MonoBehaviour
             }
         }
 
+        if (m_CentreModels.m_PlanCell.activeSelf == true)
+        {
+            UpdatePlanScreen();
+        }
+        
         SetupAdjacentLights(null, 0.0f, Color.red);
     }
 
@@ -2343,6 +2366,48 @@ public class TheCellGameMgr : MonoBehaviour
         else
         {
             Debug.LogError($"Cannot find file {filePath}.");
+        }
+    }
+
+
+    // Set the plan screen according to the board
+    void UpdatePlanScreen()
+    {
+        if (m_ScreenCard == null)
+        {
+            m_ScreenCard = new List<GameObject>(25);
+
+            string path = "Screen/group9/room/";
+            string roomName = "";
+            for (int i = 0; i < 25; ++i)
+            {
+                roomName = "room_" + i;
+                //Debug.Log($"{path}{roomName}");
+                GameObject go = m_CentreModels.m_PlanCell.transform.Find(path+roomName).gameObject;
+                m_ScreenCard.Add(go);
+            }
+        }
+
+        int id = 0;
+        foreach (GameObject card in m_ScreenCard)
+        {
+            MeshRenderer mr = card.GetComponent<MeshRenderer>();
+            if (mr != null)
+            {
+                Color col = Color.red;
+                CellTypes type = allCells[lookupTab[id]].cellType;
+                if (type == CellTypes.Start)
+                    col = Color.green;
+                else if (type == CellTypes.Exit)
+                    col = Color.cyan;
+                else if (type == CellTypes.Safe)
+                    col = Color.blue;
+                else if (type == CellTypes.Effect)
+                    col = Color.yellow;
+
+                mr.material.SetColor("_BaseColor", col);
+            }
+            id++;
         }
     }
 }

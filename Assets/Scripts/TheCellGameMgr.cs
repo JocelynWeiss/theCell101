@@ -170,6 +170,12 @@ public class TheCellGameMgr : MonoBehaviour
     //7 Beach ambiance
     [HideInInspector] public AudioSource[] Audio_Bank;
 
+    public GameObject m_FxTopSteam;
+    public GameObject m_FxTeleporter;
+    public GameObject m_FxSpawner;
+    public GameObject m_FxFlame;
+    public GameObject m_FxGaz;
+
 
     //--- Grabbables ---
     GameObject m_GroupElements;

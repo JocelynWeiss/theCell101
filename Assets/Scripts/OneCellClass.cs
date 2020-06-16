@@ -173,6 +173,12 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellSubTypes.Blind:
                 TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
                 break;
+            case TheCellGameMgr.CellSubTypes.Gaz:
+                TheCellGameMgr.instance.m_FxGaz.SetActive(false);
+                break;
+            case TheCellGameMgr.CellSubTypes.Fire:
+                TheCellGameMgr.instance.m_FxFlame.SetActive(false);
+                break;
             default:
                 break;
         }
@@ -252,14 +258,24 @@ public class OneCellClass : MonoBehaviour
         {
             //case TheCellGameMgr.CellSubTypes.Lasers: //JowTodo: Put back
             case TheCellGameMgr.CellSubTypes.Fire:
+                TheCellGameMgr.instance.m_FxFlame.SetActive(true);
+                StartCoroutine(DelayedDeath());
+                break;
             case TheCellGameMgr.CellSubTypes.Gaz:
-            //case TheCellGameMgr.CellSubTypes.Water:  //JowTodo: Put back
+                //case TheCellGameMgr.CellSubTypes.Water:  //JowTodo: Put back
+                TheCellGameMgr.instance.m_FxGaz.SetActive(true);
                 StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Blind:
                 TheCellGameMgr.instance.m_StopHandScaner.SetActive(true);
+                TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
+                TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
+                TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
                 break;
             default:
+                TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
+                TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
+                TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
                 break;
         }
     }
@@ -298,6 +314,7 @@ public class OneCellClass : MonoBehaviour
         }
 
         Debug.Log($"[OneCellClass] Teleport player back at start. Time = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+        OnPlayerExit();
         TheCellGameMgr.instance.TeleportToStart();
     }
 }

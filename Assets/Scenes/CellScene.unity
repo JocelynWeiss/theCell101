@@ -15985,8 +15985,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_StartButton: {fileID: 185960972}
-  m_FlagFr: {fileID: 372619411}
-  m_FlagUk: {fileID: 2077427681}
+  m_FlagFr: {fileID: 2040749490}
+  m_FlagUk: {fileID: 222022128}
 --- !u!1 &185960965
 GameObject:
   m_ObjectHideFlags: 0
@@ -16295,6 +16295,11 @@ MonoBehaviour:
   Audio_UseLevers: {fileID: 0}
   Snd_SoundBank: {fileID: 402926736}
   Audio_Bank: []
+  m_FxTopSteam: {fileID: 1521755665}
+  m_FxTeleporter: {fileID: 811125529}
+  m_FxSpawner: {fileID: 1422472143}
+  m_FxFlame: {fileID: 1089535404}
+  m_FxGaz: {fileID: 289673027}
   m_ElemCubeNb: 16
 --- !u!4 &213176292
 Transform:

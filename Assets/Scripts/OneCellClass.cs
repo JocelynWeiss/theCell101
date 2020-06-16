@@ -180,25 +180,45 @@ public class OneCellClass : MonoBehaviour
 
 
     // Player just enter this cell
-    public void OnPlayerEnter()
+    public void OnPlayerEnter(bool setTime = true)
     {
-        enterTime = Time.fixedTime;
+        if (setTime)
+        {
+            enterTime = Time.fixedTime;
+        }
 
-        if (TheCellGameMgr.instance.GetNorthType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        int idOnChess = TheCellGameMgr.instance.playerCellId;
+        if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             NorthDoor.SetActive(true);
         }
-        if (TheCellGameMgr.instance.GetEastType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        else
+        {
+            NorthDoor.SetActive(false);
+        }
+        if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             EastDoor.SetActive(true);
         }
-        if (TheCellGameMgr.instance.GetSouthType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        else
+        {
+            EastDoor.SetActive(false);
+        }
+        if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             SouthDoor.SetActive(true);
         }
-        if (TheCellGameMgr.instance.GetWestType(cellId) != TheCellGameMgr.CellTypes.Undefined)
+        else
+        {
+            SouthDoor.SetActive(false);
+        }
+        if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             WestDoor.SetActive(true);
+        }
+        else
+        {
+            WestDoor.SetActive(false);
         }
 
         switch (cellType)

@@ -1041,6 +1041,7 @@ public class TheCellGameMgr : MonoBehaviour
         CellTypes curType = current.cellType;
         int curId = current.cellId;
         m_CentreModels.SetActiveModel(curType, current.cellSubType);
+        Debug.Log($"UpdateCellsModels: {current}, type: {curType}, id: {curId}, playerCellId: {playerCellId}");
 
         // DeActivate elements
         m_GroupElements.SetActive(false);
@@ -1277,6 +1278,7 @@ public class TheCellGameMgr : MonoBehaviour
 
         // reposition the player
         SetPlayerLookupId(currentCellId);
+        GetCurrentCell().OnPlayerEnter(false);
 
         // Update cells models to display
         UpdateCellsModels();
@@ -1361,6 +1363,7 @@ public class TheCellGameMgr : MonoBehaviour
 
         // reposition the player
         SetPlayerLookupId(currentCellId);
+        GetCurrentCell().OnPlayerEnter(false);
 
         // Update cells models to display
         UpdateCellsModels();

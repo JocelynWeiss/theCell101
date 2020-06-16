@@ -50,4 +50,11 @@ public class Flags : MonoBehaviour
             }
         }
     }
+
+
+    [ContextMenu("SelectLanguage")]
+    void SelectLanguage()
+    {
+        TheCellGameMgr.instance.m_LocMenu.ChangeLanguageSelection(this);
+    }
 }

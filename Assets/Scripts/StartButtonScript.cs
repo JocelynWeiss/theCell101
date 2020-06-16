@@ -58,4 +58,14 @@ public class StartButtonScript : MonoBehaviour
         yield return new WaitForSecondsRealtime(2.0f);
         m_IsReady = true;
     }
+
+
+    [ContextMenu("LaunchGame")]
+    void LaunchTheGame()
+    {
+        if (m_Clickable)
+        {
+            StartCoroutine(LaunchGame());
+        }
+    }
 }

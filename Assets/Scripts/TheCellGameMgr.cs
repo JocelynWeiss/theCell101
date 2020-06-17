@@ -950,6 +950,28 @@ public class TheCellGameMgr : MonoBehaviour
                             exitCell.EastDoor.SetActive(false);
                             exitCell.SouthDoor.SetActive(false);
                             exitCell.WestDoor.SetActive(false);
+
+                            // Print score
+                            RectTransform rec0 = m_AllNotes.GetComponent<RectTransform>();
+                            rec0.sizeDelta = new Vector2(5.0f, 2.0f);
+                            rec0.SetPositionAndRotation(new Vector3(-1.0f, -0.9f, -4.27f), Quaternion.Euler(0.0f, -180.0f, 0.0f));
+
+                            GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
+                            RectTransform rec = intro.GetComponent<RectTransform>();
+                            rec.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                            rec.sizeDelta = new Vector2(5.0f, 2.0f);
+                            rec.transform.localPosition = Vector3.zero;
+                            rec.transform.localRotation = Quaternion.identity;
+
+                            // Compensate because I cannot set rec pos properly:
+                            rec0.SetPositionAndRotation(new Vector3(-1.0f, 1.1f, -4.27f), Quaternion.Euler(0.0f, -180.0f, 0.0f));
+
+                            TextMeshProUGUI tmp = intro.GetComponent<TextMeshProUGUI>();
+                            tmp.fontSize = 0.5f;
+                            tmp.color = Color.green;
+                            string duration = (gameDur / 60.0f).ToString("0.00");
+                            tmp.text = $"Time {duration}min\nScore {brutScore}";
+                            m_AllNotes.enabled = true;
                         }
                     }
                 }

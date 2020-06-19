@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 834436105
+CRC: 233418056
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ec59cae544ccd70a7d87f3b65749182b
+    Hash: 44827a3cba1448ccd96f6463bb9c0add
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21c99c86a43ad817b2cb7f65458ae090
@@ -19,13 +19,16 @@ Assets:
 - Assets/Materials/wall_safe.mat
 - Assets/Materials/top_water.mat
 - Assets/Materials/wall_illusion.mat
+- Assets/FX/Materials/vapeur.mat
 - Assets/Materials/handscanner.mat
 - Assets/Materials/trap_water.mat
 - Assets/Materials/manche_water.mat
 - Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
+- Assets/Textures/Start/Materials/FV_Light_top_teleoporteur.mat
 - Assets/Textures/mask/Materials/mask_col.mat
 - Assets/Materials/Flag-UK.mat
 - Assets/Materials/teleporteur_water.mat
+- Assets/FX/Materials/fireSmoke.mat
 - Assets/Materials/wall.mat
 - Assets/Materials/casiion_cable.mat
 - Assets/Materials/top.mat
@@ -43,9 +46,6 @@ Assets:
 - Assets/Materials/ground_vortex.mat
 - Assets/Materials/pipe.mat
 - Assets/Materials/teleporteur.mat
-- Assets/Materials/ecran.mat
-- Assets/Materials/wall_laser.mat
-- Assets/Materials/wall_vortex.mat
 Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png0
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png1

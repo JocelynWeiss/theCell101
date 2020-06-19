@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2851048397
+CRC: 2830855774
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3da4eb22e1ad86cac930298aa934411d
+    Hash: 6a2ad2fe5b72d679284a9fcf7c66e71f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
@@ -12,6 +12,12 @@ ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 Assets:
+- Assets/Textures/Laser/wall_laser_Nrm.png
+- Assets/Textures/exit/wall_col.png
+- Assets/FX/Textures/sprite_realSmoke_b.png
+- Assets/Textures/Laser/teleporteur_laser_col.png
+- Assets/Textures/exit/walll_exit_Met.png
+- Assets/Textures/ecran/wallt_Nrm.png
 - Assets/Textures/exit/ground_col.png
 - Assets/Textures/Start/pipe_Met.png
 - Assets/Textures/exit/console_exit_Nrm.png
@@ -19,6 +25,7 @@ Assets:
 - Assets/Textures/Start/console_element_col.png
 - Assets/Textures/water/ventilation_water_Nrm.png
 - Assets/Textures/Start/teleporteur_Emi.png
+- Assets/FX/Textures/sprite_realSmoke_a.png
 - Assets/Textures/exit/walll_exit_Nrm.png
 - Assets/Textures/Start/hand_scaner_Emi.png
 - Assets/Textures/Start/lock_wheel_Met.png
@@ -35,11 +42,4 @@ Assets:
 - Assets/Textures/exit/Exit_panel_Nrm.png
 - Assets/Textures/Laser/wall_laser_Met.png
 - Assets/Textures/water/manche_water_Nrm.png
-- Assets/Textures/water/teleporteur_water_Met.png
-- Assets/Textures/exit/door_exit_Emi.png
-- Assets/Textures/exit/lock_exit_col.png
-- Assets/Textures/ecran/wall_Met.png
-- Assets/Textures/mask/mask_nrm.png
-- Assets/Textures/exit/Exit_panel_col.png
-- Assets/Textures/ecran/ecran_col.png
 Dependencies: []

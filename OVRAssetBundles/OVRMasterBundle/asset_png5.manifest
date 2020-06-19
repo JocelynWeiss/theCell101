@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4239668431
+CRC: 618735837
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3932f7ce9296b997ecede88a186e1376
+    Hash: 6171fba01df399361ca652ebb1ec8e1b
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
@@ -12,6 +12,14 @@ ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 Assets:
+- Assets/Textures/water/teleporteur_water_Met.png
+- Assets/Textures/exit/door_exit_Emi.png
+- Assets/FX/Textures/sprite_realFire_a.png
+- Assets/Textures/exit/lock_exit_col.png
+- Assets/Textures/ecran/wall_Met.png
+- Assets/Textures/mask/mask_nrm.png
+- Assets/Textures/exit/Exit_panel_col.png
+- Assets/Textures/ecran/ecran_col.png
 - Assets/Textures/ecran/ground_col.png
 - Assets/Textures/gaz/wall_0_mat_Met.png
 - Assets/Textures/Start/chair_Met.png
@@ -34,12 +42,4 @@ Assets:
 - Assets/Textures/water/wall_water_col.png
 - Assets/Textures/gaz/wall_0_mat_col.png
 - Assets/Textures/exit/door_exit_Nrm.png
-- Assets/Textures/water/wall_water_Met.png
-- Assets/Textures/Laser/ground_laser_Nrm.png
-- Assets/Textures/Start/light_emi.png
-- Assets/Textures/Start/wall_Emi.png
-- Assets/Oculus/VR/Textures/HandTracking/HandTracking_uvmap_2048.png
-- Assets/Textures/water/ground_water_col.png
-- Assets/Textures/exit/wall_Met.png
-- Assets/Textures/exit/lock_exit_Met.png
 Dependencies: []

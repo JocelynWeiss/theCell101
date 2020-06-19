@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1349209795
+CRC: 3225941987
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d1dbc14914e4255e2368cad7b44a5656
+    Hash: 1c254c5e0eb3e52ecdac94d099fbfe93
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21c99c86a43ad817b2cb7f65458ae090
@@ -16,7 +16,14 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
+- Assets/Materials/ground_illusion.mat
+- Assets/Materials/wall_exit_2.mat
+- Assets/Materials/exitpanel.mat
+- Assets/FX/Materials/Gaz.mat
+- Assets/Materials/ground_laser.mat
+- Assets/Materials/ID.mat
 - Assets/Materials/lock_exit.mat
+- Assets/FX/Materials/spawn.mat
 - Assets/Materials/teleporteur_laser.mat
 - Assets/Materials/ventilation_water.mat
 - Assets/Materials/SimpleLit.mat
@@ -27,7 +34,10 @@ Assets:
 - Assets/Textures/Start/Materials/wall_col.mat
 - Assets/Materials/console_exit.mat
 - Assets/Materials/wall_feu.mat
+- Assets/FX/Materials/ember.mat
 - Assets/Materials/ventilation.mat
+- Assets/FX/Materials/Gaz_ground.mat
+- Assets/FX/Materials/Fire.mat
 - Assets/Materials/Flag-FR.mat
 - Assets/Materials/SolGenA.mat
 - Assets/Oculus/SampleFramework/Usage/DistanceGrab/Materials/SportsBottleMetalWithOutline.mat
@@ -39,5 +49,6 @@ Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png3
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png4
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png5
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png6
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_shader0
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_jpg0

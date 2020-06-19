@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 689802524
+CRC: 2211077011
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 16f03ebce9e5762110480ff3cc3ebc96
+    Hash: 7c7f910f3ef04576b4b22a6899f4336f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21c99c86a43ad817b2cb7f65458ae090
@@ -16,10 +16,15 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
+- Assets/Materials/ecran.mat
+- Assets/Materials/wall_laser.mat
+- Assets/Materials/wall_vortex.mat
 - Assets/Materials/wall_gaz.mat
 - Assets/Materials/wc.mat
 - Assets/Materials/toy_water.mat
+- Assets/FX/Materials/spawn_FX.mat
 - Assets/Oculus/SampleFramework/Usage/Locomotion/Materials/MAT_grid_01_light.mat
+- Assets/Textures/Start/Materials/FX_teleporteur_emi.mat
 - Assets/Materials/wall_water.mat
 - Assets/Materials/wall_exit.mat
 - Assets/Materials/light.mat
@@ -41,11 +46,6 @@ Assets:
 - Assets/Materials/water.mat
 - Assets/Materials/wall_ecran.mat
 - Assets/Materials/ground_water.mat
-- Assets/Materials/ground_illusion.mat
-- Assets/Materials/wall_exit_2.mat
-- Assets/Materials/exitpanel.mat
-- Assets/Materials/ground_laser.mat
-- Assets/Materials/ID.mat
 Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png0
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_png1

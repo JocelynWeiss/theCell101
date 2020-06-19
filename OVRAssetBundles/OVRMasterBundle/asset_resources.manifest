@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3035697369
+CRC: 443925315
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 82c8d25aaa7ecd7991fb8f1a1fae6c6d
+    Hash: f943c9de3974cdaaa2807a3f3033c57d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ccc11033c0c425354dff707019e56f55
+    Hash: b63de7114531e35d1b795acefe4990e2
 HashAppended: 0
 ClassTypes:
 - Class: 21
@@ -20,8 +20,6 @@ ClassTypes:
 - Class: 109
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: bf2edee5c58d82540a51f03df9d42094, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 572910c10080c0945a0ef731ccedc739, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: de640fe3d0db1804a85f9fc8f5cadab6, type: 3}
@@ -29,6 +27,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: ad074644ff568a14187a3690cfbd7534, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: bf2edee5c58d82540a51f03df9d42094, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: b3d881e962d099f4a8eb492ef7e9a8c0, type: 3}
 - Class: 114
@@ -45,7 +45,9 @@ Assets:
 - Assets/Resources/Elem_3.mat
 - Assets/Oculus/Avatar/Resources/FallbackTextures/fallback_diffuse_roughness_2048.png
 - Assets/Oculus/Avatar/Resources/FallbackTextures/fallback_diffuse_roughness_256.png
+- Assets/Resources/Elem_exite_2.mat
 - Assets/TextMesh Pro/Resources/Shaders/TMP_SDF-Surface-Mobile.shader
+- Assets/Resources/Elem_exit_4.mat
 - Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt
 - Assets/Oculus/Avatar/Resources/Materials/Version1.5/Avatar_PC_SingleComponent.shader
 - Assets/Resources/Elem_2.mat
@@ -58,6 +60,7 @@ Assets:
 - Assets/Resources/UniversalRenderPipelineAsset.asset
 - Assets/Resources/OVRBuildConfig.asset
 - Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc
+- Assets/Resources/Elem_exit_1.mat
 - Assets/Oculus/Avatar/Resources/Materials/Version1.5/Avatar_Mobile_Loader.shader
 - Assets/TextMesh Pro/Resources/Shaders/TMP_Bitmap-Custom-Atlas.shader
 - Assets/Oculus/VR/Resources/Cubemap Blit.shader
@@ -82,6 +85,7 @@ Assets:
 - Assets/Oculus/Avatar/Resources/FallbackTextures/fallback_normal_256.png
 - Assets/TextMesh Pro/Resources/Shaders/TMP_SDF Overlay.shader
 - Assets/Resources/ONSPSettings.asset
+- Assets/Resources/Elem_exit_3.mat
 - Assets/TextMesh Pro/Resources/Shaders/TMPro_Surface.cginc
 - Assets/Oculus/Avatar/Resources/Materials/Expressive/Avatar_Mobile_SingleComponentExpressive.shader
 - Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset

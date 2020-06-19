@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 186431313
+CRC: 660728644
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3fc5a88094e8e14fa4893e40eefbbff1
+    Hash: 1ac1618ad722d0f2f10ce1219d990579
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
@@ -12,6 +12,9 @@ ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 Assets:
+- Assets/Textures/feu/ground_Nrm.png
+- Assets/Textures/water/hand_scaner_all_water_col.png
+- Assets/Textures/water/lock_wheel_water_Met.png
 - Assets/Textures/Start/ventilation_Nrm.png
 - Assets/Textures/Start/console_element_Nrm.png
 - Assets/Textures/water/teleporteur_water_col.png
@@ -39,7 +42,4 @@ Assets:
 - Assets/Textures/Start/chair_Nrm.png
 - Assets/Textures/aveugle/wall_aveugle_Nrm.png
 - Assets/Textures/Start/lock_wheel_col.png
-- Assets/Textures/Start/top_Met.png
-- Assets/Textures/gaz/ground_Nrm.png
-- Assets/Textures/exit/ground_plaque_Met.png
 Dependencies: []

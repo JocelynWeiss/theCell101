@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 956231365
+CRC: 1024306380
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 2120f1cd4f2e3bfa60425b38ce0b94b4
+    Hash: ab3a7f81a93bd2ac4bdd4989d9e3620c
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
@@ -12,6 +12,10 @@ ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 Assets:
+- Assets/Textures/regard 1X/wall_col.png
+- Assets/Textures/water/lock_wheel_water_Nrm.png
+- Assets/Textures/Start/light_Nrm.png
+- Assets/Textures/Start/ventilation_col.png
 - Assets/Textures/gaz/wall_0_mat_Nrm.png
 - Assets/Textures/feu/ground_Met.png
 - Assets/Textures/Safe/ground_Nrm.png
@@ -32,14 +36,10 @@ Assets:
 - Assets/Textures/feu/wall_0_mat_Nrm.png
 - Assets/Textures/exit/ground_Nrm.png
 - Assets/Textures/water/lock_wheel_water_col.png
+- Assets/FX/Textures/black_256X256.png
 - Assets/Textures/water/wall_water_Nrm.png
 - Assets/Textures/Start/Id_col.png
 - Assets/Textures/aveugle/wall_aveugle_col.png
 - Assets/Textures/water/water_col.png
 - Assets/Textures/water/top_water_Nrm.png
-- Assets/Textures/Laser/wall_laser_Nrm.png
-- Assets/Textures/exit/wall_col.png
-- Assets/Textures/Laser/teleporteur_laser_col.png
-- Assets/Textures/exit/walll_exit_Met.png
-- Assets/Textures/ecran/wallt_Nrm.png
 Dependencies: []

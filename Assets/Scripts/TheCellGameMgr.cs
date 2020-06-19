@@ -1193,75 +1193,18 @@ public class TheCellGameMgr : MonoBehaviour
             MechanismMove mec = h3.GetComponentInChildren<MechanismMove>();
             toto.MechanismNorth = mec;
             */
-            if (current.MechanismNorth.m_modelSet == false)
-            {
-                MechanismMove[] mecs = m_CentreModels.m_GenCellA.GetComponentsInChildren<MechanismMove>();
-                foreach (MechanismMove mec in mecs)
-                {
-                    mec.enabled = true;
-                    switch (mec.cardinal)
-                    {
-                        case CardinalPoint.North:
-                            current.MechanismNorth = mec;
-                            current.MechanismNorth.m_modelSet = true;
-                            break;
-                        case CardinalPoint.East:
-                            current.MechanismEast = mec;
-                            current.MechanismEast.m_modelSet = true;
-                            break;
-                        case CardinalPoint.South:
-                            current.MechanismSouth = mec;
-                            current.MechanismSouth.m_modelSet = true;
-                            break;
-                        case CardinalPoint.West:
-                            current.MechanismWest = mec;
-                            current.MechanismWest.m_modelSet = true;
-                            break;
-                        default:
-                            Debug.LogWarning($"Wrong cardinal {mec.cardinal} for MechanismMove");
-                            break;
-                    }
-                }
-            }
+            ActivateCellMechanism(current, m_CentreModels.m_GenCellA, true);
         }
 
         if (m_CentreModels.m_BlindCell.activeSelf == true)
         {
-            if (current.MechanismNorth.m_modelSet == false)
-            {
-                MechanismMove[] mecs = m_CentreModels.m_BlindCell.GetComponentsInChildren<MechanismMove>();
-                foreach (MechanismMove mec in mecs)
-                {
-                    mec.enabled = true;
-                    switch (mec.cardinal)
-                    {
-                        case CardinalPoint.North:
-                            current.MechanismNorth = mec;
-                            current.MechanismNorth.m_modelSet = true;
-                            break;
-                        case CardinalPoint.East:
-                            current.MechanismEast = mec;
-                            current.MechanismEast.m_modelSet = true;
-                            break;
-                        case CardinalPoint.South:
-                            current.MechanismSouth = mec;
-                            current.MechanismSouth.m_modelSet = true;
-                            break;
-                        case CardinalPoint.West:
-                            current.MechanismWest = mec;
-                            current.MechanismWest.m_modelSet = true;
-                            break;
-                        default:
-                            Debug.LogWarning($"Wrong cardinal {mec.cardinal} for MechanismMove");
-                            break;
-                    }
-                }
-            }
+            ActivateCellMechanism(current, m_CentreModels.m_BlindCell, true);
         }
 
         if (m_CentreModels.m_PlanCell.activeSelf == true)
         {
             UpdatePlanScreen();
+            ActivateCellMechanism(current, m_CentreModels.m_PlanCell, true);
         }
         
         SetupAdjacentLights(null, 0.0f, Color.red);
@@ -2389,6 +2332,47 @@ public class TheCellGameMgr : MonoBehaviour
         {
             Debug.LogError($"Cannot find file {filePath}.");
         }
+    }
+
+
+    // Attach and activate or deactivate moving mechanisms for one active model
+    void ActivateCellMechanism(OneCellClass cell, GameObject model, bool turnOn)
+    {
+        if (cell.MechanismNorth.m_modelSet == false)
+        {
+            MechanismMove[] mecs = model.GetComponentsInChildren<MechanismMove>();
+            foreach (MechanismMove mec in mecs)
+            {
+                //mec.enabled = true;
+                switch (mec.cardinal)
+                {
+                    case CardinalPoint.North:
+                        cell.MechanismNorth = mec;
+                        cell.MechanismNorth.m_modelSet = true;
+                        break;
+                    case CardinalPoint.East:
+                        cell.MechanismEast = mec;
+                        cell.MechanismEast.m_modelSet = true;
+                        break;
+                    case CardinalPoint.South:
+                        cell.MechanismSouth = mec;
+                        cell.MechanismSouth.m_modelSet = true;
+                        break;
+                    case CardinalPoint.West:
+                        cell.MechanismWest = mec;
+                        cell.MechanismWest.m_modelSet = true;
+                        break;
+                    default:
+                        Debug.LogWarning($"Wrong cardinal {mec.cardinal} for MechanismMove");
+                        break;
+                }
+            }
+        }
+
+        cell.MechanismNorth.enabled = turnOn;
+        cell.MechanismEast.enabled = turnOn;
+        cell.MechanismSouth.enabled = turnOn;
+        cell.MechanismWest.enabled = turnOn;
     }
 
 

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 586891611
+CRC: 1891492025
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 185bdede08bddb166b60fc0c9ca1a8fe
+    Hash: f399add3e6bbb0090edffa3ea2b43725
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 63521236b45e6aa38f59ad7ef61a283d
+    Hash: 4daf3d84d813b539abc6bca2802e72aa
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,6 +28,8 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 54
+  Script: {instanceID: 0}
+- Class: 64
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
@@ -113,7 +115,11 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 2609c54f376cffc4da1ab9401cc1a36f, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 95af78ce8729e8944b7bec16c1263894, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 123
   Script: {instanceID: 0}
 - Class: 128
   Script: {instanceID: 0}
@@ -126,6 +132,10 @@ ClassTypes:
 - Class: 157
   Script: {instanceID: 0}
 - Class: 196
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
   Script: {instanceID: 0}
 - Class: 222
   Script: {instanceID: 0}
@@ -148,6 +158,7 @@ Dependencies:
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_mat2
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_wav0
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_fbx0
+- F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_mp30
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_mixer0
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_asset0
 - F:/Henigma/TheCell02/theCell101/OVRAssetBundles/OVRMasterBundle/asset_prefab0

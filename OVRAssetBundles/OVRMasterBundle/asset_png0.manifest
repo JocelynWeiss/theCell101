@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 926129947
+CRC: 2607422715
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5f04bdef85b155fe4ed65e9002886b94
+    Hash: d8ff042fd02247845a7da01e1d6206a5
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2ed26e3ad9f6be9c24f85f5f5b54339d
@@ -13,6 +13,7 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Textures/Start/top_Nrm.png
+- Assets/Textures/Start/FX_teleporteur_emi.png
 - Assets/Textures/Start/rules_col.png
 - Assets/Textures/Start/wall_col.png
 - Assets/Textures/exit/ground_plaque_col.png
@@ -21,7 +22,9 @@ Assets:
 - Assets/Textures/Start/teleporteur_col.png
 - Assets/Textures/Start/lavabo_col.png
 - Assets/Textures/gaz/ground_col.png
+- Assets/FX/Textures/sprite_realSmokeShockwave_a.png
 - Assets/Textures/exit/Exit_panel_Emi.png
+- Assets/Textures/Start/FV_Light_top_teleoporteur.png
 - Assets/Textures/Safe/wall_col.png
 - Assets/Textures/Start/WC_col.png
 - Assets/Textures/Start/chair_col.png
@@ -39,7 +42,4 @@ Assets:
 - Assets/Textures/Start/ventilation_Met.png
 - Assets/Textures/Start/ground_col.png
 - Assets/Textures/Start/Id_Nrm.png
-- Assets/Textures/feu/ground_Nrm.png
-- Assets/Textures/water/hand_scaner_all_water_col.png
-- Assets/Textures/water/lock_wheel_water_Met.png
 Dependencies: []

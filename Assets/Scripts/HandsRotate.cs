@@ -201,6 +201,15 @@ public class HandsRotate : MonoBehaviour
 
             if ((qw.z > 0.6f) || (qw.z < -0.6f))
             {
+                if (qw.z > 0.6f)
+                {
+                    //TheCellGameMgr.instance.MoveColumn(true); // JowTodoNext: column or row and which one
+                }
+                else
+                {
+                    //TheCellGameMgr.instance.MoveColumn(false);
+                }
+
                 m_startTrigger = Time.fixedTime + m_backingTime;
                 m_blockButtonEndTime = m_startTrigger + m_blockButtonDuration;
                 Debug.Log($"{gameObject.name} m_startTrigger= {m_startTrigger} qw= {qw}");

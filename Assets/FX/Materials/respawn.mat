@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fire 1
+  m_Name: respawn
   m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -20,10 +20,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 92cb418c26dec214c8e2179bdd735e38, type: 3}
+        m_Texture: {fileID: 2800000, guid: f7179dc083dba124b918c1f7dd3b2ce1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _InvFade: 2
+    - _InvFade: 2.285
     m_Colors:
-    - _TintColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _TintColor: {r: 0, g: 0.47046375, b: 1, a: 0.5019608}

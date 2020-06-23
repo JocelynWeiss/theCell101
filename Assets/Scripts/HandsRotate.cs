@@ -19,6 +19,8 @@ public class HandsRotate : MonoBehaviour
     float m_forceActive;
     public float m_blockButtonDuration = 2.0f; // Amount of sec to block the button after activation
     float m_blockButtonEndTime; // Time at which to re activate button
+    public bool m_onRow = true;
+    public int m_HeadId = 0;
 
 
     private void Awake()
@@ -87,7 +89,7 @@ public class HandsRotate : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        m_forceActive = 0.0f;
+        //m_forceActive = 0.0f;
         if (Input.GetKey(KeyCode.I))
         {
             m_forceActive = -10.0f;
@@ -203,11 +205,25 @@ public class HandsRotate : MonoBehaviour
             {
                 if (qw.z > 0.6f)
                 {
-                    //TheCellGameMgr.instance.MoveColumn(true); // JowTodoNext: column or row and which one
+                    if (m_onRow)
+                    {
+                        TheCellGameMgr.instance.MoveRow(m_HeadId, false);
+                    }
+                    else
+                    {
+                        TheCellGameMgr.instance.MoveColumn(m_HeadId, true);
+                    }
                 }
                 else
                 {
-                    //TheCellGameMgr.instance.MoveColumn(false);
+                    if (m_onRow)
+                    {
+                        TheCellGameMgr.instance.MoveRow(m_HeadId, true);
+                    }
+                    else
+                    {
+                        TheCellGameMgr.instance.MoveColumn(m_HeadId, false);
+                    }
                 }
 
                 m_startTrigger = Time.fixedTime + m_backingTime;
@@ -220,23 +236,40 @@ public class HandsRotate : MonoBehaviour
                 m_leftCollider = null;
                 m_rightIndexIn = false;
                 m_leftIndexIn = false;
+                m_forceActive = 0.0f;
             }
         }
 
         if (m_Renderer)
         {
-            if (m_rightIndexIn)
+            if ((m_rightIndexIn) || (m_forceActive > 0.0f))
             {
-                m_Renderer.material.SetColor("_BaseColor", new Color(0.9f, 1.0f, 0.9f));
+                m_Renderer.material.EnableKeyword("_EMISSION");
+                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 1.0f);
             }
-            else if (m_leftIndexIn)
+            else if ((m_leftIndexIn) || (m_forceActive < 0.0f))
             {
-                m_Renderer.material.SetColor("_BaseColor", new Color(0.9f, 1.0f, 0.9f));
+                m_Renderer.material.EnableKeyword("_EMISSION");
+                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.5f);
             }
             else
             {
-                m_Renderer.material.SetColor("_BaseColor", Color.white);
+                m_Renderer.material.SetColor("_EmissionColor", Color.black);
             }
         }
+    }
+
+
+    [ContextMenu("ActivatOnRight")]
+    void ActivateOnRight()
+    {
+        this.m_forceActive = -10.0f;
+    }
+
+
+    [ContextMenu("ActivatOnLeft")]
+    void ActivateOnLeft()
+    {
+        this.m_forceActive = 10.0f;
     }
 }

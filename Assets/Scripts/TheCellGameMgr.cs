@@ -244,6 +244,7 @@ public class TheCellGameMgr : MonoBehaviour
         LoadLocalizedText("localized_fr.json");
         GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
         intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
+        m_AllNotes.enabled = false;
 
         //InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
         //InitializeNewGame(System.Environment.TickCount);
@@ -287,6 +288,7 @@ public class TheCellGameMgr : MonoBehaviour
         //GameObject.Find("code_00").gameObject.SetActive(false);
         m_codes.SetActive(false);
         m_PlayaModel.transform.Rotate(Vector3.up, 180.0f);
+        m_PlayaModel.transform.position = new Vector3(0.0f, 0.0f, -1.2f);
 
         // --- Debug init ---
         // Start the game without the loc panel
@@ -365,9 +367,8 @@ public class TheCellGameMgr : MonoBehaviour
         {
             // Load language from file
         }
-        m_AllNotes = GameObject.Find("AllNotes/LocText").gameObject.GetComponent<Canvas>();
 
-        m_PlayaModel.transform.rotation = Quaternion.identity;
+        m_PlayaModel.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
         startingSeed = gameSeed;
         UnityEngine.Random.InitState(startingSeed);
@@ -1234,7 +1235,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Move an entire row to the east or west
-    void MoveRow(int from, bool onEast)
+    public void MoveRow(int from, bool onEast)
     {
         if (from == 10) // same row as the start room = impossible
         {
@@ -1319,7 +1320,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Move an entire column to the north or south
-    void MoveColumn(int from, bool onNorth)
+    public void MoveColumn(int from, bool onNorth)
     {
         if (from == 2) // same column as the start room = impossible
         {

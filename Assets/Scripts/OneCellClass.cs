@@ -179,6 +179,9 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellSubTypes.Fire:
                 TheCellGameMgr.instance.m_FxFlame.SetActive(false);
                 break;
+            case TheCellGameMgr.CellSubTypes.Lasers:
+                TheCellGameMgr.instance.m_FxLasers.SetActive(false);
+                break;
             default:
                 break;
         }
@@ -235,6 +238,7 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellTypes.Start:
                 TheCellGameMgr.instance.m_AllNotes.enabled = true;
+                TheCellGameMgr.instance.m_FxIllusion.SetActive(false);
                 break;
             default:
                 break;
@@ -256,7 +260,10 @@ public class OneCellClass : MonoBehaviour
 
         switch (cellSubType)
         {
-            //case TheCellGameMgr.CellSubTypes.Lasers: //JowTodo: Put back
+            case TheCellGameMgr.CellSubTypes.Lasers:
+                TheCellGameMgr.instance.m_FxLasers.SetActive(true);
+                StartCoroutine(DelayedDeath());
+                break;
             case TheCellGameMgr.CellSubTypes.Fire:
                 TheCellGameMgr.instance.m_FxFlame.SetActive(true);
                 StartCoroutine(DelayedDeath());
@@ -271,6 +278,17 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
+                break;
+            case TheCellGameMgr.CellSubTypes.Vortex:
+                TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
+                TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
+                TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+                StartCoroutine(TeleportToStart());
+                break;
+            case TheCellGameMgr.CellSubTypes.Illusion:
+                TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+                int id = TheCellGameMgr.instance.PickRandomCell().cellId;
+                StartCoroutine(TeleportToCell(2.0f, id));
                 break;
             default:
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
@@ -316,5 +334,13 @@ public class OneCellClass : MonoBehaviour
         Debug.Log($"[OneCellClass] Teleport player back at start. Time = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
         OnPlayerExit();
         TheCellGameMgr.instance.TeleportToStart();
+    }
+
+
+    // Teleport the player in waitSec seconds to the cell id
+    private IEnumerator TeleportToCell(float waitSec, int id)
+    {
+        yield return new WaitForSecondsRealtime(waitSec);
+        TheCellGameMgr.instance.TeleportToCell(id);
     }
 }

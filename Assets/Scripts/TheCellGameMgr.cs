@@ -175,6 +175,9 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_FxSpawner;
     public GameObject m_FxFlame;
     public GameObject m_FxGaz;
+    public GameObject m_FxLasers;
+    public GameObject m_FxIllusion;
+    public GameObject m_FxEmber;
 
     List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
@@ -1511,6 +1514,30 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // Teleport the player from the current cell to the cell Id
+    public void TeleportToCell(int id)
+    {
+        if ((id < 0) || (id >= allCells.Count))
+        {
+            Debug.LogWarning($"Cannot teleport player to cell id {id} !");
+            return;
+        }
+
+        OneCellClass current = GetCurrentCell();
+        current.OnPlayerExit();
+        m_FxIllusion.SetActive(false);
+
+        playerCellId = id;
+
+        current = GetCurrentCell();
+        Debug.Log($"Teleport player to cell {id}: {current.name} {current.cellType} {current.cellSubType}");
+        current.OnPlayerEnter();
+
+        // Update cells models to display
+        UpdateCellsModels();
+    }
+
+
     /// <summary>
     /// Gets the hand id associated with the index finger of the collider passed as parameter, if any
     /// </summary>
@@ -2415,5 +2442,13 @@ public class TheCellGameMgr : MonoBehaviour
             }
             id++;
         }
+    }
+
+
+    // Pick a random room 
+    public OneCellClass PickRandomCell()
+    {
+        int id = instance.m_RandomBis.Next(24);
+        return allCells[id];
     }
 }

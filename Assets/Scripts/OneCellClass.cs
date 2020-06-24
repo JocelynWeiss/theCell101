@@ -157,12 +157,27 @@ public class OneCellClass : MonoBehaviour
         }
         //*/
 
-        TheCellGameMgr.instance.Audio_Bank[2].Play();
-
         switch (cellType)
         {
             case TheCellGameMgr.CellTypes.Start:
                 TheCellGameMgr.instance.m_AllNotes.enabled = false;
+                TheCellGameMgr.instance.m_FxIllusion.SetActive(false);
+
+                if (TheCellGameMgr.instance.Audio_Bank[6].isPlaying == false)
+                {
+                    TheCellGameMgr.instance.Audio_Bank[6].Play();
+                }
+
+                if (TheCellGameMgr.instance.Audio_Bank[8].isPlaying == true)
+                {
+                    TheCellGameMgr.instance.Audio_Bank[8].Stop();
+                }
+
+                if (TheCellGameMgr.instance.Audio_Bank[9].isPlaying == true)
+                {
+                    TheCellGameMgr.instance.Audio_Bank[9].Stop();
+                }
+
                 break;
             default:
                 break;
@@ -238,7 +253,22 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellTypes.Start:
                 TheCellGameMgr.instance.m_AllNotes.enabled = true;
-                TheCellGameMgr.instance.m_FxIllusion.SetActive(false);
+
+                if (TheCellGameMgr.instance.Audio_Bank[6].isPlaying == true)
+                {
+                    TheCellGameMgr.instance.Audio_Bank[6].Stop();
+                }
+
+                if (TheCellGameMgr.instance.Audio_Bank[8].isPlaying == false)
+                {
+                    TheCellGameMgr.instance.Audio_Bank[8].Play();
+                }
+
+                if (TheCellGameMgr.instance.Audio_Bank[9].isPlaying == false)
+                {
+                    TheCellGameMgr.instance.Audio_Bank[9].Play();
+                }
+
                 break;
             default:
                 break;
@@ -283,12 +313,16 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+                TheCellGameMgr.instance.Audio_Bank[13].Play();
                 StartCoroutine(TeleportToStart());
+                TheCellGameMgr.instance.Audio_Bank[2].Play(100000);
                 break;
             case TheCellGameMgr.CellSubTypes.Illusion:
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
                 int id = TheCellGameMgr.instance.PickRandomCell().cellId;
+                TheCellGameMgr.instance.Audio_Bank[13].Play();
                 StartCoroutine(TeleportToCell(2.0f, id));
+                TheCellGameMgr.instance.Audio_Bank[2].Play(100000);
                 break;
             default:
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
@@ -308,6 +342,7 @@ public class OneCellClass : MonoBehaviour
 
         Debug.Log($"[OneCellClass] Kill the player sub {cellSubType}, go back at start. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
 
+        /*
         OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
         OVRScreenFade _screenFadeScript = rig.GetComponent<OVRScreenFade>();
         if (_screenFadeScript != null)
@@ -315,8 +350,10 @@ public class OneCellClass : MonoBehaviour
             _screenFadeScript.fadeColor = new Color(0.5f, 0.0f, 0.0f);
             _screenFadeScript.FadeOut();
         }
+        */
 
         StartCoroutine(TeleportToStart());
+        TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
     }
 
 
@@ -324,12 +361,14 @@ public class OneCellClass : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2.0f);
 
+        /*
         OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
         OVRScreenFade _screenFadeScript = rig.GetComponent<OVRScreenFade>();
         if (_screenFadeScript != null)
         {
             _screenFadeScript.OnLevelFinishedLoading(0);
         }
+        */
 
         Debug.Log($"[OneCellClass] Teleport player back at start. Time = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
         OnPlayerExit();

@@ -166,8 +166,14 @@ public class TheCellGameMgr : MonoBehaviour
     //3 Element placement
     //4 Hand scanner fail
     //5 Open hatch
-    //6 Genaral ambiance
+    //6 General ambiance
     //7 Beach ambiance
+    //8 =9 start room amb1
+    //9 =9a start room amb2
+    //10= 10 On player exit room
+    //11= 12 Hand scanner
+    //12= 15 Rifle Jam
+    //13= 17 Start teleport
     [HideInInspector] public AudioSource[] Audio_Bank;
 
     public GameObject m_FxTopSteam;
@@ -289,6 +295,7 @@ public class TheCellGameMgr : MonoBehaviour
         m_codes.SetActive(false);
         m_PlayaModel.transform.Rotate(Vector3.up, 180.0f);
         m_PlayaModel.transform.position = new Vector3(0.0f, 0.0f, -1.2f);
+        Audio_Bank[7].Play();
 
         // --- Debug init ---
         // Start the game without the loc panel
@@ -635,11 +642,6 @@ public class TheCellGameMgr : MonoBehaviour
         if (Audio_Bank[7].isPlaying)
         {
             Audio_Bank[7].Stop();
-        }
-
-        if (Audio_Bank[6].isPlaying == false)
-        {
-            Audio_Bank[6].Play();
         }
 
         playerSphere.SetActive(true);
@@ -1239,7 +1241,7 @@ public class TheCellGameMgr : MonoBehaviour
     {
         if (from == 10) // same row as the start room = impossible
         {
-            Audio_Bank[1].Play();
+            Audio_Bank[12].Play();
             return;
         }
 
@@ -1324,7 +1326,7 @@ public class TheCellGameMgr : MonoBehaviour
     {
         if (from == 2) // same column as the start room = impossible
         {
-            Audio_Bank[1].Play();
+            Audio_Bank[12].Play();
             return;
         }
 

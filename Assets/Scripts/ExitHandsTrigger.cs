@@ -82,6 +82,7 @@ public class ExitHandsTrigger : MonoBehaviour
         // Do whatever you need to do when trap is opening
         Debug.Log($"Exit trap is open now = {transform.position} at {Time.fixedTime}");
 
+        /*
         OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
         OVRScreenFade _screenFadeScript = rig.GetComponent<OVRScreenFade>();
         if (_screenFadeScript != null)
@@ -89,6 +90,7 @@ public class ExitHandsTrigger : MonoBehaviour
             //_screenFadeScript.SetFadeLevel(fadeLevel * MaxFade);
             _screenFadeScript.FadeOut();
         }
+        */
 
         return true;
     }

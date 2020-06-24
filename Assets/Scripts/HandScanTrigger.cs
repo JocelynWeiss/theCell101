@@ -76,8 +76,11 @@ public class HandScanTrigger : MonoBehaviour
     }
 
 
+    [ContextMenu("TriggerAction")]
     bool TriggerAction()
     {
+        AudioSource.PlayClipAtPoint(TheCellGameMgr.instance.Audio_Bank[11].clip, transform.position);
+
         TheCellGameMgr.instance.ScanTriggerAction(m_cardinal);
         return true;
     }

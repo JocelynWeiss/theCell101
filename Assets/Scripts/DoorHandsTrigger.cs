@@ -77,6 +77,7 @@ public class DoorHandsTrigger : MonoBehaviour
                 if (m_goingOutStartTime == 0.0f)
                 {
                     m_goingOutStartTime = Time.fixedTime;
+                    TheCellGameMgr.instance.Audio_Bank[10].Play();
                 }
             }
             else if (m_isIndexStaying[0] == true)

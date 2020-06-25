@@ -211,6 +211,8 @@ public class OneCellClass : MonoBehaviour
             enterTime = Time.fixedTime;
         }
 
+        TheCellGameMgr.instance.m_ViewLeft = 2;
+
         int idOnChess = TheCellGameMgr.instance.playerCellId;
         if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
@@ -304,6 +306,7 @@ public class OneCellClass : MonoBehaviour
                 StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Blind:
+                TheCellGameMgr.instance.m_ViewLeft = 0;
                 TheCellGameMgr.instance.m_StopHandScaner.SetActive(true);
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
@@ -324,6 +327,12 @@ public class OneCellClass : MonoBehaviour
                 StartCoroutine(TeleportToCell(2.0f, id));
                 TheCellGameMgr.instance.Audio_Bank[2].Play(100000);
                 break;
+            case TheCellGameMgr.CellSubTypes.OneLook:
+                TheCellGameMgr.instance.m_ViewLeft = 1;
+                TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
+                TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
+                TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
+                break;
             default:
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
@@ -341,6 +350,7 @@ public class OneCellClass : MonoBehaviour
         yield return new WaitForSecondsRealtime(3.0f);
 
         Debug.Log($"[OneCellClass] Kill the player sub {cellSubType}, go back at start. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+        TheCellGameMgr.instance.IncreaseDeath();
 
         /*
         OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();

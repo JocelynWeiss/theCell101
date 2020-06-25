@@ -38,6 +38,7 @@ public class CellsModels : MonoBehaviour
     [ViewOnly] public Light m_light_S;
     [ViewOnly] public Light m_light_W;
     [ViewOnly] public CellsModelsType m_CurrentType = CellsModelsType.None;
+    [ViewOnly] public HandScanTrigger[] m_Scaners; // A list of scaners in the current model, actualized each move
 
 
     // ---
@@ -165,45 +166,82 @@ public class CellsModels : MonoBehaviour
         if (m_PlanCell)
             m_PlanCell.SetActive(false);
 
+        GameObject current = null;
         switch (newType)
         {
             case CellsModelsType.None:
                 break;
             case CellsModelsType.Entry:
                 m_EntryCell.SetActive(true);
+                current = m_EntryCell;
                 break;
             case CellsModelsType.GenA:
                 m_GenCellA.SetActive(true);
+                current = m_GenCellA;
                 break;
             case CellsModelsType.GenB:
                 m_GenCellB.SetActive(true);
+                current = m_GenCellB;
                 break;
             case CellsModelsType.Exit:
                 m_ExitCell.SetActive(true);
+                current = m_ExitCell;
                 break;
             case CellsModelsType.BlindM:
                 m_BlindCell.SetActive(true);
+                current = m_BlindCell;
                 break;
             case CellsModelsType.IllusionM:
                 m_IllusionCell.SetActive(true);
+                current = m_IllusionCell;
                 break;
             case CellsModelsType.WaterM:
                 m_WaterCell.SetActive(true);
+                current = m_WaterCell;
                 break;
             case CellsModelsType.LaserM:
                 m_LaserCell.SetActive(true);
+                current = m_LaserCell;
                 break;
             case CellsModelsType.GazM:
                 m_GazCell.SetActive(true);
+                current = m_GazCell;
                 break;
             case CellsModelsType.PlanM:
                 m_PlanCell.SetActive(true);
+                current = m_PlanCell;
                 break;
             default:
                 Debug.LogWarning($"Wrong model type in SetActiveModel: {newType}");
                 break;
         }
 
+        if (current != null)
+        {
+            m_Scaners = current.GetComponentsInChildren<HandScanTrigger>();
+            LitupScanner(true);
+        }
+
         m_CurrentType = newType;
+    }
+
+
+    // Change the scaner's colour on/off
+    public void LitupScanner(bool turnOn)
+    {
+        Color col = Color.red;
+        if (turnOn)
+        {
+            col = Color.green * 2.0f;
+        }
+
+        foreach (HandScanTrigger scaner in m_Scaners)
+        {
+            Renderer rend = scaner.transform.GetComponent<Renderer>();
+            if (rend)
+            {
+                rend.material.SetColor("_EmissionColor", col);
+            }
+        }
     }
 }

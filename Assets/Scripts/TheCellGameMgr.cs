@@ -107,7 +107,8 @@ public class TheCellGameMgr : MonoBehaviour
 
     // Current Game state
     public static GameStates gameState { get; private set; }
-
+    [ViewOnly] public int m_DeathCount = 0;
+    [ViewOnly] public int m_ViewLeft = 0; // Number of possible use of hand scaner per cell
 
     // Current Game language
     [ViewOnly] public static GameLanguages m_Language = GameLanguages.Undefined;
@@ -1577,6 +1578,14 @@ public class TheCellGameMgr : MonoBehaviour
     // Open the shutters to look through cells
     public void ScanTriggerAction(CardinalPoint point)
     {
+        if (m_ViewLeft <= 0)
+        {
+            AudioSource.PlayClipAtPoint(Audio_Bank[1].clip, transform.position);
+            return;
+        }
+
+        m_ViewLeft--;
+
         switch (point)
         {
             case CardinalPoint.North:
@@ -1986,6 +1995,11 @@ public class TheCellGameMgr : MonoBehaviour
         Audio_OpenShutters.transform.localPosition = Vector3.zero;
         Audio_OpenShutters.Play();
         //--- Snd ---
+
+        if (m_ViewLeft <= 0)
+        {
+            m_CentreModels.LitupScanner(false);
+        }
 
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
@@ -2453,5 +2467,32 @@ public class TheCellGameMgr : MonoBehaviour
     {
         int id = instance.m_RandomBis.Next(24);
         return allCells[id];
+    }
+
+
+    // Increase the number of death count
+    public void IncreaseDeath()
+    {
+        int newDeathCount = m_DeathCount + 1;
+        GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
+        switch (newDeathCount)
+        {
+            case 1:
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["note_1"];
+                break;
+            case 2:
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["note_2"];
+                break;
+            case 3:
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["note_3"];
+                break;
+            case 4:
+                break;
+            default:
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["help_1"];
+                break;
+        }
+
+        m_DeathCount = newDeathCount;
     }
 }

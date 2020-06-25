@@ -7,7 +7,12 @@
 {"key":"note_1","value":"<b>Title if needed 1</b>\nWhatever you have to say!"},
 {"key":"note_2","value":"<b>Title if needed 2</b>\nThe cube is 5x5."},
 {"key":"note_3","value":"<b>Title if needed 3</b>\nWhatever you have to say!"},
-{"key":"help_1","value":"Sorry, we are all busy at the moment!"}
+{"key":"help_1","value":"Sorry, we are all busy at the moment!"},
+{"key":"hintDeath_1","value":"You are enclosed in a large cube itself containing 5 cells by 5."},
+{"key":"hintDeath_2","value":"Beware of the symbols under each door."},
+{"key":"hintDeath_3","value":"The cell lines are mobile."},
+{"key":"hintDeath_4","value":"The starting cell never moves."},
+{"key":"hintDeath_5","value":"To exit, enter the 'safe' combination of doors."}
 
 ]
 }

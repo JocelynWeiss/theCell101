@@ -245,6 +245,7 @@ public class CellsModels : MonoBehaviour
 
         foreach (HandScanTrigger scaner in m_Scaners)
         {
+            scaner.SwitchOnOff(turnOn);
             Renderer rend = scaner.transform.GetComponent<Renderer>();
             if (rend)
             {
@@ -255,7 +256,7 @@ public class CellsModels : MonoBehaviour
 
 
     // Change the scaner's colour on/off
-    public void LitupScanner(bool turnOn, TheCellGameMgr.CardinalPoint cardinal)
+    public void SwitchOffScanner(bool turnOn, TheCellGameMgr.CardinalPoint cardinal)
     {
         Color col = Color.red;
         if (turnOn)
@@ -267,6 +268,7 @@ public class CellsModels : MonoBehaviour
         {
             if (scaner.m_cardinal == cardinal)
             {
+                scaner.SwitchOnOff(turnOn);
                 Renderer rend = scaner.transform.GetComponent<Renderer>();
                 if (rend)
                 {

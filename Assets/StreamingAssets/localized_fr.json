@@ -7,7 +7,12 @@
 {"key":"note_1","value":"<b>Titre 1 si besoin</b>\nLe corps du message 1"},
 {"key":"note_2","value":"<b>Titre 2 si besoin</b>\nLe cube fait 5x5!"},
 {"key":"note_3","value":"<b>Titre 3 si besoin</b>\nLe corps du message 3"},
-{"key":"help_1","value":"Désolé, il n'y a aucune aide pour le moment!"}
+{"key":"help_1","value":"Désolé, il n'y a aucune aide pour le moment!"},
+{"key":"hintDeath_1","value":"Vous êtes enfermé dans un grand cube contenant lui-même 5 cellules sur 5."},
+{"key":"hintDeath_2","value":"Prenez garde aux symboles sous chaque porte."},
+{"key":"hintDeath_3","value":"Les lignées de cellules sont mobiles."},
+{"key":"hintDeath_4","value":"La cellule de départ ne bouge jamais."},
+{"key":"hintDeath_5","value":"Pour sortir, rentrez la combinaison 'safe' des portes."}
 
 ]
 }

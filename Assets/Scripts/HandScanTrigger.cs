@@ -10,6 +10,7 @@ public class HandScanTrigger : MonoBehaviour
     bool m_RightPinkyIn = false;
     bool m_leftIndexIn = false;
     bool m_leftPinkyIn = false;
+    public bool m_IsOn = true;
 
 
     // ---
@@ -79,7 +80,7 @@ public class HandScanTrigger : MonoBehaviour
     [ContextMenu("TriggerAction")]
     bool TriggerAction()
     {
-        if (TheCellGameMgr.instance.m_ViewLeft > 0)
+        if ((TheCellGameMgr.instance.m_ViewLeft > 0) && (m_IsOn))
         {
             AudioSource.PlayClipAtPoint(TheCellGameMgr.instance.Audio_Bank[11].clip, transform.position);
         }
@@ -92,5 +93,16 @@ public class HandScanTrigger : MonoBehaviour
         TheCellGameMgr.instance.ScanTriggerAction(m_cardinal);
 
         return true;
+    }
+
+
+    // Switch it on or off
+    public void SwitchOnOff(bool isOn)
+    {
+        if (isOn == m_IsOn)
+        {
+            return;
+        }
+        m_IsOn = isOn;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class TheCellGameMgr : MonoBehaviour
 {
@@ -333,7 +334,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Return the cell the player is in
-    OneCellClass GetCurrentCell()
+    public OneCellClass GetCurrentCell()
     {
         OneCellClass current = allCells[lookupTab[playerCellId]];
         return current;
@@ -1114,7 +1115,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.North, CellTypes.Undefined);
-            m_CentreModels.LitupScanner(false, CardinalPoint.North);
+            m_CentreModels.SwitchOffScanner(false, CardinalPoint.North);
         }
 
         cell = GetEast(playerCellId);
@@ -1127,7 +1128,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_EastModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.East, CellTypes.Undefined);
-            m_CentreModels.LitupScanner(false, CardinalPoint.East);
+            m_CentreModels.SwitchOffScanner(false, CardinalPoint.East);
         }
 
         cell = GetSouth(playerCellId);
@@ -1140,7 +1141,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
-            m_CentreModels.LitupScanner(false, CardinalPoint.South);
+            m_CentreModels.SwitchOffScanner(false, CardinalPoint.South);
         }
 
         cell = GetWest(playerCellId);
@@ -1153,7 +1154,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_WestModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.West, CellTypes.Undefined);
-            m_CentreModels.LitupScanner(false, CardinalPoint.West);
+            m_CentreModels.SwitchOffScanner(false, CardinalPoint.West);
         }
 
         if (curType == CellTypes.Exit)
@@ -2418,9 +2419,16 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         cell.MechanismNorth.enabled = turnOn;
+        cell.MechanismNorth.m_IsOn = turnOn;
+        
         cell.MechanismEast.enabled = turnOn;
+        cell.MechanismEast.m_IsOn = turnOn;
+
         cell.MechanismSouth.enabled = turnOn;
+        cell.MechanismSouth.m_IsOn = turnOn;
+
         cell.MechanismWest.enabled = turnOn;
+        cell.MechanismWest.m_IsOn = turnOn;
     }
 
 
@@ -2482,15 +2490,19 @@ public class TheCellGameMgr : MonoBehaviour
         switch (newDeathCount)
         {
             case 1:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["note_1"];
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_1"];
                 break;
             case 2:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["note_2"];
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_2"];
                 break;
             case 3:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["note_3"];
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_3"];
                 break;
             case 4:
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_4"];
+                break;
+            case 5:
+                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_5"];
                 break;
             default:
                 intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["help_1"];
@@ -2498,5 +2510,23 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         m_DeathCount = newDeathCount;
+    }
+
+
+    public CardinalPoint GetOppositeCardinalPoint(CardinalPoint cardinal)
+    {
+        switch (cardinal)
+        {
+            case CardinalPoint.North:
+                return CardinalPoint.South;
+            case CardinalPoint.East:
+                return CardinalPoint.West;
+            case CardinalPoint.South:
+                return CardinalPoint.North;
+            case CardinalPoint.West:
+                return CardinalPoint.East;
+        }
+
+        return CardinalPoint.North;
     }
 }

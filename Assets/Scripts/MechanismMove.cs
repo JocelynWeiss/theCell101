@@ -13,6 +13,7 @@ public class MechanismMove : MonoBehaviour
     private bool m_actionTriggered = false;
     bool m_rightIndexIn = false;
     bool m_leftIndexIn = false;
+    public bool m_IsOn = true;
 
 
     private void Awake()
@@ -111,10 +112,10 @@ public class MechanismMove : MonoBehaviour
             }
             //--- Snd ---
 
-            float ex = transform.rotation.eulerAngles.x;
-            if ((ex > 1.0f) && (ex < 280.0f))
+            float ex = transform.localRotation.x;
+            if (ex < -0.65f)
             {
-                if (m_actionTriggered)
+                if ((m_actionTriggered) || (m_IsOn == false))
                 {
                     return;
                 }
@@ -129,7 +130,7 @@ public class MechanismMove : MonoBehaviour
                 }
             }
 
-            //Debug.Log($"==============-> {transform.name} {transform.rotation.eulerAngles}");
+            //Debug.Log($"==============-> {transform.name}: {m_IsOn} {transform.rotation.eulerAngles}   {transform.localRotation}");
 
             transform.RotateAround(transform.position, transform.right, Time.deltaTime * -90.0f);
         }
@@ -167,19 +168,30 @@ public class MechanismMove : MonoBehaviour
 
     public bool TriggerAction()
     {
+        if (m_IsOn == false)
+        {
+            TheCellGameMgr.instance.Audio_Bank[15].Play();
+            return false;
+        }
+
+        OneCellClass current = TheCellGameMgr.instance.GetCurrentCell();
         switch (cardinal)
         {
             case TheCellGameMgr.CardinalPoint.North:
                 TheCellGameMgr.instance.MoveColumn(true);
+                current.MechanismSouth.m_IsOn = false;
                 break;
             case TheCellGameMgr.CardinalPoint.East:
                 TheCellGameMgr.instance.MoveRow(true);
+                current.MechanismWest.m_IsOn = false;
                 break;
             case TheCellGameMgr.CardinalPoint.South:
                 TheCellGameMgr.instance.MoveColumn(false);
+                current.MechanismNorth.m_IsOn = false;
                 break;
             case TheCellGameMgr.CardinalPoint.West:
                 TheCellGameMgr.instance.MoveRow(false);
+                current.MechanismEast.m_IsOn = false;
                 break;
         }
 

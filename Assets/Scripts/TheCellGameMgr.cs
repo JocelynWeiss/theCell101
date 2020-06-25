@@ -1114,6 +1114,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.North, CellTypes.Undefined);
+            m_CentreModels.LitupScanner(false, CardinalPoint.North);
         }
 
         cell = GetEast(playerCellId);
@@ -1126,6 +1127,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_EastModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.East, CellTypes.Undefined);
+            m_CentreModels.LitupScanner(false, CardinalPoint.East);
         }
 
         cell = GetSouth(playerCellId);
@@ -1138,6 +1140,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
+            m_CentreModels.LitupScanner(false, CardinalPoint.South);
         }
 
         cell = GetWest(playerCellId);
@@ -1150,6 +1153,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_WestModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.West, CellTypes.Undefined);
+            m_CentreModels.LitupScanner(false, CardinalPoint.West);
         }
 
         if (curType == CellTypes.Exit)

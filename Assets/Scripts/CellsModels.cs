@@ -143,7 +143,15 @@ public class CellsModels : MonoBehaviour
     void SetActiveModel(CellsModelsType newType)
     {
         if (m_CurrentType == newType)
+        {
+            GameObject cur = GetActiveModel();
+            if (cur != null)
+            {
+                m_Scaners = cur.GetComponentsInChildren<HandScanTrigger>();
+                LitupScanner(true);
+            }
             return;
+        }
 
         if (m_EntryCell)
             m_EntryCell.SetActive(false);
@@ -241,6 +249,29 @@ public class CellsModels : MonoBehaviour
             if (rend)
             {
                 rend.material.SetColor("_EmissionColor", col);
+            }
+        }
+    }
+
+
+    // Change the scaner's colour on/off
+    public void LitupScanner(bool turnOn, TheCellGameMgr.CardinalPoint cardinal)
+    {
+        Color col = Color.red;
+        if (turnOn)
+        {
+            col = Color.green * 2.0f;
+        }
+
+        foreach (HandScanTrigger scaner in m_Scaners)
+        {
+            if (scaner.m_cardinal == cardinal)
+            {
+                Renderer rend = scaner.transform.GetComponent<Renderer>();
+                if (rend)
+                {
+                    rend.material.SetColor("_EmissionColor", col);
+                }
             }
         }
     }

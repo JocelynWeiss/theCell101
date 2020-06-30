@@ -39,6 +39,7 @@ public class Flags : MonoBehaviour
             {
                 m_IsSelected = true;
                 m_Renderer.material.SetColor("_BaseColor", m_ColSelected);
+                TheCellGameMgr.instance.Audio_Bank[3].Play();
             }
         }
         else

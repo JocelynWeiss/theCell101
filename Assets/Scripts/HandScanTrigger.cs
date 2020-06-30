@@ -80,9 +80,17 @@ public class HandScanTrigger : MonoBehaviour
     [ContextMenu("TriggerAction")]
     bool TriggerAction()
     {
+        m_rightIndexIn = false;
+        m_RightPinkyIn = false;
+        m_leftIndexIn = false;
+        m_leftPinkyIn = false;
+
         if ((TheCellGameMgr.instance.m_ViewLeft > 0) && (m_IsOn))
         {
-            AudioSource.PlayClipAtPoint(TheCellGameMgr.instance.Audio_Bank[11].clip, transform.position);
+            if (TheCellGameMgr.instance.Audio_Bank[11].isPlaying == false)
+            {
+                AudioSource.PlayClipAtPoint(TheCellGameMgr.instance.Audio_Bank[11].clip, transform.position);
+            }
         }
         else
         {

@@ -54,6 +54,7 @@ public class StartButtonScript : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.isKinematic = false; // No force applied
         rb.useGravity = true;
+        TheCellGameMgr.instance.Audio_Bank[2].Play();
 
         yield return new WaitForSecondsRealtime(2.0f);
         m_IsReady = true;

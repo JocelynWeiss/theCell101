@@ -176,6 +176,7 @@ public class TheCellGameMgr : MonoBehaviour
     //11= 12 Hand scanner
     //12= 15 Rifle Jam
     //13= 17 Start teleport
+    //14= 16 Line moves
     [HideInInspector] public AudioSource[] Audio_Bank;
 
     public GameObject m_FxTopSteam;
@@ -378,6 +379,7 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         m_PlayaModel.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        m_PlayaModel.SetActive(false);
 
         startingSeed = gameSeed;
         UnityEngine.Random.InitState(startingSeed);
@@ -431,6 +433,7 @@ public class TheCellGameMgr : MonoBehaviour
         // Init a board
         bool exitChosen = false;
         int exitCount = 0;
+        int safeNb = 0;
 
         if (allCells == null)
         {
@@ -499,7 +502,7 @@ public class TheCellGameMgr : MonoBehaviour
                     }
                 }
 
-                cell.InitCell(CellTypes.Safe, 0, aRndNb);
+                cell.InitCell(CellTypes.Safe, safeNb++, aRndNb);
             }
         }
 
@@ -1257,6 +1260,8 @@ public class TheCellGameMgr : MonoBehaviour
             return;
         }
 
+        Audio_Bank[14].Play();
+
         int currentCellId = lookupTab[playerCellId];
         List<int> row = new List<int>(5);
         for (int i=0; i < 5; ++i)
@@ -1341,6 +1346,8 @@ public class TheCellGameMgr : MonoBehaviour
             Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] MoveColumn should start from the beginning of a column not {from}.");
             return;
         }
+
+        Audio_Bank[14].Play();
 
         int currentCellId = lookupTab[playerCellId];
         List<int> column = new List<int>(5);
@@ -2528,5 +2535,21 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         return CardinalPoint.North;
+    }
+
+
+    // Return the tunnel linked to id
+    public int GetTunnelExitId(int startId)
+    {
+        foreach(OneCellClass cell in allCells)
+        {
+            if (cell.cellSubType == CellSubTypes.Tunnel)
+            {
+                if (cell.cellId != startId)
+                    return cell.cellId;
+            }
+        }
+
+        return startId;
     }
 }

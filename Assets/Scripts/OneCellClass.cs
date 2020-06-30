@@ -20,6 +20,7 @@ public class OneCellClass : MonoBehaviour
     public MechanismMove MechanismEast;
     public MechanismMove MechanismSouth;
     public MechanismMove MechanismWest;
+    [ViewOnly] public bool m_TunnelEnabled = false; // JowNext...
 
     public Vector3 m_MiniGameTranslation;
 
@@ -63,7 +64,10 @@ public class OneCellClass : MonoBehaviour
                     cellSubType = TheCellGameMgr.CellSubTypes.Screen;
                 break;
             default:
-                cellSubType = TheCellGameMgr.CellSubTypes.Empty;
+                if ((subId == 1) || (subId == 2))
+                    cellSubType = TheCellGameMgr.CellSubTypes.Tunnel;
+                else
+                    cellSubType = TheCellGameMgr.CellSubTypes.Empty;
                 break;
         }
 
@@ -104,6 +108,11 @@ public class OneCellClass : MonoBehaviour
                 ret = Color.cyan;
                 break;
             case TheCellGameMgr.CellTypes.Safe:
+                if (cellSubType == TheCellGameMgr.CellSubTypes.Tunnel)
+                {
+                    ret = Color.magenta;
+                    break;
+                }
                 ret = Color.blue;
                 break;
             case TheCellGameMgr.CellTypes.Effect:
@@ -179,6 +188,9 @@ public class OneCellClass : MonoBehaviour
                 }
 
                 break;
+            case TheCellGameMgr.CellTypes.Exit:
+                TheCellGameMgr.instance.m_PlayaModel.SetActive(false);
+                break;
             default:
                 break;
         }
@@ -252,6 +264,7 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellTypes.Exit:
                 SouthDoor.SetActive(false);
                 //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
+                TheCellGameMgr.instance.m_PlayaModel.SetActive(true);
                 break;
             case TheCellGameMgr.CellTypes.Start:
                 TheCellGameMgr.instance.m_AllNotes.enabled = true;
@@ -333,6 +346,15 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
                 break;
+            case TheCellGameMgr.CellSubTypes.Tunnel:
+                TheCellGameMgr.instance.m_ViewLeft = 0;
+                TheCellGameMgr.instance.m_StopHandScaner.SetActive(true);
+                TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
+                TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
+                TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
+                TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+                StartCoroutine(ActivateTunnel(3.0f));
+                break;
             default:
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
@@ -389,6 +411,16 @@ public class OneCellClass : MonoBehaviour
     // Teleport the player in waitSec seconds to the cell id
     private IEnumerator TeleportToCell(float waitSec, int id)
     {
+        yield return new WaitForSecondsRealtime(waitSec);
+        TheCellGameMgr.instance.TeleportToCell(id);
+    }
+
+
+    // Start the tunnel effect so the player is teleported to the other tunnel cell
+    private IEnumerator ActivateTunnel(float waitSec)
+    {
+        int id = TheCellGameMgr.instance.GetTunnelExitId(cellId);
+
         yield return new WaitForSecondsRealtime(waitSec);
         TheCellGameMgr.instance.TeleportToCell(id);
     }

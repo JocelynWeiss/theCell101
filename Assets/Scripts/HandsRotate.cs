@@ -245,12 +245,12 @@ public class HandsRotate : MonoBehaviour
             if ((m_rightIndexIn) || (m_forceActive > 0.0f))
             {
                 m_Renderer.material.EnableKeyword("_EMISSION");
-                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 1.0f);
+                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.5f);
             }
             else if ((m_leftIndexIn) || (m_forceActive < 0.0f))
             {
                 m_Renderer.material.EnableKeyword("_EMISSION");
-                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.5f);
+                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.25f);
             }
             else
             {

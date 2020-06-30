@@ -115,7 +115,7 @@ public class MechanismMove : MonoBehaviour
             float ex = transform.localRotation.x;
             if (ex < -0.65f)
             {
-                if ((m_actionTriggered) || (m_IsOn == false))
+                if (m_actionTriggered)
                 {
                     return;
                 }
@@ -170,8 +170,8 @@ public class MechanismMove : MonoBehaviour
     {
         if (m_IsOn == false)
         {
-            TheCellGameMgr.instance.Audio_Bank[15].Play();
-            return false;
+            TheCellGameMgr.instance.Audio_Bank[12].Play();
+            return true;
         }
 
         OneCellClass current = TheCellGameMgr.instance.GetCurrentCell();

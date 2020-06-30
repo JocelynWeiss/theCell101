@@ -177,6 +177,7 @@ public class TheCellGameMgr : MonoBehaviour
     //12= 15 Rifle Jam
     //13= 17 Start teleport
     //14= 16 Line moves
+    //15= Female voice 1
     [HideInInspector] public AudioSource[] Audio_Bank;
 
     public GameObject m_FxTopSteam;
@@ -331,6 +332,34 @@ public class TheCellGameMgr : MonoBehaviour
     public float GetGameStartTime()
     {
         return startingTime;
+    }
+
+
+    // Get cell by its id
+    public OneCellClass GetCellById(int uid)
+    {
+        return allCells[uid];
+    }
+
+
+    // Get cell pos on the chessboard by its id
+    public int GetCellPosById(int uid)
+    {
+        foreach (int pos in lookupTab)
+        {
+            if (pos == uid)
+            {
+                return lookupTab.IndexOf(pos);
+            }
+        }
+        return 0;
+    }
+
+
+    // Get cell by its position on the chessboard
+    public OneCellClass GetCellByPos(int pos)
+    {
+        return allCells[lookupTab[pos]];
     }
 
 
@@ -1543,10 +1572,11 @@ public class TheCellGameMgr : MonoBehaviour
         current.OnPlayerExit();
         m_FxIllusion.SetActive(false);
 
-        playerCellId = id;
+        int pos = GetCellPosById(id);
+        playerCellId = pos;
 
         current = GetCurrentCell();
-        Debug.Log($"Teleport player to cell {id}: {current.name} {current.cellType} {current.cellSubType}");
+        Debug.Log($"Teleport player to cell {id}: {current.name} {current.cellType} {current.cellSubType} in pos {pos}");
         current.OnPlayerEnter();
 
         // Update cells models to display
@@ -2551,5 +2581,13 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         return startId;
+    }
+
+    
+    // Play a clip in sec seconds
+    public IEnumerator PlayDelayedClip(float sec, int clipIndex)
+    {
+        yield return new WaitForSecondsRealtime(sec);
+        Audio_Bank[clipIndex].Play();
     }
 }

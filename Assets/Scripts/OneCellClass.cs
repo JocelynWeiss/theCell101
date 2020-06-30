@@ -20,7 +20,7 @@ public class OneCellClass : MonoBehaviour
     public MechanismMove MechanismEast;
     public MechanismMove MechanismSouth;
     public MechanismMove MechanismWest;
-    [ViewOnly] public bool m_TunnelEnabled = false; // JowNext...
+    [ViewOnly] public bool m_TunnelEnabled = false;
 
     public Vector3 m_MiniGameTranslation;
 
@@ -65,7 +65,10 @@ public class OneCellClass : MonoBehaviour
                 break;
             default:
                 if ((subId == 1) || (subId == 2))
+                {
                     cellSubType = TheCellGameMgr.CellSubTypes.Tunnel;
+                    m_TunnelEnabled = true;
+                }
                 else
                     cellSubType = TheCellGameMgr.CellSubTypes.Empty;
                 break;
@@ -208,6 +211,9 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Lasers:
                 TheCellGameMgr.instance.m_FxLasers.SetActive(false);
+                break;
+            case TheCellGameMgr.CellSubTypes.Tunnel:
+                m_TunnelEnabled = true; // Activate tunnel again
                 break;
             default:
                 break;
@@ -353,7 +359,10 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
-                StartCoroutine(ActivateTunnel(3.0f));
+                if (m_TunnelEnabled)
+                {
+                    StartCoroutine(ActivateTunnel(3.0f));
+                }
                 break;
             default:
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
@@ -383,6 +392,8 @@ public class OneCellClass : MonoBehaviour
             _screenFadeScript.FadeOut();
         }
         */
+
+        StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
 
         StartCoroutine(TeleportToStart());
         TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
@@ -420,6 +431,17 @@ public class OneCellClass : MonoBehaviour
     private IEnumerator ActivateTunnel(float waitSec)
     {
         int id = TheCellGameMgr.instance.GetTunnelExitId(cellId);
+
+        // Deactivate the tunnel at tp point to avoid feedback
+        TheCellGameMgr.instance.allCells[id].m_TunnelEnabled = false;
+
+        /*
+        int pos = TheCellGameMgr.instance.GetCellPosById(cellId);
+        Debug.Log($"_____________{name} UID:{cellId} in pos {pos}");
+        OneCellClass dest = TheCellGameMgr.instance.GetCellById(id);
+        pos = TheCellGameMgr.instance.GetCellPosById(id);
+        Debug.Log($"___going to {dest.name} UID:{dest.cellId} in pos {pos}");
+        */
 
         yield return new WaitForSecondsRealtime(waitSec);
         TheCellGameMgr.instance.TeleportToCell(id);

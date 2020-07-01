@@ -180,6 +180,8 @@ public class TheCellGameMgr : MonoBehaviour
     //15= Female voice 1
     [HideInInspector] public AudioSource[] Audio_Bank;
 
+    public bool m_ShowMiniMap = true;
+
     public GameObject m_FxTopSteam;
     public GameObject m_FxTeleporter;
     public GameObject m_FxSpawner;
@@ -668,6 +670,11 @@ public class TheCellGameMgr : MonoBehaviour
         SetupLights(m_WestModels, light_range, light_colour);
         //--- set lighting ---
 
+        // Activate the minimap in english only
+        if (m_Language == GameLanguages.English)
+            m_ShowMiniMap = true;
+        ShowMiniMap(m_ShowMiniMap);
+
         UpdateCellsModels();
         gameState = GameStates.Running;
         OneCellClass current = GetCurrentCell();
@@ -678,7 +685,7 @@ public class TheCellGameMgr : MonoBehaviour
             Audio_Bank[7].Stop();
         }
 
-        playerSphere.SetActive(true);
+        // Flickering lights
 		InvokeRepeating("CheckLightState", 3.0f, 2.0f);											   
     }
 
@@ -2589,5 +2596,17 @@ public class TheCellGameMgr : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(sec);
         Audio_Bank[clipIndex].Play();
+    }
+
+
+    // Hide or show mini map cheat
+    void ShowMiniMap(bool show)
+    {
+        playerSphere.SetActive(show);
+
+        foreach (OneCellClass cell in allCells)
+        {
+            cell.SmallCell.SetActive(show);
+        }
     }
 }

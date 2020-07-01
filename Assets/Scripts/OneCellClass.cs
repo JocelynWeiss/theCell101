@@ -214,6 +214,7 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Tunnel:
                 m_TunnelEnabled = true; // Activate tunnel again
+                TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
                 break;
             default:
                 break;

@@ -925,7 +925,7 @@ public class TheCellGameMgr : MonoBehaviour
             }
             */
             m_LocMenu.ChangeLanguageSelection(m_LocMenu.m_FlagUk);
-            m_LocMenu.m_StartButton.m_IsReady = true;
+            m_LocMenu.m_StartButton.LaunchTheGame();
         }
     }
 

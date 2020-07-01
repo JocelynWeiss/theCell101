@@ -58,4 +58,12 @@ public class Flags : MonoBehaviour
     {
         TheCellGameMgr.instance.m_LocMenu.ChangeLanguageSelection(this);
     }
+
+
+    private void FixedUpdate()
+    {
+        float phase = (float)m_Language * 60.0f;
+        float posY = 1.5f + Mathf.Sin(Time.fixedTime + phase) * 0.1f;
+        transform.position = new Vector3(transform.position.x, posY, transform.position.z);
+    }
 }

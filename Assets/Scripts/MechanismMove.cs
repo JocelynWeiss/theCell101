@@ -14,6 +14,7 @@ public class MechanismMove : MonoBehaviour
     bool m_rightIndexIn = false;
     bool m_leftIndexIn = false;
     public bool m_IsOn = true;
+    public float m_TriggerPoint = -0.5f; // in rad
 
 
     private void Awake()
@@ -76,16 +77,6 @@ public class MechanismMove : MonoBehaviour
     void Update()
     {
         bool actionning = false;
-        /*
-        if (Input.GetKey(KeyCode.A))
-        {
-            if (cardinal == TheCellGameMgr.CardinalPoint.North)
-            {
-                Debug.Log($"{gameObject.name} euler = {transform.eulerAngles}");
-            }
-            actionning = true;
-        }
-        */
 
         // Check for hands
         if ((m_leftIndexIn) || (m_rightIndexIn))
@@ -113,7 +104,7 @@ public class MechanismMove : MonoBehaviour
             //--- Snd ---
 
             float ex = transform.localRotation.x;
-            if (ex < -0.65f)
+            if (ex < m_TriggerPoint)
             {
                 if (m_actionTriggered)
                 {
@@ -127,6 +118,7 @@ public class MechanismMove : MonoBehaviour
                     }
                     
                     m_actionTriggered = TriggerAction();
+                    return;
                 }
             }
 
@@ -137,37 +129,35 @@ public class MechanismMove : MonoBehaviour
         else
         {
             // Slowly go back in position
-            float ex = transform.rotation.eulerAngles.x;
+            float ex = transform.localRotation.x;
             bool inPlace = true;
-            if (ex < 355.0f)
+            if (ex < 0.0f)
             {
-                transform.RotateAround(transform.position, transform.right, Time.deltaTime * Mathf.Sqrt(ex * m_BackSpeedFactor));
+                float f = 1.0f - ex * 2.0f;
+                transform.RotateAround(transform.position, transform.right, Time.deltaTime * f * m_BackSpeedFactor);
                 inPlace = false;
             }
-            if ((inPlace == false) && (transform.rotation.eulerAngles.x > 355.0f))
+            if ((inPlace == false) && (transform.localRotation.x >= 0.0f))
             {
                 if (snd.isPlaying)
                 {
                     snd.Stop();
                     //Debug.Log($"[MechanismMove] Stop sound-> {transform.name}\\{transform.parent.name} = {snd.name} at {ex}");
                 }
-            }
-            
-            
-            if ((m_actionTriggered == true) && (inPlace == false))
-            {
-                if (transform.rotation.eulerAngles.x > 355.0f)
-                {
-                    m_actionTriggered = false; // System is back and can be re used
-                    Debug.Log($"[MechanismMove] System back-> {transform.name}\\{transform.parent.name} = {transform.rotation.eulerAngles.x}");
-                }
-            }
+
+                //transform.rotation = Quaternion.identity;
+                transform.localRotation = Quaternion.identity;
+                m_actionTriggered = false; // System is back and can be re used
+                //Debug.Log($"[MechanismMove] System back-> {transform.name}\\{transform.parent.name} = {transform.localRotation}");
+            }            
         }
     }
 
 
     public bool TriggerAction()
     {
+        //Debug.LogWarning($"[MechanismMove] TriggerAction-> {transform.name}\\{transform.parent.name} on {cardinal} = {transform.localRotation}");
+
         if (m_IsOn == false)
         {
             TheCellGameMgr.instance.Audio_Bank[12].Play();

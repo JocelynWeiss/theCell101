@@ -12,7 +12,7 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
@@ -61,8 +61,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EdgePosition: 1
-    - _FadeEnd: 0.3
-    - _FadeStart: 1
+    - _FadeEnd: 0.5
+    - _FadeStart: 0
     - _FrontFactor: 0
     - _Glossiness: 0.5
     - _GlowEnd: 0.07

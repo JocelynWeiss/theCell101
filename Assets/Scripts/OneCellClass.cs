@@ -248,51 +248,58 @@ public class OneCellClass : MonoBehaviour
         if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             //NorthDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, true));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
         }
         else
         {
-            NorthDoor.SetActive(false);
+            //NorthDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, false));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
         }
 
         if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             //EastDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, true));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
         }
         else
         {
-            EastDoor.SetActive(false);
+            //EastDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, false));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
         }
 
         if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             //SouthDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, true));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
         }
         else
         {
-            SouthDoor.SetActive(false);
+            //SouthDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, false));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
         }
 
         if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
             //WestDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, true));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
         }
         else
         {
-            WestDoor.SetActive(false);
+            //WestDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, false));
             EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
         }
 
         switch (cellType)
         {
             case TheCellGameMgr.CellTypes.Exit:
-                SouthDoor.SetActive(false);
                 //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
                 TheCellGameMgr.instance.m_PlayaModel.SetActive(true);
                 break;
@@ -474,6 +481,8 @@ public class OneCellClass : MonoBehaviour
 
     public void EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint cardinal, bool enable)
     {
+        enable = false;
+
         switch (cardinal)
         {
             case TheCellGameMgr.CardinalPoint.North:
@@ -510,6 +519,40 @@ public class OneCellClass : MonoBehaviour
                         m_DoorWest.enabled = enable;
                         //Debug.Log($"{m_DoorWest.transform.parent.parent.name}//{m_DoorWest.name} set {enable} @ {Time.fixedTime}s");
                     }
+                    break;
+                }
+        }
+    }
+
+
+    // Activate door system after few secs
+    IEnumerator ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint cardinal, bool enable)
+    {
+        yield return new WaitForSecondsRealtime(2.0f);
+
+        if (cellType == TheCellGameMgr.CellTypes.Exit)
+            enable = false; // Deactivate doors in exit room
+
+        switch (cardinal)
+        {
+            case TheCellGameMgr.CardinalPoint.North:
+                {
+                    NorthDoor.SetActive(enable);
+                    break;
+                }
+            case TheCellGameMgr.CardinalPoint.East:
+                {
+                    EastDoor.SetActive(enable);
+                    break;
+                }
+            case TheCellGameMgr.CardinalPoint.South:
+                {
+                    SouthDoor.SetActive(enable);
+                    break;
+                }
+            case TheCellGameMgr.CardinalPoint.West:
+                {
+                    WestDoor.SetActive(enable);
                     break;
                 }
         }

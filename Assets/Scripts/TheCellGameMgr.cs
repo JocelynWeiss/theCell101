@@ -178,6 +178,7 @@ public class TheCellGameMgr : MonoBehaviour
     //13= 17 Start teleport
     //14= 16 Line moves
     //15= Female voice 1
+    //16= Exit ambiance
     [HideInInspector] public AudioSource[] Audio_Bank;
 
     public bool m_ShowMiniMap = true;
@@ -390,7 +391,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 #if UNITY_EDITOR
         GameObject cam = GameObject.Find("OVRCameraRig").gameObject;
-        cam.transform.position = new Vector3(0.0f, 0.5f, -0.2f);
+        cam.transform.position = new Vector3(0.0f, 1.0f, -0.5f);
 #endif
 
         if (m_ScreenCard != null)
@@ -819,19 +820,19 @@ public class TheCellGameMgr : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.UpArrow))
         {
-            MovePlayerNorth();
+            //MovePlayerNorth();
         }
         if (Input.GetKeyUp(KeyCode.DownArrow))
         {
-            MovePlayerSouth();
+            //MovePlayerSouth();
         }
         if (Input.GetKeyUp(KeyCode.RightArrow))
         {
-            MovePlayerEast();
+            //MovePlayerEast();
         }
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
-            MovePlayerWest();
+            //MovePlayerWest();
         }
         if (Input.GetKey(KeyCode.Keypad6))
         {
@@ -987,7 +988,14 @@ public class TheCellGameMgr : MonoBehaviour
                             gameState = GameStates.CodeAllSet;
                             Debug.Log($"\tBrutScore: {brutScore}. Total: {brutScore + codePoints}");
 
-							// Change exit colour					 
+                            // Change audio ambiance
+                            if (Audio_Bank[6].isPlaying)
+                            {
+                                Audio_Bank[6].Stop();
+                                Audio_Bank[16].Play();
+                            }
+
+                            // Change exit colour					 
                             MeshRenderer exitRender = m_CentreModels.m_ExitCell.transform.Find("trap_exit/exit_panel").gameObject.GetComponent<MeshRenderer>();
                             exitRender.material.SetColor("_EmissionColor", Color.green * 2.0f);
                             StartCoroutine(OpenExitHatch());
@@ -1016,8 +1024,9 @@ public class TheCellGameMgr : MonoBehaviour
                             TextMeshProUGUI tmp = intro.GetComponent<TextMeshProUGUI>();
                             tmp.fontSize = 0.5f;
                             tmp.color = Color.green;
-                            string duration = (gameDur / 60.0f).ToString("0.00");
-                            tmp.text = $"Time {duration}min\nScore {brutScore}";
+                            string duration = Mathf.Floor(gameDur / 60.0f).ToString("00") + "m";
+                            duration += (gameDur % 60.0f).ToString("00") + "s";
+                            tmp.text = $"Time {duration}\nScore {brutScore + codePoints}";
                             m_AllNotes.enabled = true;
                         }
                     }
@@ -1139,6 +1148,7 @@ public class TheCellGameMgr : MonoBehaviour
         CellTypes curType = current.cellType;
         int curId = current.cellId;
         m_CentreModels.SetActiveModel(curType, current.cellSubType);
+        InitDoorsScript(current, m_CentreModels.GetActiveModel());
         //Debug.Log($"UpdateCellsModels: {current}, type: {curType}, id: {curId}, playerCellId: {playerCellId}");
 
         // DeActivate elements
@@ -1149,12 +1159,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_NorthModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.North, cell.cellType);
+            InitDoorsScript(cell, m_NorthModels.GetActiveModel());
+            current.EnableDoorPerCardinal(CardinalPoint.North, true);
         }
         else
         {
             m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.North, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.North);
+            current.EnableDoorPerCardinal(CardinalPoint.North, false);
         }
 
         cell = GetEast(playerCellId);
@@ -1162,12 +1175,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_EastModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.East, cell.cellType);
+            InitDoorsScript(cell, m_EastModels.GetActiveModel());
+            current.EnableDoorPerCardinal(CardinalPoint.East, true);
         }
         else
         {
             m_EastModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.East, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.East);
+            current.EnableDoorPerCardinal(CardinalPoint.East, false);
         }
 
         cell = GetSouth(playerCellId);
@@ -1175,12 +1191,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_SouthModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.South, cell.cellType);
+            InitDoorsScript(cell, m_SouthModels.GetActiveModel());
+            current.EnableDoorPerCardinal(CardinalPoint.South, true);
         }
         else
         {
             m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.South);
+            current.EnableDoorPerCardinal(CardinalPoint.South, false);
         }
 
         cell = GetWest(playerCellId);
@@ -1188,12 +1207,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_WestModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.West, cell.cellType);
+            InitDoorsScript(cell, m_WestModels.GetActiveModel());
+            current.EnableDoorPerCardinal(CardinalPoint.West, true);
         }
         else
         {
             m_WestModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.West, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.West);
+            current.EnableDoorPerCardinal(CardinalPoint.West, false);
         }
 
         if (curType == CellTypes.Exit)
@@ -2305,19 +2327,25 @@ public class TheCellGameMgr : MonoBehaviour
         ElemReceiver rC = m_GroupElements.transform.Find("CubeFeedC").GetComponent<ElemReceiver>();
         ElemReceiver rD = m_GroupElements.transform.Find("CubeFeedD").GetComponent<ElemReceiver>();
 
-        List<ElemCubeClass> cubes = new List<ElemCubeClass>(4);
+        List<GameObject> cubes = new List<GameObject>(4);
         // Pick 4 elements randomly
         for (int i = 0; i < 4; ++i)
         {
             int rnd = UnityEngine.Random.Range(0, m_ElemCubes.Count);
-            ElemCubeClass c = m_ElemCubes[rnd].GetComponent<ElemCubeClass>();
+            GameObject c = m_ElemCubes[rnd];
             cubes.Add(c);
         }
-        
+
         cubes[0].transform.SetPositionAndRotation(rA.transform.position, rA.transform.rotation);
         cubes[1].transform.SetPositionAndRotation(rB.transform.position, rB.transform.rotation);
         cubes[2].transform.SetPositionAndRotation(rC.transform.position, rC.transform.rotation);
         cubes[3].transform.SetPositionAndRotation(rD.transform.position, rD.transform.rotation);
+
+        Transform doorT = m_CentreModels.m_ExitCell.transform.Find("trap_exit/door_exit");
+        cubes[0].transform.SetParent(doorT);
+        cubes[1].transform.SetParent(doorT);
+        cubes[2].transform.SetParent(doorT);
+        cubes[3].transform.SetParent(doorT);
     }
 
 
@@ -2358,7 +2386,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (c < 33)
         {
             Light light = null;
-            int r = (int)instance.m_RandomBis.Next(3);
+            int r = (int)instance.m_RandomBis.Next(4); // [[
             if (r == 0)
                 light = m_CentreModels.m_light_N;
             else if (r == 1)
@@ -2385,7 +2413,7 @@ public class TheCellGameMgr : MonoBehaviour
     private IEnumerator SwitchLightOn(float xSec, Light light)
     {
         yield return new WaitForSeconds(xSec);
-        light.intensity = 0.5f;
+        light.intensity = 0.6f;
     }
 
     //
@@ -2476,6 +2504,43 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
+    // retreive all pullers from models
+    void InitDoorsScript(OneCellClass cell, GameObject model)
+    {
+        //if (cell.m_DoorsInitialized)
+            //return;
+
+        HandsPullWheel[] pullers = model.GetComponentsInChildren<HandsPullWheel>();
+        foreach (HandsPullWheel puller in pullers)
+        {
+            switch (puller.m_cardinal)
+            {
+                case CardinalPoint.North:
+                    cell.m_DoorNorth = puller;
+                    cell.m_DoorNorth.enabled = false;
+                    break;
+                case CardinalPoint.East:
+                    cell.m_DoorEast = puller;
+                    cell.m_DoorEast.enabled = false;
+                    break;
+                case CardinalPoint.South:
+                    cell.m_DoorSouth = puller;
+                    cell.m_DoorSouth.enabled = false;
+                    break;
+                case CardinalPoint.West:
+                    cell.m_DoorWest = puller;
+                    cell.m_DoorWest.enabled = false;
+                    break;
+                default:
+                    Debug.LogWarning($"Wrong cardinal {puller.m_cardinal} for HandsPullWheel");
+                    break;
+            }
+        }
+
+        cell.m_DoorsInitialized = true;
+    }
+
+
     // Set the plan screen according to the board
     void UpdatePlanScreen()
     {
@@ -2521,7 +2586,7 @@ public class TheCellGameMgr : MonoBehaviour
     // Pick a random room 
     public OneCellClass PickRandomCell()
     {
-        int id = instance.m_RandomBis.Next(24);
+        int id = instance.m_RandomBis.Next(allCells.Count);
         return allCells[id];
     }
 

@@ -5,14 +5,14 @@ using TMPro;
 
 public class HandsPullWheel : MonoBehaviour
 {
+    // Which door is it opening
+    public TheCellGameMgr.CardinalPoint m_cardinal;
     MeshRenderer m_Renderer;
     bool m_rightIndexIn = false;
     bool m_leftIndexIn = false;
-    Collider m_rightCollider;
-    Vector3 m_rightStartPos;
-    Collider m_leftCollider;
-    Vector3 m_leftStartPos;
-    float m_forceActive;
+    float m_enterTime = 0.0f;
+    float m_openStart = 0.0f;
+    public int m_forward = 0; //0->+z, 1->+x, 2->-x, 3->-z
 
 
     // Start is called before the first frame update
@@ -26,7 +26,7 @@ public class HandsPullWheel : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //get hand associated with finger
-        int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Middle2);
+        int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Index3);
 
 //#if HAND_DEBUG
         GameObject text = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(0).gameObject;
@@ -36,33 +36,39 @@ public class HandsPullWheel : MonoBehaviour
         if (handIdx == 0)
         {
             m_leftIndexIn = true;
-            m_leftCollider = other;
-            m_leftStartPos = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandLeft).hand.PointerPose.position;
+
+            if (m_enterTime == 0.0f)
+            {
+                m_enterTime = Time.fixedTime;
+            }
         }
         else if (handIdx == 1)
         {
             m_rightIndexIn = true;
-            m_rightCollider = other;
-            m_rightStartPos = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandRight).hand.PointerPose.position;
+
+            if (m_enterTime == 0.0f)
+            {
+                m_enterTime = Time.fixedTime;
+            }
         }
     }
 
 
     private void OnTriggerExit(Collider other)
     {
-        //get hand associated with trigger
-        int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Middle2);
+        //get hand associated with finger
+        int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Index3);
 
         if (handIdx == 0)
         {
             m_leftIndexIn = false;
-            m_leftCollider = null;
         }
         else if (handIdx == 1)
         {
             m_rightIndexIn = false;
-            m_rightCollider = null;
         }
+
+        m_enterTime = 0.0f;
     }
 
 
@@ -70,14 +76,47 @@ public class HandsPullWheel : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        //m_forceActive = 0.0f;
-        if (Input.GetKey(KeyCode.I))
+        if (m_cardinal == TheCellGameMgr.CardinalPoint.North)
         {
-            m_forceActive = 10.0f;
+            if (Input.GetKey(KeyCode.I))
+            {
+                m_rightIndexIn = true;
+                if (m_enterTime == 0.0f)
+                {
+                    m_enterTime = Time.fixedTime;
+                    Debug.Log($"{gameObject.name} m_enterTime= {m_enterTime}s");
+                }
+            }
+            if (Input.GetKey(KeyCode.U))
+            {
+                m_leftIndexIn = true;
+                if (m_enterTime == 0.0f)
+                {
+                    m_enterTime = Time.fixedTime;
+                    Debug.Log($"{gameObject.name} m_enterTime= {m_enterTime}s");
+                }
+            }
         }
-        if (Input.GetKey(KeyCode.U))
+
+        if ((Input.GetKeyUp(KeyCode.UpArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.North))
         {
-            m_forceActive = -10.0f;
+            m_rightIndexIn = true;
+            m_enterTime = Time.fixedTime;
+        }
+        if ((Input.GetKeyUp(KeyCode.RightArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.East))
+        {
+            m_rightIndexIn = true;
+            m_enterTime = Time.fixedTime;
+        }
+        if ((Input.GetKeyUp(KeyCode.DownArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.South))
+        {
+            m_rightIndexIn = true;
+            m_enterTime = Time.fixedTime;
+        }
+        if ((Input.GetKeyUp(KeyCode.LeftArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.West))
+        {
+            m_rightIndexIn = true;
+            m_enterTime = Time.fixedTime;
         }
 #endif
     }
@@ -107,86 +146,84 @@ public class HandsPullWheel : MonoBehaviour
             active = true;
         }
 
-        if ((m_forceActive >= 1.0f) || (m_forceActive <= -1.0f))
+        Vector3 forward = transform.forward;
+        if (m_forward == 1)
+            forward = transform.right;
+        else if (m_forward == 2)
+            forward = -transform.right;
+        else if (m_forward == 3)
+            forward = -transform.forward;
+
+        if ((active) && (m_enterTime > 0.0f))
         {
-            active = true;
+            float timeIn = Time.fixedTime - m_enterTime;
+            if (timeIn < 3.0f)
+            {
+                transform.RotateAround(transform.position, forward, Time.fixedDeltaTime * timeIn * 10.0f);
+            }
+            else
+            {
+                TriggerAction();
+                m_enterTime = 0.0f;
+                m_rightIndexIn = false;
+                m_leftIndexIn = false;
+            }
         }
-
-        if (active)
+        else
         {
-            if (m_rightCollider)
+            m_enterTime = 0.0f;
+
+            // Handle leaving the room
+            if (m_openStart != 0.0f)
             {
-                //Vector3 handPos = m_rightCollider.transform.position;
-                Vector3 handPos = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandRight).hand.PointerPose.position;
-
-                GameObject text = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(1).gameObject;
-                text.GetComponent<TextMeshProUGUI>().text = $"{m_rightCollider.name}= {handPos.x.ToString("0.0")} {handPos.y.ToString("0.0")} {handPos.z.ToString("0.0")}";
-
-                //Vector3 hp = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandRight).hand.PointerPose.position;
-                //float d = Vector3.Distance(m_rightStartPos, hp);
-                Vector3 vi = m_rightStartPos - transform.position;
-                Vector3 vf = handPos - transform.position;
-                float d = Vector3.Dot(vi, vf);
-                transform.RotateAround(transform.position, transform.forward, Time.fixedDeltaTime * 1000.0f * d);
-            }
-            if (m_leftCollider)
-            {
-                Vector3 handPos = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandLeft).hand.PointerPose.position;
-
-                GameObject text = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(1).gameObject;
-                text.GetComponent<TextMeshProUGUI>().text = $"{m_leftCollider.name}= {handPos.x.ToString("0.0")} {handPos.y.ToString("0.0")} {handPos.z.ToString("0.0")}";
-
-                //float d = Vector3.Distance(m_leftStartPos, handPos);
-                Vector3 vi = m_leftStartPos - transform.position;
-                Vector3 vf = handPos - transform.position;
-                float d = Vector3.Dot(vi, vf);
-
-                transform.RotateAround(transform.position, transform.forward, Time.fixedDeltaTime * 1000.0f * d);
-            }
-
-            Quaternion qw = transform.localRotation;
-            if ((m_forceActive >= 1.0f) || (m_forceActive <= -1.0f))
-            {
-                transform.RotateAround(transform.position, transform.forward, Time.fixedDeltaTime * 10.0f * m_forceActive);
-                GameObject txt1 = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(1).gameObject;
-                txt1.GetComponent<TextMeshProUGUI>().text = $"{qw.x.ToString("0.0")} {qw.y.ToString("0.0")} {qw.z.ToString("0.0")} {qw.w.ToString("0.0")}";
-            }
-
-            if ((qw.z > 0.6f) || (qw.z < -0.6f))
-            {
-                if (qw.z > 0.6f)
+                if (Time.fixedTime - m_openStart < 1.5f)
                 {
-
+                    transform.RotateAround(transform.position, forward, Time.fixedDeltaTime * 100.0f);
+                    TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity -= Time.fixedDeltaTime * 0.15f;
+                    TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity -= Time.fixedDeltaTime * 0.15f;
+                    TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity -= Time.fixedDeltaTime * 0.15f;
+                    TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity -= Time.fixedDeltaTime * 0.15f;
                 }
                 else
                 {
-
+                    TheCellGameMgr.instance.Audio_Bank[10].Play();
+                    m_openStart = 0.0f;
+                    transform.localRotation = Quaternion.identity;
+                    TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity = 0.6f;
+                    TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity = 0.6f;
+                    TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity = 0.6f;
+                    TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity = 0.6f;
+                    Debug.Log($"{transform.parent.parent.name}//{gameObject.name} Go to next room @ {Time.fixedTime}s");
+                    switch (m_cardinal)
+                    {
+                        case TheCellGameMgr.CardinalPoint.North:
+                            TheCellGameMgr.instance.MovePlayerNorth();
+                            break;
+                        case TheCellGameMgr.CardinalPoint.East:
+                            TheCellGameMgr.instance.MovePlayerEast();
+                            break;
+                        case TheCellGameMgr.CardinalPoint.South:
+                            TheCellGameMgr.instance.MovePlayerSouth();
+                            break;
+                        case TheCellGameMgr.CardinalPoint.West:
+                            TheCellGameMgr.instance.MovePlayerWest();
+                            break;
+                    }
                 }
-
-                Debug.Log($"{gameObject.name} m_startTrigger= {Time.fixedTime}s qw= {qw}");
-                TheCellGameMgr.instance.Audio_Bank[1].Play();
-                //m_leftStartZ = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandLeft).hand.PointerPose.localRotation.z;
-                //m_rightStartZ = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandRight).hand.PointerPose.localRotation.z;
-                m_rightCollider = null;
-                m_leftCollider = null;
-                m_rightIndexIn = false;
-                m_leftIndexIn = false;
-                m_forceActive = 0.0f;
-                transform.localRotation = Quaternion.identity;
             }
         }
 
         if (m_Renderer)
         {
-            if ((m_rightIndexIn) || (m_forceActive > 0.0f))
+            if (m_rightIndexIn)
             {
                 m_Renderer.material.EnableKeyword("_EMISSION");
-                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.25f);
+                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.1f);
             }
-            else if ((m_leftIndexIn) || (m_forceActive < 0.0f))
+            else if (m_leftIndexIn)
             {
                 m_Renderer.material.EnableKeyword("_EMISSION");
-                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.25f);
+                m_Renderer.material.SetColor("_EmissionColor", Color.yellow * 0.1f);
             }
             else
             {
@@ -194,4 +231,16 @@ public class HandsPullWheel : MonoBehaviour
             }
         }
     }
+
+
+    // ---
+    public void TriggerAction()
+    {
+        Debug.Log($"{transform.parent.parent.name}//{gameObject.name} {m_cardinal} @ {Time.fixedTime}s");
+        m_openStart = Time.fixedTime;
+    }
+
+
+    // ---
+    
 }

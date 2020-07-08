@@ -137,6 +137,8 @@ public class ElemReceiver : MonoBehaviour
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
+            Transform doorT = TheCellGameMgr.instance.m_CentreModels.m_ExitCell.transform.Find("trap_exit/door_exit");
+            other.transform.SetParent(doorT);
 
             grabbable.Deactivate();
 

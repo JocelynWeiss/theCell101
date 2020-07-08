@@ -22,6 +22,13 @@ public class OneCellClass : MonoBehaviour
     public MechanismMove MechanismWest;
     [ViewOnly] public bool m_TunnelEnabled = false;
 
+    [ViewOnly] public HandsPullWheel m_DoorNorth;
+    [ViewOnly] public HandsPullWheel m_DoorEast;
+    [ViewOnly] public HandsPullWheel m_DoorSouth;
+    [ViewOnly] public HandsPullWheel m_DoorWest;
+    [ViewOnly] public bool m_DoorsInitialized = false;
+
+
     public Vector3 m_MiniGameTranslation;
 
 
@@ -169,6 +176,11 @@ public class OneCellClass : MonoBehaviour
         }
         //*/
 
+        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
+        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
+        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
+        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
+
         switch (cellType)
         {
             case TheCellGameMgr.CellTypes.Start:
@@ -235,35 +247,46 @@ public class OneCellClass : MonoBehaviour
         int idOnChess = TheCellGameMgr.instance.playerCellId;
         if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
-            NorthDoor.SetActive(true);
+            //NorthDoor.SetActive(true);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
         }
         else
         {
             NorthDoor.SetActive(false);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
         }
+
         if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
-            EastDoor.SetActive(true);
+            //EastDoor.SetActive(true);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
         }
         else
         {
             EastDoor.SetActive(false);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
         }
+
         if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
-            SouthDoor.SetActive(true);
+            //SouthDoor.SetActive(true);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
         }
         else
         {
             SouthDoor.SetActive(false);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
         }
+
         if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
-            WestDoor.SetActive(true);
+            //WestDoor.SetActive(true);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
         }
         else
         {
             WestDoor.SetActive(false);
+            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
         }
 
         switch (cellType)
@@ -446,5 +469,49 @@ public class OneCellClass : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(waitSec);
         TheCellGameMgr.instance.TeleportToCell(id);
+    }
+
+
+    public void EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint cardinal, bool enable)
+    {
+        switch (cardinal)
+        {
+            case TheCellGameMgr.CardinalPoint.North:
+                {
+                    if (m_DoorNorth != null)
+                    {
+                        m_DoorNorth.enabled = enable;
+                        //Debug.Log($"{m_DoorNorth.transform.parent.parent.name}//{m_DoorNorth.name} set {enable} @ {Time.fixedTime}s");
+                    }
+                    break;
+                }
+            case TheCellGameMgr.CardinalPoint.East:
+                {
+                    if (m_DoorEast != null)
+                    {
+                        m_DoorEast.enabled = enable;
+                        //Debug.Log($"{m_DoorEast.transform.parent.parent.name}//{m_DoorEast.name} set {enable} @ {Time.fixedTime}s");
+                    }
+                    break;
+                }
+            case TheCellGameMgr.CardinalPoint.South:
+                {
+                    if (m_DoorSouth != null)
+                    {
+                        m_DoorSouth.enabled = enable;
+                        //Debug.Log($"{m_DoorSouth.transform.parent.parent.name}//{m_DoorSouth.name} set {enable} @ {Time.fixedTime}s");
+                    }
+                    break;
+                }
+            case TheCellGameMgr.CardinalPoint.West:
+                {
+                    if (m_DoorWest != null)
+                    {
+                        m_DoorWest.enabled = enable;
+                        //Debug.Log($"{m_DoorWest.transform.parent.parent.name}//{m_DoorWest.name} set {enable} @ {Time.fixedTime}s");
+                    }
+                    break;
+                }
+        }
     }
 }

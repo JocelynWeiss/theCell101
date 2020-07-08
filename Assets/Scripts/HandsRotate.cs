@@ -21,6 +21,7 @@ public class HandsRotate : MonoBehaviour
     float m_blockButtonEndTime; // Time at which to re activate button
     public bool m_onRow = true;
     public int m_HeadId = 0;
+    float m_pushStartTime = 0.0f;
 
 
     private void Awake()
@@ -35,6 +36,7 @@ public class HandsRotate : MonoBehaviour
     // --- 
     private void OnTriggerEnter(Collider other)
     {
+        /*
         //get hand associated with finger
         int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Thumb3); // thumb
 
@@ -57,11 +59,19 @@ public class HandsRotate : MonoBehaviour
             Quaternion rrot = TheCellGameMgr.instance.GetHand(OVRHand.Hand.HandRight).hand.PointerPose.localRotation;
             m_rightStartZ = rrot.z;
         }
+        */
+
+        int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Index3);
+        if (handIdx >= 0)
+        {
+            OnButtonDown();
+        }
     }
 
 
     private void OnTriggerExit(Collider other)
     {
+        /*
         //get hand associated with trigger
         int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Thumb3);
 
@@ -74,6 +84,13 @@ public class HandsRotate : MonoBehaviour
         {
             m_rightIndexIn = false;
             m_rightCollider = null;
+        }
+        */
+
+        int handIdx = TheCellGameMgr.instance.GetFingerHandId(other, OVRPlugin.BoneId.Hand_Index3);
+        if (handIdx >= 0)
+        {
+            OnButtonUp();
         }
     }
 
@@ -89,14 +106,33 @@ public class HandsRotate : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        //m_forceActive = 0.0f;
-        if (Input.GetKey(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.U))
         {
-            m_forceActive = -10.0f;
+            if (m_HeadId == 5)
+            {
+                OnButtonDown();
+            }
         }
-        if (Input.GetKey(KeyCode.U))
+        if (Input.GetKeyUp(KeyCode.U))
         {
-            m_forceActive = 10.0f;
+            if (m_HeadId == 5)
+            {
+                OnButtonUp();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (m_HeadId == 3)
+            {
+                OnButtonDown();
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.I))
+        {
+            if (m_HeadId == 3)
+            {
+                OnButtonUp();
+            }
         }
 #endif
     }
@@ -271,5 +307,41 @@ public class HandsRotate : MonoBehaviour
     void ActivateOnLeft()
     {
         this.m_forceActive = 10.0f;
+    }
+
+
+    // Push button
+    void OnButtonDown()
+    {
+        if (TheCellGameMgr.instance.Audio_Bank[18].isPlaying == false)
+            TheCellGameMgr.instance.Audio_Bank[18].Play();
+        m_rightIndexIn = true;
+        m_pushStartTime = Time.fixedTime;
+        Debug.Log($"On {gameObject.name} @ {Time.fixedTime}");
+    }
+
+
+    // If pushed for x sec, we trigger the action
+    void OnButtonUp()
+    {
+        if (m_pushStartTime != 0.0f)
+        {
+            if (Time.fixedTime - m_pushStartTime > 0.25f)
+            {
+                if (TheCellGameMgr.instance.Audio_Bank[19].isPlaying == false)
+                    TheCellGameMgr.instance.Audio_Bank[19].Play();
+                Debug.Log($"Off {gameObject.name} @ {Time.fixedTime}");
+                if (m_onRow)
+                {
+                    TheCellGameMgr.instance.MoveRow(m_HeadId, true);
+                }
+                else
+                {
+                    TheCellGameMgr.instance.MoveColumn(m_HeadId, true);
+                }
+            }
+        }
+        m_rightIndexIn = false;
+        m_pushStartTime = 0.0f;
     }
 }

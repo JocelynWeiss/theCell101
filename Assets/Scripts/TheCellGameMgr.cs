@@ -180,6 +180,8 @@ public class TheCellGameMgr : MonoBehaviour
     //15= Female voice 1
     //16= Exit ambiance
     //17= Execute teleport sequence
+    //18= Button Down
+    //19= Button Up
     [HideInInspector] public AudioSource[] Audio_Bank;
 
     public bool m_ShowMiniMap = true;

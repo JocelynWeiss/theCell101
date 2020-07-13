@@ -186,6 +186,8 @@ public class TheCellGameMgr : MonoBehaviour
     //17= Execute teleport sequence
     //18= Button Down
     //19= Button Up
+    //20= 21 Waterfall
+    //21= 22 Drowning
     [HideInInspector] public AudioSource[] Audio_Bank;
 
     public bool m_ShowMiniMap = true;
@@ -1169,7 +1171,7 @@ public class TheCellGameMgr : MonoBehaviour
         CellTypes curType = current.cellType;
         int curId = current.cellId;
         m_CentreModels.SetActiveModel(curType, current.cellSubType);
-        InitDoorsScript(current, m_CentreModels.GetActiveModel());
+        //InitDoorsScript(current, m_CentreModels.GetActiveModel());
         //Debug.Log($"UpdateCellsModels: {current}, type: {curType}, id: {curId}, playerCellId: {playerCellId}");
 
         // DeActivate elements
@@ -1180,15 +1182,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_NorthModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.North, cell.cellType);
-            InitDoorsScript(cell, m_NorthModels.GetActiveModel());
-            current.EnableDoorPerCardinal(CardinalPoint.North, true);
+            //InitDoorsScript(cell, m_NorthModels.GetActiveModel());
+            //current.EnableDoorPerCardinal(CardinalPoint.North, true);
         }
         else
         {
             m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.North, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.North);
-            current.EnableDoorPerCardinal(CardinalPoint.North, false);
+            //current.EnableDoorPerCardinal(CardinalPoint.North, false);
         }
 
         cell = GetEast(playerCellId);
@@ -1196,15 +1198,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_EastModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.East, cell.cellType);
-            InitDoorsScript(cell, m_EastModels.GetActiveModel());
-            current.EnableDoorPerCardinal(CardinalPoint.East, true);
+            //InitDoorsScript(cell, m_EastModels.GetActiveModel());
+            //current.EnableDoorPerCardinal(CardinalPoint.East, true);
         }
         else
         {
             m_EastModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.East, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.East);
-            current.EnableDoorPerCardinal(CardinalPoint.East, false);
+            //current.EnableDoorPerCardinal(CardinalPoint.East, false);
         }
 
         cell = GetSouth(playerCellId);
@@ -1212,15 +1214,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_SouthModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.South, cell.cellType);
-            InitDoorsScript(cell, m_SouthModels.GetActiveModel());
-            current.EnableDoorPerCardinal(CardinalPoint.South, true);
+            //InitDoorsScript(cell, m_SouthModels.GetActiveModel());
+            //current.EnableDoorPerCardinal(CardinalPoint.South, true);
         }
         else
         {
             m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.South);
-            current.EnableDoorPerCardinal(CardinalPoint.South, false);
+            //current.EnableDoorPerCardinal(CardinalPoint.South, false);
         }
 
         cell = GetWest(playerCellId);
@@ -1228,15 +1230,15 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_WestModels.SetActiveModel(cell.cellType, cell.cellSubType);
             UpdateCodesSections(CardinalPoint.West, cell.cellType);
-            InitDoorsScript(cell, m_WestModels.GetActiveModel());
-            current.EnableDoorPerCardinal(CardinalPoint.West, true);
+            //InitDoorsScript(cell, m_WestModels.GetActiveModel());
+            //current.EnableDoorPerCardinal(CardinalPoint.West, true);
         }
         else
         {
             m_WestModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.West, CellTypes.Undefined);
             m_CentreModels.SwitchOffScanner(false, CardinalPoint.West);
-            current.EnableDoorPerCardinal(CardinalPoint.West, false);
+            //current.EnableDoorPerCardinal(CardinalPoint.West, false);
         }
 
         if (curType == CellTypes.Exit)
@@ -2706,27 +2708,28 @@ public class TheCellGameMgr : MonoBehaviour
     {
         int newDeathCount = m_DeathCount + 1;
         GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
+        string txt = intro.GetComponent<TextMeshProUGUI>().text;
         switch (newDeathCount)
         {
             case 1:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_1"];
+                txt = m_LocalizedText["hintDeath_1"];
                 break;
             case 2:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_2"];
+                txt += "\n" + m_LocalizedText["hintDeath_2"];
                 break;
             case 3:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_3"];
+                txt += "\n" + m_LocalizedText["hintDeath_3"];
                 break;
             case 4:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_4"];
+                txt += "\n" + m_LocalizedText["hintDeath_4"];
                 break;
             case 5:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["hintDeath_5"];
+                txt += "\n" + m_LocalizedText["hintDeath_5"];
                 break;
             default:
-                intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["help_1"];
                 break;
         }
+        intro.GetComponent<TextMeshProUGUI>().text = txt;
 
         m_DeathCount = newDeathCount;
     }

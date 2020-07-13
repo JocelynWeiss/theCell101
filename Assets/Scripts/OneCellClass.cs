@@ -176,10 +176,10 @@ public class OneCellClass : MonoBehaviour
         }
         //*/
 
-        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
-        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
-        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
-        EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
+        //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
+        //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
+        //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
+        //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
 
         switch (cellType)
         {
@@ -228,6 +228,9 @@ public class OneCellClass : MonoBehaviour
                 m_TunnelEnabled = true; // Activate tunnel again
                 TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
                 break;
+            case TheCellGameMgr.CellSubTypes.Water:
+                TheCellGameMgr.instance.Audio_Bank[20].Stop();
+                break;
             default:
                 break;
         }
@@ -245,56 +248,60 @@ public class OneCellClass : MonoBehaviour
         TheCellGameMgr.instance.m_ViewLeft = 2;
 
         int idOnChess = TheCellGameMgr.instance.playerCellId;
-        if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+        if ((cellSubType != TheCellGameMgr.CellSubTypes.Fire) && (cellSubType != TheCellGameMgr.CellSubTypes.Lasers)
+            && (cellSubType != TheCellGameMgr.CellSubTypes.Gaz) && (cellSubType != TheCellGameMgr.CellSubTypes.Water))
         {
-            //NorthDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, true));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
-        }
-        else
-        {
-            //NorthDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, false));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
-        }
+            if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //NorthDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
+            }
+            else
+            {
+                //NorthDoor.SetActive(false);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, false));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
+            }
 
-        if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-        {
-            //EastDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, true));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
-        }
-        else
-        {
-            //EastDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, false));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
-        }
+            if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //EastDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
+            }
+            else
+            {
+                //EastDoor.SetActive(false);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, false));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
+            }
 
-        if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-        {
-            //SouthDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, true));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
-        }
-        else
-        {
-            //SouthDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, false));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
-        }
+            if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //SouthDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
+            }
+            else
+            {
+                //SouthDoor.SetActive(false);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, false));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
+            }
 
-        if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-        {
-            //WestDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, true));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
-        }
-        else
-        {
-            //WestDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, false));
-            EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
+            if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //WestDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
+            }
+            else
+            {
+                //WestDoor.SetActive(false);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, false));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
+            }
         }
 
         switch (cellType)
@@ -355,8 +362,10 @@ public class OneCellClass : MonoBehaviour
                 StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Water:
+                TheCellGameMgr.instance.Audio_Bank[20].Play();
+                StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 21));
                 StartCoroutine(TheCellGameMgr.instance.RaiseWaterLevel());
-                StartCoroutine(DelayedDeath(4.0f));
+                StartCoroutine(DelayedDeath(4.0f, false));
                 break;
             case TheCellGameMgr.CellSubTypes.Blind:
                 TheCellGameMgr.instance.m_ViewLeft = 0;
@@ -407,10 +416,13 @@ public class OneCellClass : MonoBehaviour
     }
 
 
-    private IEnumerator DelayedDeath(float seconds = 3.0f)
+    private IEnumerator DelayedDeath(float seconds = 3.0f, bool playScream = true)
     {
-        AudioSource snd = TheCellGameMgr.instance.Audio_Bank[0];
-        snd.Play();
+        if (playScream)
+        {
+            AudioSource snd = TheCellGameMgr.instance.Audio_Bank[0];
+            snd.Play();
+        }
 
         yield return new WaitForSecondsRealtime(seconds);
 

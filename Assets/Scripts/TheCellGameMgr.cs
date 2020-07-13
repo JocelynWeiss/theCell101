@@ -117,7 +117,7 @@ public class TheCellGameMgr : MonoBehaviour
     public Dictionary<string, string> m_LocalizedText;
 
 
-    static int startingSeed = 1966;
+    static int startingSeed = 0;
     static float startingTime = 0.0f; // Time since the start of a new game in sec
     float m_EndGameTime = 0.0f; // Time to compute score when the player end the game in sec
     public OneCellClass cellClassPrefab;
@@ -139,6 +139,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_LaserCellModel;
     public GameObject m_GazCellModel;
     public GameObject m_PlanCellModel; // The screen cell model
+    public GameObject m_OneLookCellModel; // The one look cell model
     bool m_displayCell_N = false;
     bool m_displayCell_E = false;
     bool m_displayCell_S = false;
@@ -148,6 +149,9 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_StopHandScaner; // Object showing no hands scanner availability.
     public GameObject m_PlayaModel;
     public LocalizationMenu m_LocMenu;
+
+    Vector3 m_waterLevel;
+    Vector3 m_waterStuffLevel;
 
     public CellsModels m_CentreModels;
     public CellsModels m_NorthModels;
@@ -167,7 +171,7 @@ public class TheCellGameMgr : MonoBehaviour
     //2 On Player exit room
     //3 Element placement
     //4 Hand scanner fail
-    //5 Open hatch
+    //5= 27 Open hatch
     //6 General ambiance
     //7 Beach ambiance
     //8 =9 start room amb1
@@ -261,9 +265,6 @@ public class TheCellGameMgr : MonoBehaviour
         GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
         intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
         m_AllNotes.enabled = false;
-
-        //InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
-        //InitializeNewGame(System.Environment.TickCount);
     }
 
 
@@ -296,8 +297,6 @@ public class TheCellGameMgr : MonoBehaviour
             //obj.transform.Find("air").gameObject.SetActive(true);
             n++;
         }
-
-        Debug.Log($"[GameMgr] Start. {gameState}");
 
         // Go to the localization phase
         gameState = GameStates.Localization;
@@ -416,12 +415,16 @@ public class TheCellGameMgr : MonoBehaviour
         m_PlayaModel.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         m_PlayaModel.SetActive(false);
 
-        startingSeed = gameSeed;
+        if (startingSeed != gameSeed)
+        {
+            // New game
+            startingSeed = gameSeed;
+            startingTime = Time.fixedTime;
+        }
         UnityEngine.Random.InitState(startingSeed);
 
         int firstRandom = (int)(UnityEngine.Random.value * 100.0f);
-        startingTime = Time.fixedTime;
-        Debug.Log($"[GameMgr][{startingTime}] new game initialized with seed {startingSeed}, first random {firstRandom}/19.");
+        Debug.Log($"[GameMgr][{startingTime}s] new game initialized with seed {startingSeed}, first random {firstRandom}/19.");
 
         playerCellId = 12; // replace the player in the middle
 
@@ -568,6 +571,12 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_GazCell.transform.SetParent(m_CentreModels.transform);
             m_CentreModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
             m_CentreModels.m_PlanCell.transform.SetParent(m_CentreModels.transform);
+            m_CentreModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
+            m_CentreModels.m_OneLookCell.transform.SetParent(m_CentreModels.transform);
+
+            // Save initial water position
+            m_waterLevel = m_CentreModels.m_WaterCell.transform.Find("ground_all/water").position;
+            m_waterStuffLevel = m_CentreModels.m_WaterCell.transform.Find("ground_all/water_stuff").position;
 
             m_NorthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_NorthModels.m_GenCellA.SetActive(true);
@@ -590,6 +599,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_NorthModels.m_GazCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
             m_NorthModels.m_PlanCell.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
+            m_NorthModels.m_OneLookCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.transform.position = new Vector3(0.0f, 0.0f, 2.9f);            
 
             m_EastModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -613,6 +624,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_EastModels.m_GazCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
             m_EastModels.m_PlanCell.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
+            m_EastModels.m_OneLookCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.transform.position = new Vector3(2.9f, 0.0f, 0.0f);            
 
             m_SouthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -636,6 +649,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_SouthModels.m_GazCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
             m_SouthModels.m_PlanCell.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
+            m_SouthModels.m_OneLookCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);            
 
             m_WestModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -659,6 +674,8 @@ public class TheCellGameMgr : MonoBehaviour
             m_WestModels.m_GazCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.m_PlanCell = GameObject.Instantiate(m_PlanCellModel);
             m_WestModels.m_PlanCell.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
+            m_WestModels.m_OneLookCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);            
         }
         //--- show models ---
@@ -678,6 +695,12 @@ public class TheCellGameMgr : MonoBehaviour
         if (m_Language == GameLanguages.English)
             m_ShowMiniMap = true;
         ShowMiniMap(m_ShowMiniMap);
+
+        // Reset water levels
+        GameObject water = m_CentreModels.m_WaterCell.transform.Find("ground_all/water").gameObject;
+        water.transform.position = m_waterLevel;
+        GameObject waterStuff = m_CentreModels.m_WaterCell.transform.Find("ground_all/water_stuff").gameObject;
+        waterStuff.transform.position = m_waterStuffLevel;
 
         UpdateCellsModels();
         gameState = GameStates.Running;
@@ -916,11 +939,6 @@ public class TheCellGameMgr : MonoBehaviour
     // Update while in localization phase
     void LocalizationUpdate()
     {
-        if (Input.GetKeyUp(KeyCode.Home))
-        {
-            InitializeNewGame(startingSeed); // for debug purpose we always start with the same seed
-        }
-
         if (Input.GetKeyUp(KeyCode.KeypadPlus))
         {
             /*
@@ -989,7 +1007,7 @@ public class TheCellGameMgr : MonoBehaviour
                             GameObject txt2 = m_basicCanvas.transform.GetChild(2).gameObject;
                             txt2.GetComponent<TextMeshProUGUI>().text = $"code: {codePoints}";
                             gameState = GameStates.CodeAllSet;
-                            Debug.Log($"\tBrutScore: {brutScore}. Total: {brutScore + codePoints}");
+                            Debug.Log($"StartTime {startingTime}, end {m_EndGameTime} -> BrutScore: {brutScore}. Total: {brutScore + codePoints}");
 
                             // Change audio ambiance
                             if (Audio_Bank[6].isPlaying)
@@ -1282,7 +1300,12 @@ public class TheCellGameMgr : MonoBehaviour
             UpdatePlanScreen();
             ActivateCellMechanism(current, m_CentreModels.m_PlanCell, true);
         }
-        
+
+        if (m_CentreModels.m_OneLookCell.activeSelf == true)
+        {
+            ActivateCellMechanism(current, m_CentreModels.m_OneLookCell, true);
+        }
+
         SetupAdjacentLights(null, 0.0f, Color.red);
     }
 
@@ -1585,9 +1608,16 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    public void TeleportToStart()
+    public void TeleportToStart(bool newSeed = false)
     {
-        InitializeNewGame(startingSeed); // Restart the game with the same previous seed
+        int seed = startingSeed;
+        if (newSeed)
+        {
+            seed = System.Environment.TickCount;
+            //seed = 1966;
+            //seed = 13068546;
+        }
+        InitializeNewGame(seed);
     }
 
 
@@ -1694,6 +1724,11 @@ public class TheCellGameMgr : MonoBehaviour
                             front = m_CentreModels.m_PlanCell.transform.Find("Trap_1").gameObject;
                             front = front.transform.Find("trape_1").gameObject;
                         }
+                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_OneLookCell.transform.Find("Trap_1").gameObject;
+                            front = front.transform.Find("trape_1").gameObject;
+                        }
 
                         // Jow: Make sure the back is set considering the right active model as for the front
                         GameObject back = m_NorthModels.GetActiveModel();
@@ -1745,6 +1780,12 @@ public class TheCellGameMgr : MonoBehaviour
                             back = back.transform.Find("trape_2").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
                         }
+                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
+                        {
+                            back = back.transform.Find("trap_0").gameObject;
+                            back = back.transform.Find("trape_2").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
                         else
                         {
                             m_displayCell_N = false;
@@ -1787,6 +1828,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else if (m_CentreModels.m_PlanCell.activeSelf == true)
                         {
                             front = m_CentreModels.m_PlanCell.transform.Find("trap_3").gameObject;
+                            front = front.transform.Find("trape_2 2").gameObject;
+                        }
+                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_OneLookCell.transform.Find("trap_3").gameObject;
                             front = front.transform.Find("trape_2 2").gameObject;
                         }
 
@@ -1845,6 +1891,12 @@ public class TheCellGameMgr : MonoBehaviour
                             back = back.transform.Find("trape_2 1").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
                         }
+                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
+                        {
+                            back = back.transform.Find("trap_2").gameObject;
+                            back = back.transform.Find("trape_2 1").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
                         else
                         {
                             m_displayCell_E = false;
@@ -1887,6 +1939,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else if (m_CentreModels.m_PlanCell.activeSelf == true)
                         {
                             front = m_CentreModels.m_PlanCell.transform.Find("trap_0").gameObject;
+                            front = front.transform.Find("trape_2").gameObject;
+                        }
+                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_OneLookCell.transform.Find("trap_0").gameObject;
                             front = front.transform.Find("trape_2").gameObject;
                         }
 
@@ -1939,6 +1996,12 @@ public class TheCellGameMgr : MonoBehaviour
                             back = back.transform.Find("trape_1").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
                         }
+                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
+                        {
+                            back = back.transform.Find("Trap_1").gameObject;
+                            back = back.transform.Find("trape_1").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
                         else
                         {
                             m_displayCell_S = false;
@@ -1981,6 +2044,11 @@ public class TheCellGameMgr : MonoBehaviour
                         else if (m_CentreModels.m_PlanCell.activeSelf == true)
                         {
                             front = m_CentreModels.m_PlanCell.transform.Find("trap_2").gameObject;
+                            front = front.transform.Find("trape_2 1").gameObject;
+                        }
+                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
+                        {
+                            front = m_CentreModels.m_OneLookCell.transform.Find("trap_2").gameObject;
                             front = front.transform.Find("trape_2 1").gameObject;
                         }
 
@@ -2034,6 +2102,12 @@ public class TheCellGameMgr : MonoBehaviour
                             StartCoroutine(OpenShutters(point, front, back));
                         }
                         else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
+                        {
+                            back = back.transform.Find("trap_3").gameObject;
+                            back = back.transform.Find("trape_2 2").gameObject;
+                            StartCoroutine(OpenShutters(point, front, back));
+                        }
+                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
                         {
                             back = back.transform.Find("trap_3").gameObject;
                             back = back.transform.Find("trape_2 2").gameObject;
@@ -2330,11 +2404,15 @@ public class TheCellGameMgr : MonoBehaviour
         ElemReceiver rC = m_GroupElements.transform.Find("CubeFeedC").GetComponent<ElemReceiver>();
         ElemReceiver rD = m_GroupElements.transform.Find("CubeFeedD").GetComponent<ElemReceiver>();
 
+        List<int> pickedNb = new List<int>(4);
         List<GameObject> cubes = new List<GameObject>(4);
-        // Pick 4 elements randomly
-        for (int i = 0; i < 4; ++i)
+        // Pick 4 uniq elements randomly
+        while (cubes.Count < 4)
         {
             int rnd = UnityEngine.Random.Range(0, m_ElemCubes.Count);
+            if (pickedNb.Contains(rnd))
+                continue;
+            pickedNb.Add(rnd);
             GameObject c = m_ElemCubes[rnd];
             cubes.Add(c);
         }
@@ -2379,6 +2457,35 @@ public class TheCellGameMgr : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {hatchModel.name} is open.");
+    }
+
+
+    public IEnumerator RaiseWaterLevel()
+    {
+        GameObject water = null;
+        GameObject waterStuff = null;
+        water = m_CentreModels.m_WaterCell.transform.Find("ground_all/water").gameObject;
+        waterStuff = m_CentreModels.m_WaterCell.transform.Find("ground_all/water_stuff").gameObject;
+        if ((water == null) || (waterStuff == null))
+        {
+            Debug.LogWarning($"{transform.name}, {water} & {waterStuff}");
+            yield return 0;
+        }
+
+        //--- Snd ---
+        //Audio_Bank[5].transform.SetParent(hatchModel.transform);
+        //Audio_Bank[5].Play();
+        //--- Snd ---
+
+        float startTime = Time.time;
+        while (Time.time - startTime < 3.5f)
+        {
+            water.transform.position += new Vector3(0.0f, Time.fixedDeltaTime * 0.4f, 0.0f);
+            waterStuff.transform.position += new Vector3(0.0f, Time.fixedDeltaTime * 0.4f, 0.0f);
+            //Debug.Log($"raising {water.name} @ {Time.fixedTime}s.");
+            yield return new WaitForFixedUpdate();
+        }
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {water.name} is raised.");
     }
 
 

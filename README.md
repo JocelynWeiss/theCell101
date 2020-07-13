@@ -35,6 +35,8 @@ You can check for the list of connected devices using:
 ``` adb devices ```  
 You can create connections again to check devices:  
 ``` adb kill-server ```
+If need to uninstall:
+``` adb uninstall "com.StudioHG.TheCell" ```
 
 ---------------------------------------------  
   

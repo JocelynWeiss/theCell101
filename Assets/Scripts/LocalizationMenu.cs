@@ -25,7 +25,7 @@ public class LocalizationMenu : MonoBehaviour
                         break;
                 }
 
-                TheCellGameMgr.instance.TeleportToStart();
+                TheCellGameMgr.instance.TeleportToStart(true);
                 m_StartButton.m_IsReady = false;
                 GameObject.Find("LocalizationMenu").gameObject.SetActive(false); // Hide loc
                 TheCellGameMgr.instance.m_codes.SetActive(true);

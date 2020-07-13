@@ -7,6 +7,7 @@ public class DoorHandsTrigger : MonoBehaviour
 {
     // Which door is it opening
     public TheCellGameMgr.CardinalPoint m_cardinal;
+    public float m_timeToTrigger = 1.0f; // in sec
 
     private Renderer m_renderer;
 
@@ -114,7 +115,7 @@ public class DoorHandsTrigger : MonoBehaviour
                 return;
             }
 
-            if (Time.fixedTime - m_bothIn < 1.5f)
+            if (Time.fixedTime - m_bothIn < m_timeToTrigger)
             {
                 //wait
             }

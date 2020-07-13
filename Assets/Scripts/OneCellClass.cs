@@ -351,9 +351,12 @@ public class OneCellClass : MonoBehaviour
                 StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
-                //case TheCellGameMgr.CellSubTypes.Water:  //JowTodo: Put back
                 TheCellGameMgr.instance.m_FxGaz.SetActive(true);
                 StartCoroutine(DelayedDeath());
+                break;
+            case TheCellGameMgr.CellSubTypes.Water:
+                StartCoroutine(TheCellGameMgr.instance.RaiseWaterLevel());
+                StartCoroutine(DelayedDeath(4.0f));
                 break;
             case TheCellGameMgr.CellSubTypes.Blind:
                 TheCellGameMgr.instance.m_ViewLeft = 0;
@@ -404,12 +407,12 @@ public class OneCellClass : MonoBehaviour
     }
 
 
-    private IEnumerator DelayedDeath()
+    private IEnumerator DelayedDeath(float seconds = 3.0f)
     {
         AudioSource snd = TheCellGameMgr.instance.Audio_Bank[0];
         snd.Play();
 
-        yield return new WaitForSecondsRealtime(3.0f);
+        yield return new WaitForSecondsRealtime(seconds);
 
         Debug.Log($"[OneCellClass] Kill the player sub {cellSubType}, go back at start. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
         TheCellGameMgr.instance.IncreaseDeath();
@@ -427,7 +430,9 @@ public class OneCellClass : MonoBehaviour
         StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
 
         StartCoroutine(TeleportToStart());
-        TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+
+        if (cellSubType != TheCellGameMgr.CellSubTypes.Water)
+            TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
     }
 
 

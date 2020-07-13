@@ -21,6 +21,7 @@ public class CellsModels : MonoBehaviour
         LaserM,
         GazM,
         PlanM,
+        OneLook,
     }
 
     [ViewOnly] public GameObject m_EntryCell;  // The starting room
@@ -33,6 +34,7 @@ public class CellsModels : MonoBehaviour
     [ViewOnly] public GameObject m_LaserCell;   // The laser cell model
     [ViewOnly] public GameObject m_GazCell;     // The gaz cell model
     [ViewOnly] public GameObject m_PlanCell;    // The screen cell model
+    [ViewOnly] public GameObject m_OneLookCell; // The screen cell model
     [ViewOnly] public Light m_light_N;
     [ViewOnly] public Light m_light_E;
     [ViewOnly] public Light m_light_S;
@@ -80,6 +82,9 @@ public class CellsModels : MonoBehaviour
             case CellsModelsType.PlanM:
                 obj = m_PlanCell;
                 break;
+            case CellsModelsType.OneLook:
+                obj = m_OneLookCell;
+                break;
         }
 
         return obj;
@@ -115,7 +120,7 @@ public class CellsModels : MonoBehaviour
                             SetActiveModel(CellsModelsType.IllusionM);
                             break;
                         case TheCellGameMgr.CellSubTypes.OneLook:
-                            SetActiveModel(CellsModelsType.BlindM);
+                            SetActiveModel(CellsModelsType.OneLook);
                             break;
                         case TheCellGameMgr.CellSubTypes.Water:
                             SetActiveModel(CellsModelsType.WaterM);
@@ -173,6 +178,8 @@ public class CellsModels : MonoBehaviour
             m_GazCell.SetActive(false);
         if (m_PlanCell)
             m_PlanCell.SetActive(false);
+        if (m_OneLookCell)
+            m_OneLookCell.SetActive(false);
 
         GameObject current = null;
         switch (newType)
@@ -218,6 +225,10 @@ public class CellsModels : MonoBehaviour
             case CellsModelsType.PlanM:
                 m_PlanCell.SetActive(true);
                 current = m_PlanCell;
+                break;
+            case CellsModelsType.OneLook:
+                m_OneLookCell.SetActive(true);
+                current = m_OneLookCell;
                 break;
             default:
                 Debug.LogWarning($"Wrong model type in SetActiveModel: {newType}");

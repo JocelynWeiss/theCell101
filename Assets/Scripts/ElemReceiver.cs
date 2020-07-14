@@ -31,7 +31,7 @@ public class ElemReceiver : MonoBehaviour
             return;
         }
 
-        GameObject t0 = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(0).gameObject;
+        //GameObject t0 = TheCellGameMgr.instance.m_basicCanvas.transform.GetChild(0).gameObject;
         //t0.GetComponent<TextMeshProUGUI>().text = other.tag;
         //t0.GetComponent<TextMeshProUGUI>().text = other.name;
 
@@ -40,7 +40,8 @@ public class ElemReceiver : MonoBehaviour
             m_LastCollider = other;
             Material meshMaterial = m_renderer.material;
             meshMaterial.SetColor("_BaseColor", Color.red);
-            t0.GetComponent<TextMeshProUGUI>().text = other.name;
+            
+            //t0.GetComponent<TextMeshProUGUI>().text = other.name;
         }
     }
 

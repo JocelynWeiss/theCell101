@@ -112,6 +112,8 @@ public class MechanismMove : MonoBehaviour
             {
                 m_forceActionning = false;
                 m_autoMove = false;
+                m_leftIndexIn = false;
+                m_rightIndexIn = false;
                 if (m_actionTriggered)
                 {
                     return;

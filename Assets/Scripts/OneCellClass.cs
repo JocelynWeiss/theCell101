@@ -555,23 +555,43 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CardinalPoint.North:
                 {
                     NorthDoor.SetActive(enable);
+                    if (enable)
+                    {
+                        StartCoroutine(DoorHandsTrigger.LitupConsole(NorthDoor));
+                    }
                     break;
                 }
             case TheCellGameMgr.CardinalPoint.East:
                 {
                     EastDoor.SetActive(enable);
+                    if (enable)
+                    {
+                        StartCoroutine(DoorHandsTrigger.LitupConsole(EastDoor));
+                    }
                     break;
                 }
             case TheCellGameMgr.CardinalPoint.South:
                 {
                     SouthDoor.SetActive(enable);
+                    if (enable)
+                    {
+                        StartCoroutine(DoorHandsTrigger.LitupConsole(SouthDoor));
+                    }
                     break;
                 }
             case TheCellGameMgr.CardinalPoint.West:
                 {
                     WestDoor.SetActive(enable);
+                    if (enable)
+                    {
+                        StartCoroutine(DoorHandsTrigger.LitupConsole(WestDoor));
+                    }
                     break;
                 }
         }
     }
+
+
+    // ---
+    // ---
 }

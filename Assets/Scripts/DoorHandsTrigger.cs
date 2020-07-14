@@ -19,10 +19,20 @@ public class DoorHandsTrigger : MonoBehaviour
     private float m_goingOutStartTime = 0.0f;
 
 
+    private void Awake()
+    {
+        m_renderer = GetComponent<Renderer>();
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        m_renderer = GetComponent<Renderer>();
+        if (m_renderer == null)
+        {
+            m_renderer = GetComponent<Renderer>();
+        }
+
         m_isIndexStaying = new bool[2] { false, false };
         m_goingOutStartTime = 0.0f;
         m_bothIn = 0.0f;
@@ -203,4 +213,25 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.Audio_Bank[10].Play();
         m_renderer.enabled = false;
     }
+
+
+    // ---
+    public static IEnumerator LitupConsole(GameObject obj)
+    {
+        DoorHandsTrigger door = obj.GetComponent<DoorHandsTrigger>();
+        if (door == null)
+            yield return null;
+
+        float startTime = Time.time;
+        float intensity = 0.0f;
+        while (intensity < 0.3f)
+        {
+            intensity += Time.fixedDeltaTime;
+            door.m_renderer.material.SetFloat("_Intensity", intensity);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+
+    // ---
 }

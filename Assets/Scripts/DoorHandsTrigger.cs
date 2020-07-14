@@ -152,7 +152,7 @@ public class DoorHandsTrigger : MonoBehaviour
 
             if ((m_isIndexStaying[0] == true) && (m_isIndexStaying[1] == true))
             {
-                m_renderer.material.SetColor("_TintColor", Color.red);
+                m_renderer.material.SetColor("_TintColor", Color.green);
                 if (m_goingOutStartTime == 0.0f)
                 {
                     TheCellGameMgr.instance.Audio_Bank[17].Play();
@@ -166,7 +166,7 @@ public class DoorHandsTrigger : MonoBehaviour
             }
             else if (m_isIndexStaying[1] == true)
             {
-                m_renderer.material.SetColor("_TintColor", Color.green);
+                m_renderer.material.SetColor("_TintColor", Color.blue);
                 m_goingOutStartTime = 0.0f;
             }
             else

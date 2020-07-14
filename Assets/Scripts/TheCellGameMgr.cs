@@ -279,6 +279,7 @@ public class TheCellGameMgr : MonoBehaviour
         int n = m_basicCanvas.transform.childCount;
         GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
         directions.GetComponent<TextMeshProUGUI>().text = $"Bonne journée\n {Time.fixedTime}s";
+        m_basicCanvas.enabled = false;
 
         // Init hands
         m_hands[0].handType = OVRHand.Hand.HandLeft;
@@ -1042,10 +1043,10 @@ public class TheCellGameMgr : MonoBehaviour
                             rec.transform.localRotation = Quaternion.identity;
 
                             // Compensate because I cannot set rec pos properly:
-                            rec0.SetPositionAndRotation(new Vector3(-1.0f, 1.1f, -4.27f), Quaternion.Euler(0.0f, -180.0f, 0.0f));
+                            rec0.SetPositionAndRotation(new Vector3(-1.25f, 1.1f, -4.27f), Quaternion.Euler(0.0f, -180.0f, 0.0f));
 
                             TextMeshProUGUI tmp = intro.GetComponent<TextMeshProUGUI>();
-                            tmp.fontSize = 0.5f;
+                            tmp.fontSize = 0.35f;
                             tmp.color = Color.green;
                             string duration = Mathf.Floor(gameDur / 60.0f).ToString("00") + "m";
                             duration += (gameDur % 60.0f).ToString("00") + "s";

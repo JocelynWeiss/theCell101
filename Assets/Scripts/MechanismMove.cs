@@ -10,11 +10,13 @@ public class MechanismMove : MonoBehaviour
     public float m_BackSpeedFactor = 100.0f;
     [ViewOnly] public bool m_modelSet = false;
     [ViewOnly] public bool m_forceActionning = false;   // Will do as if player was actionning the mechanism
+    [ViewOnly] public bool m_autoMove = false;
     private bool m_actionTriggered = false;
     bool m_rightIndexIn = false;
     bool m_leftIndexIn = false;
     public bool m_IsOn = true;
-    public float m_TriggerPoint = -0.5f; // in rad
+    public float m_TriggerPoint = -0.1f; // in rad
+    public float m_TriggerFinal = -0.5f; // in rad
 
 
     private void Awake()
@@ -59,6 +61,8 @@ public class MechanismMove : MonoBehaviour
 
         //Debug.Log($"[MechanismMove] Awake-> {transform.name}\\{transform.parent.name}");
         //gameObject.SetActive(false);
+
+        m_TriggerPoint = -0.05f;
     }
 
 
@@ -92,7 +96,7 @@ public class MechanismMove : MonoBehaviour
         }
 
         AudioSource snd = TheCellGameMgr.instance.Audio_UseLevers;
-        if ((actionning) || (m_forceActionning))
+        if ((actionning) || (m_forceActionning) || (m_autoMove))
         {
             //--- Snd ---
             if ((snd.isPlaying == false) && (m_actionTriggered == false))
@@ -104,8 +108,10 @@ public class MechanismMove : MonoBehaviour
             //--- Snd ---
 
             float ex = transform.localRotation.x;
-            if (ex < m_TriggerPoint)
+            if (ex < m_TriggerFinal)
             {
+                m_forceActionning = false;
+                m_autoMove = false;
                 if (m_actionTriggered)
                 {
                     return;
@@ -116,10 +122,15 @@ public class MechanismMove : MonoBehaviour
                     {
                         snd.Stop();
                     }
-                    
+
                     m_actionTriggered = TriggerAction();
                     return;
                 }
+            }
+
+            if (ex < m_TriggerPoint)
+            {
+                m_autoMove = true;
             }
 
             //Debug.Log($"==============-> {transform.name}: {m_IsOn} {transform.rotation.eulerAngles}   {transform.localRotation}");

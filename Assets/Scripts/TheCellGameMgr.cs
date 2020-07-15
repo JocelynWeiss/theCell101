@@ -410,7 +410,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 #if UNITY_EDITOR
         GameObject cam = GameObject.Find("OVRCameraRig").gameObject;
-        cam.transform.position = new Vector3(0.0f, 1.0f, -0.5f);
+        cam.transform.position = new Vector3(0.0f, 1.3f, -0.5f);
 #endif
 
         if (m_ScreenCard != null)
@@ -592,8 +592,11 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_OneLookCell.transform.SetParent(m_CentreModels.transform);
 
             // Save initial water position
-            m_waterLevel = m_CentreModels.m_WaterCell.transform.Find("ground_all/water").position;
+            Transform waterT = m_CentreModels.m_WaterCell.transform.Find("ground_all/water");
+            m_waterLevel = waterT.position;
             m_waterStuffLevel = m_CentreModels.m_WaterCell.transform.Find("ground_all/water_stuff").position;
+            m_FxWater.transform.parent = waterT;
+            m_FxWater.transform.localPosition = m_FxWater.transform.localPosition + new Vector3(0.0f, -3.0f, 0.0f);
 
             m_NorthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
             m_NorthModels.m_GenCellA.SetActive(true);

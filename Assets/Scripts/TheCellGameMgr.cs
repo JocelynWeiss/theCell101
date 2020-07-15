@@ -200,6 +200,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_FxLasers;
     public GameObject m_FxIllusion;
     public GameObject m_FxEmber;
+    public GameObject m_FxWater;
 
     List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
@@ -209,6 +210,13 @@ public class TheCellGameMgr : MonoBehaviour
     private List<GameObject> m_ElemCubes = new List<GameObject>();
     public int m_ElemCubeNb = 16;
     //--- Grabbables ---
+
+    //--- Consoles ---
+    public GameObject m_Console_N;
+    public GameObject m_Console_E;
+    public GameObject m_Console_S;
+    public GameObject m_Console_W;
+    //--- Consoles ---
 
 
     void Awake()
@@ -267,6 +275,12 @@ public class TheCellGameMgr : MonoBehaviour
         GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
         intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["entry_room_1"];
         m_AllNotes.enabled = false;
+
+        // Hide consoles
+        m_Console_N.SetActive(false);
+        m_Console_E.SetActive(false);
+        m_Console_S.SetActive(false);
+        m_Console_W.SetActive(false);
     }
 
 
@@ -1025,8 +1039,8 @@ public class TheCellGameMgr : MonoBehaviour
                             StartCoroutine(OpenExitHatch());
 
                             OneCellClass exitCell = GetCurrentCell();
-                            exitCell.NorthDoor.SetActive(false);
-                            exitCell.EastDoor.SetActive(false);
+                            //exitCell.NorthDoor.SetActive(false);
+                            //exitCell.EastDoor.SetActive(false);
                             exitCell.SouthDoor.SetActive(false);
                             exitCell.WestDoor.SetActive(false);
 

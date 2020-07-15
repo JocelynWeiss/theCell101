@@ -46,7 +46,7 @@ public class DoorHandsTrigger : MonoBehaviour
         if ((Input.GetKeyUp(KeyCode.UpArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.North))
         {
             TheCellGameMgr.instance.Audio_Bank[17].Play();
-            m_renderer.material.SetColor("_TintColor", Color.red);
+            m_renderer.material.SetColor("_TintColor", Color.green);
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
@@ -54,7 +54,7 @@ public class DoorHandsTrigger : MonoBehaviour
         if ((Input.GetKeyUp(KeyCode.RightArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.East))
         {
             TheCellGameMgr.instance.Audio_Bank[17].Play();
-            m_renderer.material.SetColor("_TintColor", Color.red);
+            m_renderer.material.SetColor("_TintColor", Color.green);
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
@@ -62,7 +62,7 @@ public class DoorHandsTrigger : MonoBehaviour
         if ((Input.GetKeyUp(KeyCode.DownArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.South))
         {
             TheCellGameMgr.instance.Audio_Bank[17].Play();
-            m_renderer.material.SetColor("_TintColor", Color.red);
+            m_renderer.material.SetColor("_TintColor", Color.green);
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
@@ -70,7 +70,7 @@ public class DoorHandsTrigger : MonoBehaviour
         if ((Input.GetKeyUp(KeyCode.LeftArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.West))
         {
             TheCellGameMgr.instance.Audio_Bank[17].Play();
-            m_renderer.material.SetColor("_TintColor", Color.red);
+            m_renderer.material.SetColor("_TintColor", Color.green);
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
@@ -139,6 +139,9 @@ public class DoorHandsTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        if (m_goingOutStartTime != 0.0f)
+            return;
+
         //get hand associated with trigger
         int handIdx = TheCellGameMgr.instance.GetFingerHandId(collider, OVRPlugin.BoneId.Hand_Index3);
         //m_goingOutStartTime = 0.0f;
@@ -147,32 +150,32 @@ public class DoorHandsTrigger : MonoBehaviour
         //change the color of the cube accordingly (blue for left hand, green for right one)
         if (handIdx != -1)
         {
-            //m_renderer.material.color = handIdx == 0 ? m_renderer.material.color = Color.blue : m_renderer.material.color = Color.green;
             m_isIndexStaying[handIdx] = true;
+
+            if (TheCellGameMgr.instance.Audio_Bank[17].isPlaying == false)
+            {
+                TheCellGameMgr.instance.Audio_Bank[17].Play();
+            }
 
             if ((m_isIndexStaying[0] == true) && (m_isIndexStaying[1] == true))
             {
                 m_renderer.material.SetColor("_TintColor", Color.green);
                 if (m_goingOutStartTime == 0.0f)
                 {
-                    TheCellGameMgr.instance.Audio_Bank[17].Play();
                     m_bothIn = Time.fixedTime;
                 }
             }
             else if (m_isIndexStaying[0] == true)
             {
                 m_renderer.material.SetColor("_TintColor", Color.blue);
-                m_goingOutStartTime = 0.0f;
             }
             else if (m_isIndexStaying[1] == true)
             {
                 m_renderer.material.SetColor("_TintColor", Color.blue);
-                m_goingOutStartTime = 0.0f;
             }
             else
             {
                 m_renderer.material.SetColor("_TintColor", Color.cyan);
-                m_goingOutStartTime = 0.0f;
             }
         }
     }
@@ -212,6 +215,10 @@ public class DoorHandsTrigger : MonoBehaviour
         m_goingOutStartTime = Time.fixedTime;
         TheCellGameMgr.instance.Audio_Bank[10].Play();
         m_renderer.enabled = false;
+        TheCellGameMgr.instance.m_Console_N.SetActive(false);
+        TheCellGameMgr.instance.m_Console_E.SetActive(false);
+        TheCellGameMgr.instance.m_Console_S.SetActive(false);
+        TheCellGameMgr.instance.m_Console_W.SetActive(false);
     }
 
 

@@ -543,13 +543,14 @@ public class OneCellClass : MonoBehaviour
 
 
     // Activate door system after few secs
-    IEnumerator ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint cardinal, bool enable)
+    public IEnumerator ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint cardinal, bool enable, float delay = 2.0f)
     {
-        yield return new WaitForSecondsRealtime(2.0f);
+        yield return new WaitForSecondsRealtime(delay);
 
         if (cellType == TheCellGameMgr.CellTypes.Exit)
             enable = false; // Deactivate doors in exit room
 
+        Debug.Log($"{name} {cardinal} set {enable} @ {Time.fixedTime}s");
         switch (cardinal)
         {
             case TheCellGameMgr.CardinalPoint.North:
@@ -559,6 +560,7 @@ public class OneCellClass : MonoBehaviour
                     {
                         StartCoroutine(DoorHandsTrigger.LitupConsole(NorthDoor));
                     }
+                    TheCellGameMgr.instance.m_Console_N.SetActive(enable);
                     break;
                 }
             case TheCellGameMgr.CardinalPoint.East:
@@ -568,6 +570,7 @@ public class OneCellClass : MonoBehaviour
                     {
                         StartCoroutine(DoorHandsTrigger.LitupConsole(EastDoor));
                     }
+                    TheCellGameMgr.instance.m_Console_E.SetActive(enable);
                     break;
                 }
             case TheCellGameMgr.CardinalPoint.South:
@@ -577,6 +580,7 @@ public class OneCellClass : MonoBehaviour
                     {
                         StartCoroutine(DoorHandsTrigger.LitupConsole(SouthDoor));
                     }
+                    TheCellGameMgr.instance.m_Console_S.SetActive(enable);
                     break;
                 }
             case TheCellGameMgr.CardinalPoint.West:
@@ -586,6 +590,7 @@ public class OneCellClass : MonoBehaviour
                     {
                         StartCoroutine(DoorHandsTrigger.LitupConsole(WestDoor));
                     }
+                    TheCellGameMgr.instance.m_Console_W.SetActive(enable);
                     break;
                 }
         }

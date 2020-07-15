@@ -230,6 +230,7 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Water:
                 TheCellGameMgr.instance.Audio_Bank[20].Stop();
+                TheCellGameMgr.instance.m_FxWater.SetActive(false);
                 break;
             default:
                 break;
@@ -363,6 +364,7 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Water:
                 TheCellGameMgr.instance.Audio_Bank[20].Play();
+                TheCellGameMgr.instance.m_FxWater.SetActive(true);
                 StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 21));
                 StartCoroutine(TheCellGameMgr.instance.RaiseWaterLevel());
                 StartCoroutine(DelayedDeath(4.0f, false));
@@ -550,7 +552,7 @@ public class OneCellClass : MonoBehaviour
         if (cellType == TheCellGameMgr.CellTypes.Exit)
             enable = false; // Deactivate doors in exit room
 
-        Debug.Log($"{name} {cardinal} set {enable} @ {Time.fixedTime}s");
+        //Debug.Log($"{name} {cardinal} set {enable} @ {Time.fixedTime}s");
         switch (cardinal)
         {
             case TheCellGameMgr.CardinalPoint.North:

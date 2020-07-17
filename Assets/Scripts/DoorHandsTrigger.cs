@@ -76,6 +76,31 @@ public class DoorHandsTrigger : MonoBehaviour
             m_bothIn = Time.fixedTime;
         }
 #endif
+
+        if (m_goingOutStartTime != 0.0f)
+        {
+            Vector3 vel = Vector3.zero;
+            switch (m_cardinal)
+            {
+                case TheCellGameMgr.CardinalPoint.North:
+                    vel.z = -0.5f;
+                    break;
+                case TheCellGameMgr.CardinalPoint.East:
+                    vel.x = -0.5f;
+                    break;
+                case TheCellGameMgr.CardinalPoint.South:
+                    vel.z = 0.5f;
+                    break;
+                case TheCellGameMgr.CardinalPoint.West:
+                    vel.x = 0.5f;
+                    break;
+            }
+            TheCellGameMgr.instance.m_CentreModels.transform.position += vel * Time.deltaTime;
+            TheCellGameMgr.instance.m_NorthModels.transform.position += vel * Time.deltaTime;
+            TheCellGameMgr.instance.m_EastModels.transform.position += vel * Time.deltaTime;
+            TheCellGameMgr.instance.m_SouthModels.transform.position += vel * Time.deltaTime;
+            TheCellGameMgr.instance.m_WestModels.transform.position += vel * Time.deltaTime;
+        }
     }
 
 
@@ -96,6 +121,11 @@ public class DoorHandsTrigger : MonoBehaviour
                 TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity = 0.6f;
                 TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity = 0.6f;
                 TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity = 0.6f;
+                TheCellGameMgr.instance.m_CentreModels.transform.position = Vector3.zero;
+                TheCellGameMgr.instance.m_NorthModels.transform.position = new Vector3(0.0f, 0.0f, 2.9f);
+                TheCellGameMgr.instance.m_EastModels.transform.position = new Vector3(2.9f, 0.0f, 0.0f);
+                TheCellGameMgr.instance.m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);
+                TheCellGameMgr.instance.m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
                 m_renderer.material.SetColor("_TintColor", Color.cyan);
                 m_renderer.enabled = true;
 

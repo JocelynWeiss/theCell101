@@ -159,6 +159,8 @@ public class TheCellGameMgr : MonoBehaviour
     public CellsModels m_SouthModels;
     public CellsModels m_WestModels;
 
+    public List<Material> m_ScreenMats;
+
     public GameObject Snd_OpenShutters;
     private AudioSource Audio_OpenShutters;
 
@@ -262,7 +264,7 @@ public class TheCellGameMgr : MonoBehaviour
             //GameObject obj = GameObject.Instantiate(m_ElementPrefab);
             GameObject obj = GameObject.Instantiate(m_ElementPrefab, m_GroupElements.transform);
             obj.name = $"Elem_{i}";
-            Vector3 pos = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-1.0f, 1.0f));
+            Vector3 pos = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-0.8f, 1.0f));
             pos.y = UnityEngine.Random.Range(1.0f, 2.0f);
             obj.transform.SetPositionAndRotation(pos, Quaternion.Euler(pos * 360.0f));
             obj.SetActive(true);
@@ -1750,12 +1752,12 @@ public class TheCellGameMgr : MonoBehaviour
                             front = front.transform.Find("trape_1").gameObject;
                         }
 
-                        // Jow: Make sure the back is set considering the right active model as for the front
+                        // Make sure the back is set considering the right active model as for the front
                         GameObject back = m_NorthModels.GetActiveModel();
                         if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.Entry)
                         {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
+                            back = back.transform.Find("Trap_1").gameObject;
+                            back = back.transform.Find("trape_1").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
                         }
                         else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.GenA)
@@ -2695,6 +2697,7 @@ public class TheCellGameMgr : MonoBehaviour
             MeshRenderer mr = card.GetComponent<MeshRenderer>();
             if (mr != null)
             {
+                /*
                 Color col = Color.red;
                 CellTypes type = allCells[lookupTab[id]].cellType;
                 if (type == CellTypes.Start)
@@ -2707,9 +2710,84 @@ public class TheCellGameMgr : MonoBehaviour
                     col = Color.yellow;
 
                 mr.material.SetColor("_BaseColor", col);
+                */
+
+                CellTypes type = allCells[lookupTab[id]].cellType;
+                CellSubTypes subtype = allCells[lookupTab[id]].cellSubType;
+                mr.material = GetScreenMat(type, subtype);
+
+                /*
+                Color col = Color.yellow;
+                mr.material.EnableKeyword("_EMISSION");
+                mr.material.SetColor("_EmissionColor", col);
+                */
             }
             id++;
         }
+    }
+
+
+    // Return the good screen card material from types
+    Material GetScreenMat(CellTypes type, CellSubTypes subType)
+    {
+        Material matos = null;
+        if (m_ScreenMats.Count == 0)
+            return matos;
+
+        switch (type)
+        {
+            case CellTypes.Start:
+                matos = m_ScreenMats[9];
+                break;
+            case CellTypes.Exit:
+                matos = m_ScreenMats[3];
+                break;
+            case CellTypes.Safe:
+            case CellTypes.Deadly:
+            case CellTypes.Undefined:
+            case CellTypes.Effect:
+                {
+                    switch (subType)
+                    {
+                        case CellSubTypes.Blind:
+                            matos = m_ScreenMats[1];
+                            break;
+                        case CellSubTypes.Fire:
+                            matos = m_ScreenMats[4];
+                            break;
+                        case CellSubTypes.Empty:
+                            matos = m_ScreenMats[8];
+                            break;
+                        case CellSubTypes.Gaz:
+                            matos = m_ScreenMats[5];
+                            break;
+                        case CellSubTypes.Illusion:
+                            matos = m_ScreenMats[6];
+                            break;
+                        case CellSubTypes.Lasers:
+                            matos = m_ScreenMats[7];
+                            break;
+                        case CellSubTypes.OneLook:
+                            matos = m_ScreenMats[0];
+                            break;
+                        case CellSubTypes.Screen:
+                            matos = m_ScreenMats[2];
+                            break;
+                        case CellSubTypes.Tunnel:
+                            matos = m_ScreenMats[10];
+                            break;
+                        case CellSubTypes.Vortex:
+                            matos = m_ScreenMats[11];
+                            break;
+                        case CellSubTypes.Water:
+                            matos = m_ScreenMats[12];
+                            break;
+                    }
+                }
+                break;
+        }
+
+        return matos;
     }
 
 

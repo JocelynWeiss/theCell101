@@ -32,6 +32,7 @@ public class DoorHandsTrigger : MonoBehaviour
         {
             m_renderer = GetComponent<Renderer>();
         }
+        m_renderer.enabled = false;
 
         m_isIndexStaying = new bool[2] { false, false };
         m_goingOutStartTime = 0.0f;
@@ -50,6 +51,10 @@ public class DoorHandsTrigger : MonoBehaviour
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
+
+            Transform t = TheCellGameMgr.instance.m_Console_N.transform.Find("Lhand");
+            Renderer r = t.GetComponent<Renderer>();
+            r.material.SetColor("_BaseColor", Color.green);
         }
         if ((Input.GetKeyUp(KeyCode.RightArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.East))
         {
@@ -127,7 +132,7 @@ public class DoorHandsTrigger : MonoBehaviour
                 TheCellGameMgr.instance.m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);
                 TheCellGameMgr.instance.m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
                 m_renderer.material.SetColor("_TintColor", Color.cyan);
-                m_renderer.enabled = true;
+                //m_renderer.enabled = true;
 
                 switch (m_cardinal)
                 {
@@ -249,6 +254,21 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.m_Console_E.SetActive(false);
         TheCellGameMgr.instance.m_Console_S.SetActive(false);
         TheCellGameMgr.instance.m_Console_W.SetActive(false);
+
+        GameObject front = TheCellGameMgr.instance.GetShutterPerCardinal(m_cardinal, TheCellGameMgr.instance.m_CentreModels);
+        GameObject back = null;
+        if (m_cardinal == TheCellGameMgr.CardinalPoint.North)
+            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_NorthModels);
+        else if (m_cardinal == TheCellGameMgr.CardinalPoint.East)
+            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_EastModels);
+        else if (m_cardinal == TheCellGameMgr.CardinalPoint.South)
+            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_SouthModels);
+        else if (m_cardinal == TheCellGameMgr.CardinalPoint.West)
+            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_WestModels);
+        if ((front != null) && (back != null))
+        {
+            StartCoroutine(TheCellGameMgr.instance.AnimateShutters(m_cardinal, front, back));
+        }
     }
 
 

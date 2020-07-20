@@ -1710,8 +1710,6 @@ public class TheCellGameMgr : MonoBehaviour
             return;
         }
 
-        m_ViewLeft--;
-
         switch (point)
         {
             case CardinalPoint.North:
@@ -1720,93 +1718,12 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_N = true;
 
-                        GameObject front = null;
-                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        GameObject front = GetShutterPerCardinal(point, m_CentreModels);
+                        GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_NorthModels);
+                        if ((front != null) && (back != null))
                         {
-                            front = m_CentreModels.m_EntryCell.transform.Find("trap_0").gameObject;
-                            front = front.transform.Find("trape_2").gameObject;
-                        }
-                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_GenCellA.transform.Find("Trap_1").gameObject;
-                            front = front.transform.Find("trape_1").gameObject;
-                        }
-                        else if (m_CentreModels.m_IllusionCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_IllusionCell.transform.Find("Trap_1").gameObject;
-                            front = front.transform.Find("trape_1").gameObject;
-                        }
-                        else if (m_CentreModels.m_BlindCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_BlindCell.transform.Find("Trap_1").gameObject;
-                            front = front.transform.Find("trape_1").gameObject;
-                        }
-                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_PlanCell.transform.Find("Trap_1").gameObject;
-                            front = front.transform.Find("trape_1").gameObject;
-                        }
-                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_OneLookCell.transform.Find("Trap_1").gameObject;
-                            front = front.transform.Find("trape_1").gameObject;
-                        }
-
-                        // Make sure the back is set considering the right active model as for the front
-                        GameObject back = m_NorthModels.GetActiveModel();
-                        if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.Entry)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.GenA)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.BlindM)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.IllusionM)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_0").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.WaterM)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.LaserM)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.GazM)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_NorthModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
+                            m_ViewLeft--;
                         }
                         else
                         {
@@ -1826,98 +1743,12 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_E = true;
 
-                        GameObject front = null;
-                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        GameObject front = GetShutterPerCardinal(point, m_CentreModels);
+                        GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_EastModels);
+                        if ((front != null) && (back != null))
                         {
-                            front = m_CentreModels.m_EntryCell.transform.Find("trap_2").gameObject;
-                            front = front.transform.Find("trape_2 1").gameObject;
-                        }
-                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_GenCellA.transform.Find("trap_3").gameObject;
-                            front = front.transform.Find("trape_2 2").gameObject;
-                        }
-                        else if (m_CentreModels.m_IllusionCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_IllusionCell.transform.Find("trap_3").gameObject;
-                            front = front.transform.Find("trape_3").gameObject;
-                        }
-                        else if (m_CentreModels.m_BlindCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_BlindCell.transform.Find("trap_3").gameObject;
-                            front = front.transform.Find("trape_2 2").gameObject;
-                        }
-                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_PlanCell.transform.Find("trap_3").gameObject;
-                            front = front.transform.Find("trape_2 2").gameObject;
-                        }
-                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_OneLookCell.transform.Find("trap_3").gameObject;
-                            front = front.transform.Find("trape_2 2").gameObject;
-                        }
-
-                        GameObject back = m_EastModels.GetActiveModel();
-                        if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.Entry)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 2").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.GenA)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.Exit)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.BlindM)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.IllusionM)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.WaterM)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.LaserM)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.GazM)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_EastModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
+                            m_ViewLeft--;
                         }
                         else
                         {
@@ -1937,92 +1768,12 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_S = true;
 
-                        GameObject front = null;
-                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        GameObject front = GetShutterPerCardinal(point, m_CentreModels);
+                        GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_SouthModels);
+                        if ((front != null) && (back != null))
                         {
-                            front = m_CentreModels.m_EntryCell.transform.Find("Trap_1").gameObject;
-                            front = front.transform.Find("trape_1").gameObject;
-                        }
-                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_GenCellA.transform.Find("trap_0").gameObject;
-                            front = front.transform.Find("trape_2").gameObject;
-                        }
-                        else if (m_CentreModels.m_IllusionCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_IllusionCell.transform.Find("trap_0").gameObject;
-                            front = front.transform.Find("trape_0").gameObject;
-                        }
-                        else if (m_CentreModels.m_BlindCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_BlindCell.transform.Find("trap_0").gameObject;
-                            front = front.transform.Find("trape_2").gameObject;
-                        }
-                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_PlanCell.transform.Find("trap_0").gameObject;
-                            front = front.transform.Find("trape_2").gameObject;
-                        }
-                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_OneLookCell.transform.Find("trap_0").gameObject;
-                            front = front.transform.Find("trape_2").gameObject;
-                        }
-
-                        GameObject back = m_SouthModels.GetActiveModel();
-                        if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.Entry)
-                        {
-                            back = back.transform.Find("trap_0").gameObject;
-                            back = back.transform.Find("trape_2").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.GenA)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.BlindM)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.IllusionM)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.WaterM)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.LaserM)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.GazM)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_SouthModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
-                        {
-                            back = back.transform.Find("Trap_1").gameObject;
-                            back = back.transform.Find("trape_1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
+                            m_ViewLeft--;
                         }
                         else
                         {
@@ -2042,98 +1793,12 @@ public class TheCellGameMgr : MonoBehaviour
                     {
                         m_displayCell_W = true;
 
-                        GameObject front = null;
-                        if (m_CentreModels.m_EntryCell.activeSelf == true)
+                        GameObject front = GetShutterPerCardinal(point, m_CentreModels);
+                        GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_WestModels);
+                        if ((front != null) && (back != null))
                         {
-                            front = m_CentreModels.m_EntryCell.transform.Find("trap_3").gameObject;
-                            front = front.transform.Find("trape_2 2").gameObject;
-                        }
-                        else if (m_CentreModels.m_GenCellA.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_GenCellA.transform.Find("trap_2").gameObject;
-                            front = front.transform.Find("trape_2 1").gameObject;
-                        }
-                        else if (m_CentreModels.m_IllusionCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_IllusionCell.transform.Find("trap_2").gameObject;
-                            front = front.transform.Find("trape_2").gameObject;
-                        }
-                        else if (m_CentreModels.m_BlindCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_BlindCell.transform.Find("trap_2").gameObject;
-                            front = front.transform.Find("trape_2 1").gameObject;
-                        }
-                        else if (m_CentreModels.m_PlanCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_PlanCell.transform.Find("trap_2").gameObject;
-                            front = front.transform.Find("trape_2 1").gameObject;
-                        }
-                        else if (m_CentreModels.m_OneLookCell.activeSelf == true)
-                        {
-                            front = m_CentreModels.m_OneLookCell.transform.Find("trap_2").gameObject;
-                            front = front.transform.Find("trape_2 1").gameObject;
-                        }
-
-                        GameObject back = m_WestModels.GetActiveModel();
-                        if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.Entry)
-                        {
-                            back = back.transform.Find("trap_2").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
                             StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.GenA)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.Exit)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 1").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.BlindM)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.IllusionM)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_3").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.WaterM)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_3").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.LaserM)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.GazM)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.PlanM)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
-                        }
-                        else if (m_WestModels.m_CurrentType == CellsModels.CellsModelsType.OneLook)
-                        {
-                            back = back.transform.Find("trap_3").gameObject;
-                            back = back.transform.Find("trape_2 2").gameObject;
-                            StartCoroutine(OpenShutters(point, front, back));
+                            m_ViewLeft--;
                         }
                         else
                         {
@@ -2148,6 +1813,175 @@ public class TheCellGameMgr : MonoBehaviour
                     break;
                 }
         }
+    }
+
+
+    // Return the shutter on point for model if any or null
+    public GameObject GetShutterPerCardinal(CardinalPoint point, CellsModels model)
+    {
+        GameObject ret = null;
+
+        if ((model == null) || (model.m_CurrentType == CellsModels.CellsModelsType.None))
+        {
+            return ret;
+        }
+
+        GameObject obj = model.GetActiveModel();
+        switch (point)
+        {
+            case CardinalPoint.North:
+                {
+                    switch (model.m_CurrentType)
+                    {
+                        case CellsModels.CellsModelsType.Entry:
+                            ret = obj.transform.Find("trap_0/trape_2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.Exit:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.GenA:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.IllusionM:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.BlindM:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.WaterM:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.LaserM:
+                        case CellsModels.CellsModelsType.GazM:
+                        case CellsModels.CellsModelsType.PlanM:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.OneLook:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        default:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                    }
+
+                    break;
+                }
+            case CardinalPoint.East:
+                {
+                    switch (model.m_CurrentType)
+                    {
+                        case CellsModels.CellsModelsType.Entry:
+                            ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.Exit:
+                            ret = obj.transform.Find("trap_3/trape_2 1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.GenA:
+                            ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.IllusionM:
+                            ret = obj.transform.Find("trap_3/trape_3").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.BlindM:
+                            ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.WaterM:
+                            ret = obj.transform.Find("trap_3/trape_3").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.LaserM:
+                        case CellsModels.CellsModelsType.GazM:
+                        case CellsModels.CellsModelsType.PlanM:
+                            ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.OneLook:
+                            ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
+                            break;
+                        default:
+                            ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
+                            break;
+                    }
+
+                    break;
+                }
+            case CardinalPoint.South:
+                {
+                    switch (model.m_CurrentType)
+                    {
+                        case CellsModels.CellsModelsType.Entry:
+                            ret = obj.transform.Find("Trap_1/trape_1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.Exit:
+                            //ret = obj.transform.Find("trap_3/trape_2 1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.GenA:
+                            ret = obj.transform.Find("trap_0/trape_2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.IllusionM:
+                            ret = obj.transform.Find("trap_0/trape_0").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.BlindM:
+                            ret = obj.transform.Find("trap_0/trape_2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.WaterM:
+                            ret = obj.transform.Find("trap_0/trape_2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.LaserM:
+                        case CellsModels.CellsModelsType.GazM:
+                        case CellsModels.CellsModelsType.PlanM:
+                            ret = obj.transform.Find("trap_0/trape_2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.OneLook:
+                            ret = obj.transform.Find("trap_0/trape_2").gameObject;
+                            break;
+                        default:
+                            ret = obj.transform.Find("trap_0/trape_2").gameObject;
+                            break;
+                    }
+
+                    break;
+                }
+            case CardinalPoint.West:
+                {
+                    switch (model.m_CurrentType)
+                    {
+                        case CellsModels.CellsModelsType.Entry:
+                            ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.Exit:
+                            ret = obj.transform.Find("trap_2/trape_2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.GenA:
+                            ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.IllusionM:
+                            ret = obj.transform.Find("trap_2/trape_2").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.BlindM:
+                        case CellsModels.CellsModelsType.WaterM:
+                        case CellsModels.CellsModelsType.LaserM:
+                        case CellsModels.CellsModelsType.GazM:
+                            ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.PlanM:
+                            ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
+                            break;
+                        case CellsModels.CellsModelsType.OneLook:
+                            ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
+                            break;
+                        default:
+                            ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
+                            break;
+                    }
+                    break;
+                }
+        }
+
+        if (ret == null)
+        {
+            Debug.LogWarning($"Couldn't find shutter in {model.name} on cardinal {point}, type: {model.m_CurrentType}");
+        }
+        
+        return ret;
     }
 
 
@@ -2224,6 +2058,36 @@ public class TheCellGameMgr : MonoBehaviour
                     break;
                 }
         }
+    }
+
+
+    public IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back)
+    {
+        if ((front == null) || (back == null))
+        {
+            yield return 0;
+        }
+
+        //--- Snd ---
+        Audio_OpenShutters.transform.SetParent(front.transform);
+        Audio_OpenShutters.transform.localPosition = Vector3.zero;
+        Audio_OpenShutters.Play();
+        //--- Snd ---
+
+        Vector3 frontPos = front.transform.localPosition;
+        Vector3 backPos = back.transform.localPosition;
+        //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} pos {frontPos}");
+
+        float startTime = Time.time;
+        while (Time.time - startTime < 2.0f)
+        {
+            front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
+            back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
+            yield return new WaitForFixedUpdate();
+        }
+        //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is going back to {frontPos}");
+        front.transform.localPosition = frontPos;
+        back.transform.localPosition = backPos;
     }
 
 
@@ -2831,7 +2695,7 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    public CardinalPoint GetOppositeCardinalPoint(CardinalPoint cardinal)
+    public static CardinalPoint GetOppositeCardinalPoint(CardinalPoint cardinal)
     {
         switch (cardinal)
         {

@@ -382,14 +382,14 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
                 TheCellGameMgr.instance.Audio_Bank[13].Play();
                 StartCoroutine(TeleportToStart());
-                TheCellGameMgr.instance.Audio_Bank[2].Play(100000);
+                TheCellGameMgr.instance.Audio_Bank[2].PlayDelayed(2.0f);
                 break;
             case TheCellGameMgr.CellSubTypes.Illusion:
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
                 int id = TheCellGameMgr.instance.PickRandomCell().cellId;
                 TheCellGameMgr.instance.Audio_Bank[13].Play();
                 StartCoroutine(TeleportToCell(2.0f, id));
-                TheCellGameMgr.instance.Audio_Bank[2].Play(100000);
+                TheCellGameMgr.instance.Audio_Bank[2].PlayDelayed(2.0f);
                 break;
             case TheCellGameMgr.CellSubTypes.OneLook:
                 TheCellGameMgr.instance.m_ViewLeft = 1;
@@ -560,7 +560,7 @@ public class OneCellClass : MonoBehaviour
                     NorthDoor.SetActive(enable);
                     if (enable)
                     {
-                        StartCoroutine(DoorHandsTrigger.LitupConsole(NorthDoor));
+                        //StartCoroutine(DoorHandsTrigger.LitupConsole(NorthDoor));
                     }
                     TheCellGameMgr.instance.m_Console_N.SetActive(enable);
                     break;
@@ -570,7 +570,7 @@ public class OneCellClass : MonoBehaviour
                     EastDoor.SetActive(enable);
                     if (enable)
                     {
-                        StartCoroutine(DoorHandsTrigger.LitupConsole(EastDoor));
+                        //StartCoroutine(DoorHandsTrigger.LitupConsole(EastDoor));
                     }
                     TheCellGameMgr.instance.m_Console_E.SetActive(enable);
                     break;
@@ -580,7 +580,7 @@ public class OneCellClass : MonoBehaviour
                     SouthDoor.SetActive(enable);
                     if (enable)
                     {
-                        StartCoroutine(DoorHandsTrigger.LitupConsole(SouthDoor));
+                        //StartCoroutine(DoorHandsTrigger.LitupConsole(SouthDoor));
                     }
                     TheCellGameMgr.instance.m_Console_S.SetActive(enable);
                     break;
@@ -590,7 +590,7 @@ public class OneCellClass : MonoBehaviour
                     WestDoor.SetActive(enable);
                     if (enable)
                     {
-                        StartCoroutine(DoorHandsTrigger.LitupConsole(WestDoor));
+                        //StartCoroutine(DoorHandsTrigger.LitupConsole(WestDoor));
                     }
                     TheCellGameMgr.instance.m_Console_W.SetActive(enable);
                     break;

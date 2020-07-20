@@ -3,7 +3,7 @@
 
 {"key":"about","value":"<b>Henigma Studio<\/b><br><b>Team:<\/b><br><i>Game Design, Coding:<\/i> Jocelyn Weiss<br><i>Art Direction:<\/i> Ramiz Morina<br><i>Game Design:<\/i> Pierre-Yve Franzzetti<br><i>Game Design:<\/i> Charlotte Zanin"},
 
-{"key":"entry_room_1","value":"Vous ne savez pas ce que vous\n faites ici.\n Inutile de perdre du temps\n à vous poser cette question\n car vous n’avez que 30 minutes\n pour vous échapper.\n Bonne chance!"},
+{"key":"entry_room_1","value":"\t<b>Instructions<\/b><br>Vous ne savez pas ce que vous\n faites ici.\n Inutile de perdre du temps\n à vous poser cette question\n car vous n’avez que 30 minutes\n pour vous échapper.\n Bonne chance!"},
 {"key":"note_1","value":"<b>Titre 1 si besoin</b>\nLe corps du message 1"},
 {"key":"note_2","value":"<b>Titre 2 si besoin</b>\nLe cube fait 5x5!"},
 {"key":"note_3","value":"<b>Titre 3 si besoin</b>\nLe corps du message 3"},

@@ -133,6 +133,7 @@ public class DoorHandsTrigger : MonoBehaviour
                 TheCellGameMgr.instance.m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
                 m_renderer.material.SetColor("_TintColor", Color.cyan);
                 //m_renderer.enabled = true;
+                TheCellGameMgr.instance.m_codes.SetActive(true);
 
                 switch (m_cardinal)
                 {
@@ -262,6 +263,8 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.m_Console_S.SetActive(false);
         TheCellGameMgr.instance.m_Console_W.SetActive(false);
         TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false);
+        TheCellGameMgr.instance.m_codes.SetActive(false);
+        TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
 
         GameObject front = TheCellGameMgr.instance.GetShutterPerCardinal(m_cardinal, TheCellGameMgr.instance.m_CentreModels);
         GameObject back = null;

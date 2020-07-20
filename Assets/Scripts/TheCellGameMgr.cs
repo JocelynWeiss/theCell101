@@ -1682,7 +1682,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (newSeed)
         {
             seed = System.Environment.TickCount;
-            seed = 1966;
+            //seed = 1966;
             //seed = 13068546;
         }
         InitializeNewGame(seed);
@@ -2730,7 +2730,7 @@ public class TheCellGameMgr : MonoBehaviour
         switch (newDeathCount)
         {
             case 1:
-                txt = m_LocalizedText["hintDeath_1"];
+                txt += "\n" + m_LocalizedText["hintDeath_1"];
                 break;
             case 2:
                 txt += "\n" + m_LocalizedText["hintDeath_2"];

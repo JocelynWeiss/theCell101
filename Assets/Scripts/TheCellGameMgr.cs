@@ -140,6 +140,9 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_GazCellModel;
     public GameObject m_PlanCellModel; // The screen cell model
     public GameObject m_OneLookCellModel; // The one look cell model
+    public GameObject m_FireCellModel;
+    public GameObject m_VortexModel;
+    public GameObject m_TunnelCellModel;
     bool m_displayCell_N = false;
     bool m_displayCell_E = false;
     bool m_displayCell_S = false;
@@ -600,6 +603,12 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_PlanCell.transform.SetParent(m_CentreModels.transform);
             m_CentreModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
             m_CentreModels.m_OneLookCell.transform.SetParent(m_CentreModels.transform);
+            m_CentreModels.m_FireCell = GameObject.Instantiate(m_FireCellModel);
+            m_CentreModels.m_FireCell.transform.SetParent(m_CentreModels.transform);
+            m_CentreModels.m_VortexCell = GameObject.Instantiate(m_VortexModel);
+            m_CentreModels.m_VortexCell.transform.SetParent(m_CentreModels.transform);
+            m_CentreModels.m_TunnelCell = GameObject.Instantiate(m_TunnelCellModel);
+            m_CentreModels.m_TunnelCell.transform.SetParent(m_CentreModels.transform);
 
             // Save initial water position
             Transform waterT = m_CentreModels.m_WaterCell.transform.Find("ground_all/water");
@@ -631,6 +640,12 @@ public class TheCellGameMgr : MonoBehaviour
             m_NorthModels.m_PlanCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
             m_NorthModels.m_OneLookCell.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_FireCell = GameObject.Instantiate(m_FireCellModel);
+            m_NorthModels.m_FireCell.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_VortexCell = GameObject.Instantiate(m_VortexModel);
+            m_NorthModels.m_VortexCell.transform.SetParent(m_NorthModels.transform);
+            m_NorthModels.m_TunnelCell = GameObject.Instantiate(m_TunnelCellModel);
+            m_NorthModels.m_TunnelCell.transform.SetParent(m_NorthModels.transform);
             m_NorthModels.transform.position = new Vector3(0.0f, 0.0f, 2.9f);            
 
             m_EastModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -656,6 +671,12 @@ public class TheCellGameMgr : MonoBehaviour
             m_EastModels.m_PlanCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
             m_EastModels.m_OneLookCell.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_FireCell = GameObject.Instantiate(m_FireCellModel);
+            m_EastModels.m_FireCell.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_VortexCell = GameObject.Instantiate(m_VortexModel);
+            m_EastModels.m_VortexCell.transform.SetParent(m_EastModels.transform);
+            m_EastModels.m_TunnelCell = GameObject.Instantiate(m_TunnelCellModel);
+            m_EastModels.m_TunnelCell.transform.SetParent(m_EastModels.transform);
             m_EastModels.transform.position = new Vector3(2.9f, 0.0f, 0.0f);            
 
             m_SouthModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -681,6 +702,12 @@ public class TheCellGameMgr : MonoBehaviour
             m_SouthModels.m_PlanCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
             m_SouthModels.m_OneLookCell.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_FireCell = GameObject.Instantiate(m_FireCellModel);
+            m_SouthModels.m_FireCell.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_VortexCell = GameObject.Instantiate(m_VortexModel);
+            m_SouthModels.m_VortexCell.transform.SetParent(m_SouthModels.transform);
+            m_SouthModels.m_TunnelCell = GameObject.Instantiate(m_TunnelCellModel);
+            m_SouthModels.m_TunnelCell.transform.SetParent(m_SouthModels.transform);
             m_SouthModels.transform.position = new Vector3(0.0f, 0.0f, -2.9f);            
 
             m_WestModels.m_GenCellA = GameObject.Instantiate(m_GenCellA);
@@ -706,6 +733,12 @@ public class TheCellGameMgr : MonoBehaviour
             m_WestModels.m_PlanCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.m_OneLookCell = GameObject.Instantiate(m_OneLookCellModel);
             m_WestModels.m_OneLookCell.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_FireCell = GameObject.Instantiate(m_FireCellModel);
+            m_WestModels.m_FireCell.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_VortexCell = GameObject.Instantiate(m_VortexModel);
+            m_WestModels.m_VortexCell.transform.SetParent(m_WestModels.transform);
+            m_WestModels.m_TunnelCell = GameObject.Instantiate(m_TunnelCellModel);
+            m_WestModels.m_TunnelCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);            
         }
         //--- show models ---
@@ -1336,6 +1369,11 @@ public class TheCellGameMgr : MonoBehaviour
             ActivateCellMechanism(current, m_CentreModels.m_OneLookCell, true);
         }
 
+        if (m_CentreModels.m_TunnelCell.activeSelf == true)
+        {
+            ActivateCellMechanism(current, m_CentreModels.m_TunnelCell, true);
+        }
+
         SetupAdjacentLights(null, 0.0f, Color.red);
     }
 
@@ -1644,7 +1682,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (newSeed)
         {
             seed = System.Environment.TickCount;
-            //seed = 1966;
+            seed = 1966;
             //seed = 13068546;
         }
         InitializeNewGame(seed);
@@ -1862,6 +1900,9 @@ public class TheCellGameMgr : MonoBehaviour
                         case CellsModels.CellsModelsType.LaserM:
                         case CellsModels.CellsModelsType.GazM:
                         case CellsModels.CellsModelsType.PlanM:
+                        case CellsModels.CellsModelsType.FireM:
+                        case CellsModels.CellsModelsType.VortexM:
+                        case CellsModels.CellsModelsType.TunnelM:
                             ret = obj.transform.Find("Trap_1/trape_1").gameObject;
                             break;
                         case CellsModels.CellsModelsType.OneLook:
@@ -1894,11 +1935,14 @@ public class TheCellGameMgr : MonoBehaviour
                             ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
                             break;
                         case CellsModels.CellsModelsType.WaterM:
+                        case CellsModels.CellsModelsType.VortexM:
+                        case CellsModels.CellsModelsType.TunnelM:
                             ret = obj.transform.Find("trap_3/trape_3").gameObject;
                             break;
                         case CellsModels.CellsModelsType.LaserM:
                         case CellsModels.CellsModelsType.GazM:
                         case CellsModels.CellsModelsType.PlanM:
+                        case CellsModels.CellsModelsType.FireM:
                             ret = obj.transform.Find("trap_3/trape_2 2").gameObject;
                             break;
                         case CellsModels.CellsModelsType.OneLook:
@@ -1925,6 +1969,8 @@ public class TheCellGameMgr : MonoBehaviour
                             ret = obj.transform.Find("trap_0/trape_2").gameObject;
                             break;
                         case CellsModels.CellsModelsType.IllusionM:
+                        case CellsModels.CellsModelsType.VortexM:
+                        case CellsModels.CellsModelsType.TunnelM:
                             ret = obj.transform.Find("trap_0/trape_0").gameObject;
                             break;
                         case CellsModels.CellsModelsType.BlindM:
@@ -1936,6 +1982,7 @@ public class TheCellGameMgr : MonoBehaviour
                         case CellsModels.CellsModelsType.LaserM:
                         case CellsModels.CellsModelsType.GazM:
                         case CellsModels.CellsModelsType.PlanM:
+                        case CellsModels.CellsModelsType.FireM:
                             ret = obj.transform.Find("trap_0/trape_2").gameObject;
                             break;
                         case CellsModels.CellsModelsType.OneLook:
@@ -1962,12 +2009,15 @@ public class TheCellGameMgr : MonoBehaviour
                             ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
                             break;
                         case CellsModels.CellsModelsType.IllusionM:
+                        case CellsModels.CellsModelsType.VortexM:
+                        case CellsModels.CellsModelsType.TunnelM:
                             ret = obj.transform.Find("trap_2/trape_2").gameObject;
                             break;
                         case CellsModels.CellsModelsType.BlindM:
                         case CellsModels.CellsModelsType.WaterM:
                         case CellsModels.CellsModelsType.LaserM:
                         case CellsModels.CellsModelsType.GazM:
+                        case CellsModels.CellsModelsType.FireM:
                             ret = obj.transform.Find("trap_2/trape_2 1").gameObject;
                             break;
                         case CellsModels.CellsModelsType.PlanM:

@@ -22,6 +22,9 @@ public class CellsModels : MonoBehaviour
         GazM,
         PlanM,
         OneLook,
+        FireM,
+        VortexM,
+        TunnelM,
     }
 
     [ViewOnly] public GameObject m_EntryCell;  // The starting room
@@ -35,6 +38,9 @@ public class CellsModels : MonoBehaviour
     [ViewOnly] public GameObject m_GazCell;     // The gaz cell model
     [ViewOnly] public GameObject m_PlanCell;    // The screen cell model
     [ViewOnly] public GameObject m_OneLookCell; // The screen cell model
+    [ViewOnly] public GameObject m_FireCell;
+    [ViewOnly] public GameObject m_VortexCell;
+    [ViewOnly] public GameObject m_TunnelCell;
     [ViewOnly] public Light m_light_N;
     [ViewOnly] public Light m_light_E;
     [ViewOnly] public Light m_light_S;
@@ -85,6 +91,15 @@ public class CellsModels : MonoBehaviour
             case CellsModelsType.OneLook:
                 obj = m_OneLookCell;
                 break;
+            case CellsModelsType.FireM:
+                obj = m_FireCell;
+                break;
+            case CellsModelsType.VortexM:
+                obj = m_VortexCell;
+                break;
+            case CellsModelsType.TunnelM:
+                obj = m_TunnelCell;
+                break;
         }
 
         return obj;
@@ -117,7 +132,7 @@ public class CellsModels : MonoBehaviour
                             SetActiveModel(CellsModelsType.IllusionM);
                             break;
                         case TheCellGameMgr.CellSubTypes.Vortex:
-                            SetActiveModel(CellsModelsType.IllusionM);
+                            SetActiveModel(CellsModelsType.VortexM);
                             break;
                         case TheCellGameMgr.CellSubTypes.OneLook:
                             SetActiveModel(CellsModelsType.OneLook);
@@ -133,6 +148,12 @@ public class CellsModels : MonoBehaviour
                             break;
                         case TheCellGameMgr.CellSubTypes.Screen:
                             SetActiveModel(CellsModelsType.PlanM);
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Fire:
+                            SetActiveModel(CellsModelsType.FireM);
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Tunnel:
+                            SetActiveModel(CellsModelsType.TunnelM);
                             break;
                         default:
                             SetActiveModel(CellsModelsType.GenA);
@@ -180,6 +201,12 @@ public class CellsModels : MonoBehaviour
             m_PlanCell.SetActive(false);
         if (m_OneLookCell)
             m_OneLookCell.SetActive(false);
+        if (m_FireCell)
+            m_FireCell.SetActive(false);
+        if (m_VortexCell)
+            m_VortexCell.SetActive(false);
+        if (m_TunnelCell)
+            m_TunnelCell.SetActive(false);
 
         GameObject current = null;
         switch (newType)
@@ -229,6 +256,18 @@ public class CellsModels : MonoBehaviour
             case CellsModelsType.OneLook:
                 m_OneLookCell.SetActive(true);
                 current = m_OneLookCell;
+                break;
+            case CellsModelsType.FireM:
+                m_FireCell.SetActive(true);
+                current = m_FireCell;
+                break;
+            case CellsModelsType.VortexM:
+                m_VortexCell.SetActive(true);
+                current = m_VortexCell;
+                break;
+            case CellsModelsType.TunnelM:
+                m_TunnelCell.SetActive(true);
+                current = m_TunnelCell;
                 break;
             default:
                 Debug.LogWarning($"Wrong model type in SetActiveModel: {newType}");

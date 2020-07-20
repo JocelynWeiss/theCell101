@@ -51,10 +51,7 @@ public class DoorHandsTrigger : MonoBehaviour
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
-
-            Transform t = TheCellGameMgr.instance.m_Console_N.transform.Find("Lhand");
-            Renderer r = t.GetComponent<Renderer>();
-            r.material.SetColor("_BaseColor", Color.green);
+            TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, true);
         }
         if ((Input.GetKeyUp(KeyCode.RightArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.East))
         {
@@ -63,6 +60,7 @@ public class DoorHandsTrigger : MonoBehaviour
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
+            TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, true);
         }
         if ((Input.GetKeyUp(KeyCode.DownArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.South))
         {
@@ -71,6 +69,7 @@ public class DoorHandsTrigger : MonoBehaviour
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
+            TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, true);
         }
         if ((Input.GetKeyUp(KeyCode.LeftArrow)) && (m_cardinal == TheCellGameMgr.CardinalPoint.West))
         {
@@ -79,6 +78,7 @@ public class DoorHandsTrigger : MonoBehaviour
             m_isIndexStaying[0] = true;
             m_isIndexStaying[1] = true;
             m_bothIn = Time.fixedTime;
+            TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, true);
         }
 #endif
 
@@ -195,6 +195,7 @@ public class DoorHandsTrigger : MonoBehaviour
             if ((m_isIndexStaying[0] == true) && (m_isIndexStaying[1] == true))
             {
                 m_renderer.material.SetColor("_TintColor", Color.green);
+                TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, true);
                 if (m_goingOutStartTime == 0.0f)
                 {
                     m_bothIn = Time.fixedTime;
@@ -203,14 +204,17 @@ public class DoorHandsTrigger : MonoBehaviour
             else if (m_isIndexStaying[0] == true)
             {
                 m_renderer.material.SetColor("_TintColor", Color.blue);
+                TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, true, 0);
             }
             else if (m_isIndexStaying[1] == true)
             {
                 m_renderer.material.SetColor("_TintColor", Color.blue);
+                TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, true, 1);
             }
             else
             {
                 m_renderer.material.SetColor("_TintColor", Color.cyan);
+                TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false);
             }
         }
     }
@@ -231,14 +235,17 @@ public class DoorHandsTrigger : MonoBehaviour
             if (m_isIndexStaying[0] == true)
             {
                 m_renderer.material.SetColor("_TintColor", Color.blue);
+                TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false, 0);
             }
             else if (m_isIndexStaying[1] == true)
             {
                 m_renderer.material.SetColor("_TintColor", Color.green);
+                TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false, 1);
             }
             else
             {
                 m_renderer.material.SetColor("_TintColor", Color.cyan);
+                TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false);
             }
         }
     }
@@ -254,6 +261,7 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.m_Console_E.SetActive(false);
         TheCellGameMgr.instance.m_Console_S.SetActive(false);
         TheCellGameMgr.instance.m_Console_W.SetActive(false);
+        TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false);
 
         GameObject front = TheCellGameMgr.instance.GetShutterPerCardinal(m_cardinal, TheCellGameMgr.instance.m_CentreModels);
         GameObject back = null;

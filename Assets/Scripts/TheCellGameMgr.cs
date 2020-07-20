@@ -215,9 +215,17 @@ public class TheCellGameMgr : MonoBehaviour
 
     //--- Consoles ---
     public GameObject m_Console_N;
+    public Renderer m_Console_N_Lhand;
+    public Renderer m_Console_N_Rhand;
     public GameObject m_Console_E;
+    public Renderer m_Console_E_Lhand;
+    public Renderer m_Console_E_Rhand;
     public GameObject m_Console_S;
+    public Renderer m_Console_S_Lhand;
+    public Renderer m_Console_S_Rhand;
     public GameObject m_Console_W;
+    public Renderer m_Console_W_Lhand;
+    public Renderer m_Console_W_Rhand;
     //--- Consoles ---
 
 
@@ -2734,6 +2742,67 @@ public class TheCellGameMgr : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(sec);
         Audio_Bank[clipIndex].Play();
+    }
+
+
+
+    // hand=0 for left hand, 1 -> right hand, 2 -> both hands
+    public void SwitchHandConsole(CardinalPoint point, bool turnOn, int hand=2)
+    {
+        Color colour = Color.red;
+        if (turnOn)
+        {
+            colour = Color.green;
+        }
+
+        switch (point)
+        {
+            case CardinalPoint.North:
+                if (hand == 0)
+                    m_Console_N_Lhand.material.SetColor("_BaseColor", colour);
+                else if (hand == 1)
+                    m_Console_N_Rhand.material.SetColor("_BaseColor", colour);
+                else
+                {
+                    m_Console_N_Lhand.material.SetColor("_BaseColor", colour);
+                    m_Console_N_Rhand.material.SetColor("_BaseColor", colour);
+                }
+                break;
+            case CardinalPoint.East:
+                if (hand == 0)
+                    m_Console_E_Lhand.material.SetColor("_BaseColor", colour);
+                else if (hand == 1)
+                    m_Console_E_Rhand.material.SetColor("_BaseColor", colour);
+                else
+                {
+                    m_Console_E_Lhand.material.SetColor("_BaseColor", colour);
+                    m_Console_E_Rhand.material.SetColor("_BaseColor", colour);
+                }
+                break;
+            case CardinalPoint.South:
+                if (hand == 0)
+                    m_Console_S_Lhand.material.SetColor("_BaseColor", colour);
+                else if (hand == 1)
+                    m_Console_S_Rhand.material.SetColor("_BaseColor", colour);
+                else
+                {
+                    m_Console_S_Lhand.material.SetColor("_BaseColor", colour);
+                    m_Console_S_Rhand.material.SetColor("_BaseColor", colour);
+                }
+                break;
+            case CardinalPoint.West:
+                if (hand == 0)
+                    m_Console_W_Lhand.material.SetColor("_BaseColor", colour);
+                else if (hand == 1)
+                    m_Console_W_Rhand.material.SetColor("_BaseColor", colour);
+                else
+                {
+                    m_Console_W_Lhand.material.SetColor("_BaseColor", colour);
+                    m_Console_W_Rhand.material.SetColor("_BaseColor", colour);
+                }
+                break;
+
+        }
     }
 
 

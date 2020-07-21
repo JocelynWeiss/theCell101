@@ -38,11 +38,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: e6472017559d8d54bb24d7a8030ac5ff, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5831cea3dc6ff16458649678871634f1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 9ef6240b5d8e9cd4c9e7e91d4dfa450a, type: 3}
+        m_Texture: {fileID: 2800000, guid: a9ce151baf525534491a4f953e3c0b2f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -64,7 +64,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
-    - _BumpScale: -0.09
+    - _BumpScale: -1.07
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
@@ -86,5 +86,5 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

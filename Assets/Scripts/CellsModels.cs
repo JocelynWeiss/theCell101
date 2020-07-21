@@ -305,20 +305,26 @@ public class CellsModels : MonoBehaviour
     }
 
 
-    // Change the scaner's colour on/off
-    public void SwitchOffScanner(bool turnOn, TheCellGameMgr.CardinalPoint cardinal)
+    // Change the scaner's colour 0=red 1=green 2=black
+    public void SwitchOffScanner(int state, TheCellGameMgr.CardinalPoint cardinal)
     {
         Color col = Color.red;
-        if (turnOn)
+        bool isOn = false;
+        if (state == 1)
         {
             col = Color.green * 2.0f;
+            isOn = true;
+        }
+        else if (state == 2)
+        {
+            col = Color.black;
         }
 
         foreach (HandScanTrigger scaner in m_Scaners)
         {
             if (scaner.m_cardinal == cardinal)
             {
-                scaner.SwitchOnOff(turnOn);
+                scaner.SwitchOnOff(isOn);
                 Renderer rend = scaner.transform.GetComponent<Renderer>();
                 if (rend)
                 {

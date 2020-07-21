@@ -150,7 +150,6 @@ public class TheCellGameMgr : MonoBehaviour
     bool m_displayCell_W = false;
 
     public GameObject m_codes;  // The 4 codes on each wall
-    public GameObject m_StopHandScaner; // Object showing no hands scanner availability.
     public GameObject m_MenuArea1;  // Menu to select languages.
     public GameObject m_PlayaModel;
     public LocalizationMenu m_LocMenu;
@@ -1081,7 +1080,6 @@ public class TheCellGameMgr : MonoBehaviour
                     m_Console_S.SetActive(false);
                     m_Console_W.SetActive(false);
                     m_codes.SetActive(false);
-                    m_StopHandScaner.SetActive(false);
                     m_MenuArea1.SetActive(true);
                     GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
                     intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["gameOver_1"];
@@ -1312,7 +1310,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.North, CellTypes.Undefined);
-            m_CentreModels.SwitchOffScanner(false, CardinalPoint.North);
+            m_CentreModels.SwitchOffScanner(2, CardinalPoint.North);
             //current.EnableDoorPerCardinal(CardinalPoint.North, false);
         }
 
@@ -1328,7 +1326,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_EastModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.East, CellTypes.Undefined);
-            m_CentreModels.SwitchOffScanner(false, CardinalPoint.East);
+            m_CentreModels.SwitchOffScanner(2, CardinalPoint.East);
             //current.EnableDoorPerCardinal(CardinalPoint.East, false);
         }
 
@@ -1344,7 +1342,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.South, CellTypes.Undefined);
-            m_CentreModels.SwitchOffScanner(false, CardinalPoint.South);
+            m_CentreModels.SwitchOffScanner(2, CardinalPoint.South);
             //current.EnableDoorPerCardinal(CardinalPoint.South, false);
         }
 
@@ -1360,7 +1358,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_WestModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
             UpdateCodesSections(CardinalPoint.West, CellTypes.Undefined);
-            m_CentreModels.SwitchOffScanner(false, CardinalPoint.West);
+            m_CentreModels.SwitchOffScanner(2, CardinalPoint.West);
             //current.EnableDoorPerCardinal(CardinalPoint.West, false);
         }
 
@@ -1744,7 +1742,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (newSeed)
         {
             seed = System.Environment.TickCount;
-            //seed = 1966;
+            seed = 1966;
             //seed = 13068546;
         }
         InitializeNewGame(seed);
@@ -1835,10 +1833,10 @@ public class TheCellGameMgr : MonoBehaviour
             {
                 instance.m_ViewLeft = 0;
                 Audio_Bank[23].Play();
-                m_CentreModels.SwitchOffScanner(false, CardinalPoint.North);
-                m_CentreModels.SwitchOffScanner(false, CardinalPoint.East);
-                m_CentreModels.SwitchOffScanner(false, CardinalPoint.South);
-                m_CentreModels.SwitchOffScanner(false, CardinalPoint.West);
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.North);
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.East);
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.South);
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.West);
                 return;
             }
         }

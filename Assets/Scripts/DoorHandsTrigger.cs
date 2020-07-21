@@ -264,7 +264,6 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.m_Console_W.SetActive(false);
         TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false);
         TheCellGameMgr.instance.m_codes.SetActive(false);
-        TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
         TheCellGameMgr.instance.AnimateShuttersOpen(m_cardinal);
     }
 

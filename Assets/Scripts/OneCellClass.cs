@@ -215,7 +215,6 @@ public class OneCellClass : MonoBehaviour
         switch (cellSubType)
         {
             case TheCellGameMgr.CellSubTypes.Blind:
-                TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
                 TheCellGameMgr.instance.m_FxGaz.SetActive(false);
@@ -228,7 +227,6 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Tunnel:
                 m_TunnelEnabled = true; // Activate tunnel again
-                TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
                 break;
             case TheCellGameMgr.CellSubTypes.Water:
                 TheCellGameMgr.instance.Audio_Bank[20].Stop();
@@ -373,7 +371,6 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Blind:
                 TheCellGameMgr.instance.m_ViewLeft = 0;
-                TheCellGameMgr.instance.m_StopHandScaner.SetActive(true);
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
@@ -400,7 +397,6 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Tunnel:
                 TheCellGameMgr.instance.m_ViewLeft = 0;
-                TheCellGameMgr.instance.m_StopHandScaner.SetActive(true);
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);

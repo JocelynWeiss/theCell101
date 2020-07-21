@@ -394,7 +394,6 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.Audio_Bank[2].PlayDelayed(2.0f);
                 break;
             case TheCellGameMgr.CellSubTypes.OneLook:
-                TheCellGameMgr.instance.m_ViewLeft = 1;
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
@@ -405,7 +404,6 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
-                TheCellGameMgr.instance.m_FxRespawn.SetActive(true);
                 if (m_TunnelEnabled)
                 {
                     StartCoroutine(ActivateTunnel(3.0f));
@@ -467,6 +465,7 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxFlame.SetActive(true);
                 break;
             case TheCellGameMgr.CellSubTypes.Lasers:
+                TheCellGameMgr.instance.Audio_Bank[24].Play();
                 TheCellGameMgr.instance.m_FxLasers.SetActive(true);
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
@@ -506,6 +505,8 @@ public class OneCellClass : MonoBehaviour
     // Start the tunnel effect so the player is teleported to the other tunnel cell
     private IEnumerator ActivateTunnel(float waitSec)
     {
+        TheCellGameMgr.instance.m_FxRespawn.SetActive(true);
+
         int id = TheCellGameMgr.instance.GetTunnelExitId(cellId);
 
         // Deactivate the tunnel at tp point to avoid feedback
@@ -520,6 +521,7 @@ public class OneCellClass : MonoBehaviour
         */
 
         yield return new WaitForSecondsRealtime(waitSec);
+        TheCellGameMgr.instance.Audio_Bank[25].Play();
         TheCellGameMgr.instance.TeleportToCell(id);
     }
 

@@ -195,6 +195,10 @@ public class TheCellGameMgr : MonoBehaviour
     //19= Button Up
     //20= 21 Waterfall
     //21= 22 Drowning
+    //22= 1 Metal impact
+    //23= 19 Warning alarm
+    //24= 23 Lasers cut
+    //25= 24 Tunnel effect
     [HideInInspector] public AudioSource[] Audio_Bank;
 
     public bool m_ShowMiniMap = true;
@@ -1810,8 +1814,33 @@ public class TheCellGameMgr : MonoBehaviour
     {
         if (m_ViewLeft <= 0)
         {
-            AudioSource.PlayClipAtPoint(Audio_Bank[1].clip, transform.position);
+            if (GetCurrentCell().cellSubType == CellSubTypes.Blind)
+            {
+                if (Audio_Bank[23].isPlaying == false)
+                {
+                    Audio_Bank[23].Play();
+                }
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(Audio_Bank[1].clip, transform.position);
+            }
             return;
+        }
+
+        // Warning alarm in OneLook at the second time
+        if (GetCurrentCell().cellSubType == CellSubTypes.OneLook)
+        {
+            if (m_ViewLeft == 1)
+            {
+                instance.m_ViewLeft = 0;
+                Audio_Bank[23].Play();
+                m_CentreModels.SwitchOffScanner(false, CardinalPoint.North);
+                m_CentreModels.SwitchOffScanner(false, CardinalPoint.East);
+                m_CentreModels.SwitchOffScanner(false, CardinalPoint.South);
+                m_CentreModels.SwitchOffScanner(false, CardinalPoint.West);
+                return;
+            }
         }
 
         switch (point)
@@ -2150,6 +2179,8 @@ public class TheCellGameMgr : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is closed.");
+
+        Audio_Bank[22].Play();
 
         switch (point)
         {

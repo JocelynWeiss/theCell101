@@ -150,6 +150,7 @@ public class TheCellGameMgr : MonoBehaviour
 
     public GameObject m_codes;  // The 4 codes on each wall
     public GameObject m_StopHandScaner; // Object showing no hands scanner availability.
+    public GameObject m_MenuArea1;  // Menu to select languages.
     public GameObject m_PlayaModel;
     public LocalizationMenu m_LocMenu;
 
@@ -206,6 +207,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_FxIllusion;
     public GameObject m_FxEmber;
     public GameObject m_FxWater;
+    public GameObject m_FXDeathRespawn;
 
     List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
@@ -331,6 +333,7 @@ public class TheCellGameMgr : MonoBehaviour
         // Go to the localization phase
         gameState = GameStates.Localization;
         //GameObject.Find("code_00").gameObject.SetActive(false);
+        m_MenuArea1.SetActive(true);
         m_codes.SetActive(false);
         m_PlayaModel.transform.Rotate(Vector3.up, 180.0f);
         m_PlayaModel.transform.position = new Vector3(0.0f, 0.0f, -1.2f);
@@ -442,6 +445,7 @@ public class TheCellGameMgr : MonoBehaviour
             // Load language from file
         }
 
+        m_MenuArea1.SetActive(false);
         m_PlayaModel.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         m_PlayaModel.SetActive(false);
 
@@ -1043,6 +1047,39 @@ public class TheCellGameMgr : MonoBehaviour
         {
             playerSphere.transform.position = current.SmallCell.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
 
+            // Check if running out of time
+            float maxTime = 1800.0f;
+            float gameLength = Time.fixedTime - startingTime;
+            if (gameLength > maxTime)
+            {
+                // Fade out & go back at start
+                if (gameLength < maxTime + 2.0f)
+                {
+                    float intensity = 3.0f;
+                    m_CentreModels.m_light_N.intensity += Time.fixedDeltaTime * intensity;
+                    m_CentreModels.m_light_E.intensity += Time.fixedDeltaTime * intensity;
+                    m_CentreModels.m_light_S.intensity += Time.fixedDeltaTime * intensity;
+                    m_CentreModels.m_light_W.intensity += Time.fixedDeltaTime * intensity;
+                }
+                if (gameLength > maxTime + 3.0f)
+                {
+                    Debug.Log($"GameOver after {gameLength}s");
+                    gameState = GameStates.Localization;
+                    m_CentreModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+                    m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+                    m_EastModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+                    m_SouthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+                    m_WestModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
+                    m_Console_N.SetActive(false);
+                    m_Console_E.SetActive(false);
+                    m_Console_S.SetActive(false);
+                    m_Console_W.SetActive(false);
+                    m_codes.SetActive(false);
+                    m_StopHandScaner.SetActive(false);
+                    m_MenuArea1.SetActive(true);
+                }
+            }
+
             if (current.cellType == CellTypes.Exit)
             {
                 if ((gameState != GameStates.ExitFound) && (gameState != GameStates.CodeAllSet))
@@ -1112,6 +1149,23 @@ public class TheCellGameMgr : MonoBehaviour
                             duration += (gameDur % 60.0f).ToString("00") + "s";
                             tmp.text = $"Time {duration}\nScore {brutScore + codePoints}";
                             m_AllNotes.enabled = true;
+                        }
+                    }
+                    else
+                    {
+                        // All remaining elements should fall down
+                        foreach (GameObject obj in m_ElemCubes)
+                        {
+                            ElemCubeClass elem = obj.GetComponent<ElemCubeClass>();
+                            if (elem.m_State == 0)
+                            {
+                                int c = instance.m_RandomBis.Next(99);
+                                if (c < 3)
+                                {
+                                    elem.SetUseGravity();
+                                    break;
+                                }
+                            }
                         }
                     }
                 }

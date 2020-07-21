@@ -186,6 +186,7 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellTypes.Start:
                 TheCellGameMgr.instance.m_AllNotes.enabled = false;
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(false);
+                TheCellGameMgr.instance.m_FXDeathRespawn.SetActive(false);
 
                 if (TheCellGameMgr.instance.Audio_Bank[6].isPlaying == false)
                 {
@@ -351,15 +352,15 @@ public class OneCellClass : MonoBehaviour
         switch (cellSubType)
         {
             case TheCellGameMgr.CellSubTypes.Lasers:
-                TheCellGameMgr.instance.m_FxLasers.SetActive(true);
+                StartCoroutine(StartDelayedFx());
                 StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Fire:
-                TheCellGameMgr.instance.m_FxFlame.SetActive(true);
+                StartCoroutine(StartDelayedFx());
                 StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
-                TheCellGameMgr.instance.m_FxGaz.SetActive(true);
+                StartCoroutine(StartDelayedFx());
                 StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Water:
@@ -445,8 +446,32 @@ public class OneCellClass : MonoBehaviour
 
         StartCoroutine(TeleportToStart());
 
+        yield return new WaitForSecondsRealtime(1.0f); // Wait another seconds before starting teleport fx
+
         if (cellSubType != TheCellGameMgr.CellSubTypes.Water)
-            TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+        {
+            TheCellGameMgr.instance.m_FXDeathRespawn.SetActive(true);
+        }
+    }
+
+
+    // Launch an Fx after seconds based on subtypes
+    private IEnumerator StartDelayedFx(float seconds = 2.0f)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+
+        switch (cellSubType)
+        {
+            case TheCellGameMgr.CellSubTypes.Fire:
+                TheCellGameMgr.instance.m_FxFlame.SetActive(true);
+                break;
+            case TheCellGameMgr.CellSubTypes.Lasers:
+                TheCellGameMgr.instance.m_FxLasers.SetActive(true);
+                break;
+            case TheCellGameMgr.CellSubTypes.Gaz:
+                TheCellGameMgr.instance.m_FxGaz.SetActive(true);
+                break;
+        }
     }
 
 

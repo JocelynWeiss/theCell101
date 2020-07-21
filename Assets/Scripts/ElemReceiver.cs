@@ -120,10 +120,12 @@ public class ElemReceiver : MonoBehaviour
                 transform.localScale *= 0.75f;
             }
 
-            TheCellGameMgr.Elements type = other.gameObject.GetComponent<ElemCubeClass>().m_ElemType;
-            m_ElementType = type;
+            //TheCellGameMgr.Elements type = other.gameObject.GetComponent<ElemCubeClass>().m_ElemType;
+            ElemCubeClass cube = other.gameObject.GetComponent<ElemCubeClass>();
+            m_ElementType = cube.m_ElemType;
             m_Validated = true;
             CodeUtils.BitfieldSet(m_ReceiverId, true, ref TheCellGameMgr.instance.m_CodeFinalSet);
+            cube.m_State = 1;
 
             t2.GetComponent<TextMeshProUGUI>().text = $"Released by '{grabberName} at {Time.fixedTime}s'";
             other.enabled = false;

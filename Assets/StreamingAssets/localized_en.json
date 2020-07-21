@@ -12,7 +12,8 @@
 {"key":"hintDeath_2","value":"Beware of the symbols under each door."},
 {"key":"hintDeath_3","value":"The cell lines are mobile."},
 {"key":"hintDeath_4","value":"The starting cell never moves."},
-{"key":"hintDeath_5","value":"To exit, enter the 'safe' combination of doors."}
+{"key":"hintDeath_5","value":"To exit, enter the 'safe' combination of doors."},
+{"key":"gameOver_1","value":"\t<b>Game over<\/b><br>You didn't manage to exit within half an hour."}
 
 ]
 }

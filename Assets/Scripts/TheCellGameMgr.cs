@@ -110,6 +110,7 @@ public class TheCellGameMgr : MonoBehaviour
     public static GameStates gameState { get; private set; }
     [ViewOnly] public int m_DeathCount = 0;
     [ViewOnly] public int m_ViewLeft = 0; // Number of possible use of hand scaner per cell
+    public float m_MaxGameLength = 1800.0f; // Maximum time allowed for one game in seconds
 
     // Current Game language
     [ViewOnly] public static GameLanguages m_Language = GameLanguages.Undefined;
@@ -208,6 +209,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_FxEmber;
     public GameObject m_FxWater;
     public GameObject m_FXDeathRespawn;
+    public GameObject m_FxRespawn;
 
     List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
@@ -1048,12 +1050,12 @@ public class TheCellGameMgr : MonoBehaviour
             playerSphere.transform.position = current.SmallCell.transform.position + new Vector3(0.0f, 0.1f, 0.0f);
 
             // Check if running out of time
-            float maxTime = 1800.0f;
+            //m_MaxGameLength = 6.0f; // To test
             float gameLength = Time.fixedTime - startingTime;
-            if (gameLength > maxTime)
+            if ((gameState != GameStates.CodeAllSet) && (gameLength > m_MaxGameLength))
             {
                 // Fade out & go back at start
-                if (gameLength < maxTime + 2.0f)
+                if (gameLength < m_MaxGameLength + 2.0f)
                 {
                     float intensity = 3.0f;
                     m_CentreModels.m_light_N.intensity += Time.fixedDeltaTime * intensity;
@@ -1061,9 +1063,9 @@ public class TheCellGameMgr : MonoBehaviour
                     m_CentreModels.m_light_S.intensity += Time.fixedDeltaTime * intensity;
                     m_CentreModels.m_light_W.intensity += Time.fixedDeltaTime * intensity;
                 }
-                if (gameLength > maxTime + 3.0f)
+                if (gameLength > m_MaxGameLength + 3.0f)
                 {
-                    Debug.Log($"GameOver after {gameLength}s");
+                    Debug.Log($"-----GameOver----- after {gameLength}s");
                     gameState = GameStates.Localization;
                     m_CentreModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
                     m_NorthModels.SetActiveModel(CellTypes.Undefined, CellSubTypes.Empty);
@@ -1077,6 +1079,8 @@ public class TheCellGameMgr : MonoBehaviour
                     m_codes.SetActive(false);
                     m_StopHandScaner.SetActive(false);
                     m_MenuArea1.SetActive(true);
+                    GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
+                    intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["gameOver_1"];
                 }
             }
 
@@ -1098,7 +1102,7 @@ public class TheCellGameMgr : MonoBehaviour
                             //endgame, open door
                             m_EndGameTime = Time.fixedTime;
                             float gameDur = m_EndGameTime - startingTime;
-                            float brutScore = Math.Max(0.0f, 1800.0f - gameDur);
+                            float brutScore = Math.Max(0.0f, m_MaxGameLength - gameDur);
 
                             GameObject txt1 = m_basicCanvas.transform.GetChild(1).gameObject;
                             txt1.GetComponent<TextMeshProUGUI>().text = $"Time: {gameDur}\nBrutScore: {brutScore}";
@@ -2173,7 +2177,27 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    public IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back)
+    public void AnimateShuttersOpen(CardinalPoint cardinal)
+    {
+        GameObject front = GetShutterPerCardinal(cardinal, m_CentreModels);
+        CardinalPoint inverseCardinal = GetOppositeCardinalPoint(cardinal);
+        GameObject back = null;
+        if (cardinal == CardinalPoint.North)
+            back = GetShutterPerCardinal(inverseCardinal, m_NorthModels);
+        else if (cardinal == CardinalPoint.East)
+            back = GetShutterPerCardinal(inverseCardinal, m_EastModels);
+        else if (cardinal == CardinalPoint.South)
+            back = GetShutterPerCardinal(inverseCardinal, m_SouthModels);
+        else if (cardinal == CardinalPoint.West)
+            back = GetShutterPerCardinal(inverseCardinal, m_WestModels);
+        if ((front != null) && (back != null))
+        {
+            StartCoroutine(AnimateShutters(cardinal, front, back));
+        }
+    }
+
+
+    IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back)
     {
         if ((front == null) || (back == null))
         {
@@ -2197,7 +2221,7 @@ public class TheCellGameMgr : MonoBehaviour
             back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
             yield return new WaitForFixedUpdate();
         }
-        //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is going back to {frontPos}");
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is going back to {frontPos}");
         front.transform.localPosition = frontPos;
         back.transform.localPosition = backPos;
     }

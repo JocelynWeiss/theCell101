@@ -187,6 +187,7 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_AllNotes.enabled = false;
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(false);
                 TheCellGameMgr.instance.m_FXDeathRespawn.SetActive(false);
+                TheCellGameMgr.instance.m_FxRespawn.SetActive(false);
 
                 if (TheCellGameMgr.instance.Audio_Bank[6].isPlaying == false)
                 {
@@ -380,7 +381,7 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellSubTypes.Vortex:
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
-                TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+                TheCellGameMgr.instance.m_FxRespawn.SetActive(true);
                 TheCellGameMgr.instance.Audio_Bank[13].Play();
                 StartCoroutine(TeleportToStart());
                 TheCellGameMgr.instance.Audio_Bank[2].PlayDelayed(2.0f);
@@ -404,7 +405,7 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxTopSteam.SetActive(true);
                 TheCellGameMgr.instance.m_FxTeleporter.SetActive(true);
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
-                TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
+                TheCellGameMgr.instance.m_FxRespawn.SetActive(true);
                 if (m_TunnelEnabled)
                 {
                     StartCoroutine(ActivateTunnel(3.0f));

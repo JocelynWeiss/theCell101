@@ -265,21 +265,7 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false);
         TheCellGameMgr.instance.m_codes.SetActive(false);
         TheCellGameMgr.instance.m_StopHandScaner.SetActive(false);
-
-        GameObject front = TheCellGameMgr.instance.GetShutterPerCardinal(m_cardinal, TheCellGameMgr.instance.m_CentreModels);
-        GameObject back = null;
-        if (m_cardinal == TheCellGameMgr.CardinalPoint.North)
-            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_NorthModels);
-        else if (m_cardinal == TheCellGameMgr.CardinalPoint.East)
-            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_EastModels);
-        else if (m_cardinal == TheCellGameMgr.CardinalPoint.South)
-            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_SouthModels);
-        else if (m_cardinal == TheCellGameMgr.CardinalPoint.West)
-            back = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.GetOppositeCardinalPoint(m_cardinal), TheCellGameMgr.instance.m_WestModels);
-        if ((front != null) && (back != null))
-        {
-            StartCoroutine(TheCellGameMgr.instance.AnimateShutters(m_cardinal, front, back));
-        }
+        TheCellGameMgr.instance.AnimateShuttersOpen(m_cardinal);
     }
 
 

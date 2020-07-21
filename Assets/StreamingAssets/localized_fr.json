@@ -12,7 +12,8 @@
 {"key":"hintDeath_2","value":"Prenez garde aux symboles sous chaque porte."},
 {"key":"hintDeath_3","value":"Les lignées de cellules sont mobiles."},
 {"key":"hintDeath_4","value":"La cellule de départ ne bouge jamais."},
-{"key":"hintDeath_5","value":"Pour sortir, rentrez la combinaison 'safe' des portes."}
+{"key":"hintDeath_5","value":"Pour sortir, rentrez la combinaison 'safe' des portes."},
+{"key":"gameOver_1","value":"\t<b>Fin de la partie<\/b><br>Vous n'êtes pas parvenu à sortir dans la demi-heure."}
 
 ]
 }

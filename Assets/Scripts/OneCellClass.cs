@@ -310,6 +310,7 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellTypes.Exit:
                 //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
                 TheCellGameMgr.instance.m_PlayaModel.SetActive(true);
+                TheCellGameMgr.instance.m_EndingLights.SetActive(true);
                 break;
             case TheCellGameMgr.CellTypes.Start:
                 TheCellGameMgr.instance.m_AllNotes.enabled = true;

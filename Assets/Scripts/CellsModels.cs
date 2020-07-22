@@ -174,7 +174,7 @@ public class CellsModels : MonoBehaviour
             if (cur != null)
             {
                 m_Scaners = cur.GetComponentsInChildren<HandScanTrigger>();
-                LitupScanner(true);
+                LitupScanner(1);
             }
             return;
         }
@@ -274,28 +274,36 @@ public class CellsModels : MonoBehaviour
                 break;
         }
 
+        //*
         if (current != null)
         {
             m_Scaners = current.GetComponentsInChildren<HandScanTrigger>();
-            LitupScanner(true);
+            LitupScanner(1);
         }
+        //*/
 
         m_CurrentType = newType;
     }
 
 
-    // Change the scaner's colour on/off
-    public void LitupScanner(bool turnOn)
+    // Change all scaner's colour 0=red 1=green 2=black
+    public void LitupScanner(int state)
     {
         Color col = Color.red;
-        if (turnOn)
+        bool isOn = false;
+        if (state == 1)
         {
             col = Color.green * 2.0f;
+            isOn = true;
+        }
+        else if (state == 2)
+        {
+            col = Color.black;
         }
 
         foreach (HandScanTrigger scaner in m_Scaners)
         {
-            scaner.SwitchOnOff(turnOn);
+            scaner.SwitchOnOff(isOn);
             Renderer rend = scaner.transform.GetComponent<Renderer>();
             if (rend)
             {

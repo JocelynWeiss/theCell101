@@ -5,6 +5,8 @@ public class LocalizationMenu : MonoBehaviour
     public StartButtonScript m_StartButton;
     public Flags m_FlagFr;
     public Flags m_FlagUk;
+    public GameObject m_GameoverMesh;
+    [ViewOnly] public bool m_TransitionStarted = false;
 
 
     // ---

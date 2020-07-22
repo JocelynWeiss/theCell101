@@ -152,6 +152,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_codes;  // The 4 codes on each wall
     public GameObject m_MenuArea1;  // Menu to select languages.
     public GameObject m_PlayaModel;
+    public GameObject m_EndingLights;
     public LocalizationMenu m_LocMenu;
 
     Vector3 m_waterLevel;
@@ -330,7 +331,7 @@ public class TheCellGameMgr : MonoBehaviour
         foreach (GameObject obj in m_ElemCubes)
         {
             ElemCubeClass elem = obj.GetComponent<ElemCubeClass>();
-            elem.ChangeType((Elements)(n%4), m_CubesElemMats);
+            elem.ChangeType((Elements)(n % 4), m_CubesElemMats);
             //obj.transform.Find("air").gameObject.SetActive(true);
             n++;
         }
@@ -343,6 +344,13 @@ public class TheCellGameMgr : MonoBehaviour
         m_PlayaModel.transform.Rotate(Vector3.up, 180.0f);
         m_PlayaModel.transform.position = new Vector3(0.0f, 0.0f, -1.2f);
         Audio_Bank[7].Play();
+
+        Color light_colour = new Color(1.0f, 1.0f, 0.9f, 1.0f);
+        SetupLights(m_CentreModels, 6.0f, light_colour);
+        SetupLights(m_NorthModels, 0.0f, Color.black);
+        SetupLights(m_EastModels, 0.0f, Color.black);
+        SetupLights(m_SouthModels, 0.0f, Color.black);
+        SetupLights(m_WestModels, 0.0f, Color.black);
 
         // --- Debug init ---
         // Start the game without the loc panel
@@ -453,6 +461,8 @@ public class TheCellGameMgr : MonoBehaviour
         m_MenuArea1.SetActive(false);
         m_PlayaModel.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         m_PlayaModel.SetActive(false);
+        m_EndingLights.SetActive(false);
+        m_LocMenu.m_TransitionStarted = false;
 
         if (startingSeed != gameSeed)
         {
@@ -756,6 +766,10 @@ public class TheCellGameMgr : MonoBehaviour
         float light_range = 1.0f;
         Color light_colour = new Color(1.0f, 1.0f, 0.9f, 1.0f);
         SetupLights(m_CentreModels, light_range, light_colour);
+        m_CentreModels.m_light_N.intensity = 0.1f;
+        m_CentreModels.m_light_E.intensity = 0.0f;
+        m_CentreModels.m_light_S.intensity = 0.0f;
+        m_CentreModels.m_light_W.intensity = 0.0f;
         light_colour = Color.red;
         SetupLights(m_NorthModels, light_range, light_colour);
         SetupLights(m_EastModels, light_range, light_colour);
@@ -1011,6 +1025,25 @@ public class TheCellGameMgr : MonoBehaviour
     // Update while in localization phase
     void LocalizationUpdate()
     {
+        if (m_LocMenu.m_TransitionStarted == true)
+        {
+            float inc = 3.0f;
+            m_CentreModels.m_light_N.intensity += Time.deltaTime * inc;
+            m_CentreModels.m_light_E.intensity += Time.deltaTime * inc;
+            m_CentreModels.m_light_S.intensity += Time.deltaTime * inc;
+            m_CentreModels.m_light_W.intensity += Time.deltaTime * inc;
+            return;
+        }
+
+        if (m_CentreModels.m_light_N.intensity < 1.0f)
+        {
+            float inc = 0.5f;
+            m_CentreModels.m_light_N.intensity += Time.deltaTime * inc;
+            m_CentreModels.m_light_E.intensity += Time.deltaTime * inc;
+            m_CentreModels.m_light_S.intensity += Time.deltaTime * inc;
+            m_CentreModels.m_light_W.intensity += Time.deltaTime * inc;
+        }
+
         if (Input.GetKeyUp(KeyCode.KeypadPlus))
         {
             /*
@@ -1081,6 +1114,17 @@ public class TheCellGameMgr : MonoBehaviour
                     m_Console_W.SetActive(false);
                     m_codes.SetActive(false);
                     m_MenuArea1.SetActive(true);
+                    m_LocMenu.m_StartButton.enabled = false;
+                    m_LocMenu.m_FlagFr.transform.gameObject.SetActive(false);
+                    m_LocMenu.m_FlagUk.transform.gameObject.SetActive(false);
+                    m_LocMenu.m_GameoverMesh.SetActive(true);
+                    m_LocMenu.enabled = true;
+                    m_LocMenu.transform.gameObject.SetActive(true);
+                    // switch light off, they will lit up in the loc update
+                    m_CentreModels.m_light_N.intensity = 0.1f;
+                    m_CentreModels.m_light_E.intensity = 0.1f;
+                    m_CentreModels.m_light_S.intensity = 0.1f;
+                    m_CentreModels.m_light_W.intensity = 0.1f;
                     GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
                     intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["gameOver_1"];
                 }
@@ -1290,7 +1334,7 @@ public class TheCellGameMgr : MonoBehaviour
     {
         OneCellClass current = GetCurrentCell();
         CellTypes curType = current.cellType;
-        int curId = current.cellId;
+        //int curId = current.cellId;
         m_CentreModels.SetActiveModel(curType, current.cellSubType);
         //InitDoorsScript(current, m_CentreModels.GetActiveModel());
         //Debug.Log($"UpdateCellsModels: {current}, type: {curType}, id: {curId}, playerCellId: {playerCellId}");
@@ -1305,6 +1349,8 @@ public class TheCellGameMgr : MonoBehaviour
             UpdateCodesSections(CardinalPoint.North, cell.cellType);
             //InitDoorsScript(cell, m_NorthModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.North, true);
+            m_CentreModels.SwitchOffScanner(1, CardinalPoint.North);
+            SwitchScaners(m_NorthModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -1321,6 +1367,8 @@ public class TheCellGameMgr : MonoBehaviour
             UpdateCodesSections(CardinalPoint.East, cell.cellType);
             //InitDoorsScript(cell, m_EastModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.East, true);
+            m_CentreModels.SwitchOffScanner(1, CardinalPoint.East);
+            SwitchScaners(m_EastModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -1337,6 +1385,8 @@ public class TheCellGameMgr : MonoBehaviour
             UpdateCodesSections(CardinalPoint.South, cell.cellType);
             //InitDoorsScript(cell, m_SouthModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.South, true);
+            m_CentreModels.SwitchOffScanner(1, CardinalPoint.South);
+            SwitchScaners(m_SouthModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -1353,6 +1403,8 @@ public class TheCellGameMgr : MonoBehaviour
             UpdateCodesSections(CardinalPoint.West, cell.cellType);
             //InitDoorsScript(cell, m_WestModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.West, true);
+            m_CentreModels.SwitchOffScanner(1, CardinalPoint.West);
+            SwitchScaners(m_WestModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -1392,6 +1444,10 @@ public class TheCellGameMgr : MonoBehaviour
             m_GroupElements.SetActive(true);
         }
         else if (curType == CellTypes.Deadly)
+        {
+            SetupLightsBySubType(m_CentreModels, current.cellSubType);
+        }
+        if (current.cellSubType == CellSubTypes.Blind)
         {
             SetupLightsBySubType(m_CentreModels, current.cellSubType);
         }
@@ -1648,6 +1704,8 @@ public class TheCellGameMgr : MonoBehaviour
                 light_colour = new Color(1.0f, 0.6f, 0.6f, 1.0f);
                 break;
             case CellSubTypes.Blind:
+                light_colour = new Color(0.8f, 0.5f, 1.0f, 1.0f);
+                break;
             case CellSubTypes.Empty:
             case CellSubTypes.Illusion:
             case CellSubTypes.OneLook:
@@ -1742,7 +1800,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (newSeed)
         {
             seed = System.Environment.TickCount;
-            seed = 1966;
+            //seed = 1966;
             //seed = 13068546;
         }
         InitializeNewGame(seed);
@@ -1818,6 +1876,10 @@ public class TheCellGameMgr : MonoBehaviour
                 {
                     Audio_Bank[23].Play();
                 }
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.North);
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.East);
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.South);
+                m_CentreModels.SwitchOffScanner(0, CardinalPoint.West);
             }
             else
             {
@@ -2145,7 +2207,7 @@ public class TheCellGameMgr : MonoBehaviour
 
         if (m_ViewLeft <= 0)
         {
-            m_CentreModels.LitupScanner(false);
+            m_CentreModels.LitupScanner(0);
         }
 
         float startTime = Time.time;
@@ -2960,6 +3022,32 @@ public class TheCellGameMgr : MonoBehaviour
                 break;
 
         }
+    }
+
+
+    // Turn on/off scaners of a model based on a cellId checking for neighbours
+    void SwitchScaners(CellsModels model, int fromCellId)
+    {
+        OneCellClass neighbours = GetNorth(fromCellId);
+        if (neighbours)
+            model.SwitchOffScanner(1, CardinalPoint.North);
+        else
+            model.SwitchOffScanner(2, CardinalPoint.North);
+        neighbours = GetEast(fromCellId);
+        if (neighbours)
+            model.SwitchOffScanner(1, CardinalPoint.East);
+        else
+            model.SwitchOffScanner(2, CardinalPoint.East);
+        neighbours = GetSouth(fromCellId);
+        if (neighbours)
+            model.SwitchOffScanner(1, CardinalPoint.South);
+        else
+            model.SwitchOffScanner(2, CardinalPoint.South);
+        neighbours = GetWest(fromCellId);
+        if (neighbours)
+            model.SwitchOffScanner(1, CardinalPoint.West);
+        else
+            model.SwitchOffScanner(2, CardinalPoint.West);
     }
 
 

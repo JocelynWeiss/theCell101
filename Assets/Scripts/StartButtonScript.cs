@@ -56,6 +56,7 @@ public class StartButtonScript : MonoBehaviour
         m_Rb.isKinematic = false; // No force applied
         m_Rb.useGravity = true;
         TheCellGameMgr.instance.Audio_Bank[2].Play();
+        TheCellGameMgr.instance.m_LocMenu.m_TransitionStarted = true;
 
         yield return new WaitForSecondsRealtime(2.0f);
         m_IsReady = true;

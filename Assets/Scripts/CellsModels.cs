@@ -47,6 +47,18 @@ public class CellsModels : MonoBehaviour
     [ViewOnly] public Light m_light_W;
     [ViewOnly] public CellsModelsType m_CurrentType = CellsModelsType.None;
     [ViewOnly] public HandScanTrigger[] m_Scaners; // A list of scaners in the current model, actualized each move
+    [ViewOnly] public bool[] m_ShutterPosSaved = new bool[4] { false, false, false, false };
+    [ViewOnly] public Vector3[] m_ShutterOriginPos = new Vector3[4];
+
+
+    private void Awake()
+    {
+        if (m_ShutterPosSaved.Length < 4)
+        {
+            m_ShutterPosSaved = new bool[4] { false, false, false, false };
+            m_ShutterOriginPos = new Vector3[4];
+        }        
+    }
 
 
     // ---

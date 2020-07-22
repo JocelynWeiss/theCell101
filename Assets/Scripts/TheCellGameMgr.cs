@@ -1685,7 +1685,7 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Sets lighting when entering a deadly room
-    void SetupLightsBySubType(CellsModels model, CellSubTypes subTypes)
+    public void SetupLightsBySubType(CellsModels model, CellSubTypes subTypes)
     {
         float light_range = 3.0f;
         Color light_colour = new Color(1.0f, 1.0f, 0.9f, 1.0f);
@@ -2185,6 +2185,13 @@ public class TheCellGameMgr : MonoBehaviour
         {
             Debug.LogWarning($"Couldn't find shutter in {model.name} on cardinal {point}, type: {model.m_CurrentType}");
         }
+
+        // Save origin position of shutters
+        if (model.m_ShutterPosSaved[(int)point] == false)
+        {
+            model.m_ShutterOriginPos[(int)point] = ret.transform.localPosition;
+            model.m_ShutterPosSaved[(int)point] = true;
+        }
         
         return ret;
     }
@@ -2273,22 +2280,25 @@ public class TheCellGameMgr : MonoBehaviour
         GameObject front = GetShutterPerCardinal(cardinal, m_CentreModels);
         CardinalPoint inverseCardinal = GetOppositeCardinalPoint(cardinal);
         GameObject back = null;
+        CellsModels model = m_CentreModels;
         if (cardinal == CardinalPoint.North)
-            back = GetShutterPerCardinal(inverseCardinal, m_NorthModels);
+            model = m_NorthModels;
         else if (cardinal == CardinalPoint.East)
-            back = GetShutterPerCardinal(inverseCardinal, m_EastModels);
+            model = m_EastModels;
         else if (cardinal == CardinalPoint.South)
-            back = GetShutterPerCardinal(inverseCardinal, m_SouthModels);
+            model = m_SouthModels;
         else if (cardinal == CardinalPoint.West)
-            back = GetShutterPerCardinal(inverseCardinal, m_WestModels);
+            model = m_WestModels;
+
+        back = GetShutterPerCardinal(inverseCardinal, model);
         if ((front != null) && (back != null))
         {
-            StartCoroutine(AnimateShutters(cardinal, front, back));
+            StartCoroutine(AnimateShutters(cardinal, front, back, model));
         }
     }
 
 
-    IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back)
+    IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels backModel)
     {
         if ((front == null) || (back == null))
         {
@@ -2301,8 +2311,9 @@ public class TheCellGameMgr : MonoBehaviour
         Audio_OpenShutters.Play();
         //--- Snd ---
 
-        Vector3 frontPos = front.transform.localPosition;
-        Vector3 backPos = back.transform.localPosition;
+        //Vector3 frontPos = front.transform.localPosition;
+        Vector3 frontPos = m_CentreModels.m_ShutterOriginPos[(int)point];
+        Vector3 backPos = backModel.m_ShutterOriginPos[(int)point];
         //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} pos {frontPos}");
 
         float startTime = Time.time;

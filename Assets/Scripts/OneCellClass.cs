@@ -181,6 +181,9 @@ public class OneCellClass : MonoBehaviour
         //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
         //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
 
+        //TheCellGameMgr.instance.StopAllCoroutines();
+        //TheCellGameMgr.instance.StopCoroutine(TheCellGameMgr.instance.OpenShutters);
+
         switch (cellType)
         {
             case TheCellGameMgr.CellTypes.Start:
@@ -215,6 +218,7 @@ public class OneCellClass : MonoBehaviour
         switch (cellSubType)
         {
             case TheCellGameMgr.CellSubTypes.Blind:
+                TheCellGameMgr.instance.SetupLightsBySubType(TheCellGameMgr.instance.m_CentreModels, TheCellGameMgr.CellSubTypes.Empty);
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
                 TheCellGameMgr.instance.m_FxGaz.SetActive(false);
@@ -247,6 +251,16 @@ public class OneCellClass : MonoBehaviour
         }
 
         TheCellGameMgr.instance.m_ViewLeft = 2;
+
+        CellsModels curModel = TheCellGameMgr.instance.m_CentreModels;
+        GameObject shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.North, curModel);
+        shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.North];
+        shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.East, curModel);
+        shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.East];
+        shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.South, curModel);
+        shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.South];
+        shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.West, curModel);
+        shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.West];
 
         int idOnChess = TheCellGameMgr.instance.playerCellId;
         if ((cellSubType != TheCellGameMgr.CellSubTypes.Fire) && (cellSubType != TheCellGameMgr.CellSubTypes.Lasers)

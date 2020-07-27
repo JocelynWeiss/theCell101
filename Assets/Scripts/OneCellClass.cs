@@ -27,6 +27,7 @@ public class OneCellClass : MonoBehaviour
     [ViewOnly] public HandsPullWheel m_DoorSouth;
     [ViewOnly] public HandsPullWheel m_DoorWest;
     [ViewOnly] public bool m_DoorsInitialized = false;
+    [ViewOnly] public bool m_DeathTriggered = false;
 
 
     public Vector3 m_MiniGameTranslation;
@@ -43,6 +44,7 @@ public class OneCellClass : MonoBehaviour
 
         cellType = type;
         cellRndSource = rnd;
+        m_DeathTriggered = false;
 
         switch (type)
         {
@@ -181,9 +183,6 @@ public class OneCellClass : MonoBehaviour
         //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
         //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
 
-        //TheCellGameMgr.instance.StopAllCoroutines();
-        //TheCellGameMgr.instance.StopCoroutine(TheCellGameMgr.instance.OpenShutters);
-
         switch (cellType)
         {
             case TheCellGameMgr.CellTypes.Start:
@@ -263,60 +262,56 @@ public class OneCellClass : MonoBehaviour
         shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.West];
 
         int idOnChess = TheCellGameMgr.instance.playerCellId;
-        if ((cellSubType != TheCellGameMgr.CellSubTypes.Fire) && (cellSubType != TheCellGameMgr.CellSubTypes.Lasers)
-            && (cellSubType != TheCellGameMgr.CellSubTypes.Gaz) && (cellSubType != TheCellGameMgr.CellSubTypes.Water))
+        if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
         {
-            if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-            {
-                //NorthDoor.SetActive(true);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, true));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
-            }
-            else
-            {
-                //NorthDoor.SetActive(false);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, false));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
-            }
+            //NorthDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, true));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
+        }
+        else
+        {
+            //NorthDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, false));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
+        }
 
-            if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-            {
-                //EastDoor.SetActive(true);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, true));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
-            }
-            else
-            {
-                //EastDoor.SetActive(false);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, false));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
-            }
+        if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+        {
+            //EastDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, true));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
+        }
+        else
+        {
+            //EastDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, false));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
+        }
 
-            if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-            {
-                //SouthDoor.SetActive(true);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, true));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
-            }
-            else
-            {
-                //SouthDoor.SetActive(false);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, false));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
-            }
+        if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+        {
+            //SouthDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, true));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
+        }
+        else
+        {
+            //SouthDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, false));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
+        }
 
-            if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-            {
-                //WestDoor.SetActive(true);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, true));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
-            }
-            else
-            {
-                //WestDoor.SetActive(false);
-                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, false));
-                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
-            }
+        if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+        {
+            //WestDoor.SetActive(true);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, true));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
+        }
+        else
+        {
+            //WestDoor.SetActive(false);
+            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, false));
+            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
         }
 
         switch (cellType)
@@ -367,22 +362,18 @@ public class OneCellClass : MonoBehaviour
         {
             case TheCellGameMgr.CellSubTypes.Lasers:
                 StartCoroutine(StartDelayedFx());
-                StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Fire:
                 StartCoroutine(StartDelayedFx());
-                StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
                 StartCoroutine(StartDelayedFx());
-                StartCoroutine(DelayedDeath());
                 break;
             case TheCellGameMgr.CellSubTypes.Water:
                 TheCellGameMgr.instance.Audio_Bank[20].Play();
                 TheCellGameMgr.instance.m_FxWater.SetActive(true);
                 StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 21));
                 StartCoroutine(TheCellGameMgr.instance.RaiseWaterLevel());
-                StartCoroutine(DelayedDeath(4.0f, false));
                 break;
             case TheCellGameMgr.CellSubTypes.Blind:
                 TheCellGameMgr.instance.m_ViewLeft = 0;
@@ -426,9 +417,13 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
                 break;
         }
+
+        TheCellGameMgr.instance.m_MovingOut = false;
+        Debug.Log($"Player entering cell {name} @ {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}s, pos on chess = {idOnChess}");
     }
 
 
+    // Shouldn't use this anymore as we can flee from deadly rooms
     private IEnumerator DelayedDeath(float seconds = 3.0f, bool playScream = true)
     {
         if (playScream)
@@ -439,18 +434,14 @@ public class OneCellClass : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(seconds);
 
+
+        if (TheCellGameMgr.instance.m_MovingOut == true)
+        {
+            yield return null;
+        }
+
         Debug.Log($"[OneCellClass] Kill the player sub {cellSubType}, go back at start. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
         TheCellGameMgr.instance.IncreaseDeath();
-
-        /*
-        OVRCameraRig rig = FindObjectOfType<OVRCameraRig>();
-        OVRScreenFade _screenFadeScript = rig.GetComponent<OVRScreenFade>();
-        if (_screenFadeScript != null)
-        {
-            _screenFadeScript.fadeColor = new Color(0.5f, 0.0f, 0.0f);
-            _screenFadeScript.FadeOut();
-        }
-        */
 
         StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
 

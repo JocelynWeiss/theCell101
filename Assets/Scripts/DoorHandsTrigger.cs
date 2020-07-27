@@ -258,6 +258,8 @@ public class DoorHandsTrigger : MonoBehaviour
         m_goingOutStartTime = Time.fixedTime;
         TheCellGameMgr.instance.Audio_Bank[10].Play();
         m_renderer.enabled = false;
+        TheCellGameMgr.instance.m_MovingOut = true;
+        Debug.Log($"Player start action going out cardinal {m_cardinal} @ {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}s");
         TheCellGameMgr.instance.m_Console_N.SetActive(false);
         TheCellGameMgr.instance.m_Console_E.SetActive(false);
         TheCellGameMgr.instance.m_Console_S.SetActive(false);

@@ -111,6 +111,7 @@ public class TheCellGameMgr : MonoBehaviour
     [ViewOnly] public int m_DeathCount = 0;
     [ViewOnly] public int m_ViewLeft = 0; // Number of possible use of hand scaner per cell
     public float m_MaxGameLength = 1800.0f; // Maximum time allowed for one game in seconds
+    [ViewOnly] public bool m_MovingOut = false; // True since both hands trigger moving out and false when entering a new cell
 
     // Current Game language
     [ViewOnly] public static GameLanguages m_Language = GameLanguages.Undefined;
@@ -1130,6 +1131,54 @@ public class TheCellGameMgr : MonoBehaviour
                 }
             }
 
+            if (gameState == GameStates.Running)
+            {
+                if (current.cellType == CellTypes.Deadly)
+                {
+                    if (m_MovingOut == false)
+                    {
+                        float t = Time.fixedTime - current.enterTime;
+                        switch (current.cellSubType)
+                        {
+                            case CellSubTypes.Fire:
+                            case CellSubTypes.Lasers:
+                            case CellSubTypes.Gaz:
+                                if ((t > 5.0f) && (current.m_DeathTriggered == false))
+                                {
+                                    Audio_Bank[0].Play(); // play scream
+
+                                    current.m_DeathTriggered = true;
+                                    IncreaseDeath();
+                                    Debug.Log($"+++ +++ +++ Kill the player in {current.cellSubType}, go back at start Death {m_DeathCount}. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+                                }
+                                if ((t > 5.0f + 2.0f) && (current.m_DeathTriggered == true))
+                                {
+                                    current.OnPlayerExit();
+                                    StartCoroutine(PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
+                                    m_FXDeathRespawn.SetActive(true);
+                                    TeleportToStart();
+                                }
+                                break;
+                            case CellSubTypes.Water:
+                                if ((t > 5.0f) && (current.m_DeathTriggered == false))
+                                {
+                                    current.m_DeathTriggered = true;
+                                    IncreaseDeath();
+                                    Debug.Log($"+++ +++ +++ Kill the player in {current.cellSubType}, go back at start Death {m_DeathCount}. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+                                }
+                                if ((t > 5.0f + 2.0f) && (current.m_DeathTriggered == true))
+                                {
+                                    current.OnPlayerExit();
+                                    StartCoroutine(PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
+                                    m_FXDeathRespawn.SetActive(true);
+                                    TeleportToStart();
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            
             if (current.cellType == CellTypes.Exit)
             {
                 if ((gameState != GameStates.ExitFound) && (gameState != GameStates.CodeAllSet))
@@ -2184,6 +2233,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (ret == null)
         {
             Debug.LogWarning($"Couldn't find shutter in {model.name} on cardinal {point}, type: {model.m_CurrentType}");
+            // JowTodo: Set hand scanner to red
         }
 
         // Save origin position of shutters

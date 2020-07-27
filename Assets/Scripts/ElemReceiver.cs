@@ -21,6 +21,11 @@ public class ElemReceiver : MonoBehaviour
     {
         m_Validated = false;
         m_renderer = this.GetComponent<MeshRenderer>();
+
+        if (m_renderer == null)
+        {
+            Debug.LogError($"Couldn't find a MeshRenderer for {name}");
+        }
     }
 
 

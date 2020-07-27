@@ -267,6 +267,7 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.SwitchHandConsole(m_cardinal, false);
         TheCellGameMgr.instance.m_codes.SetActive(false);
         TheCellGameMgr.instance.AnimateShuttersOpen(m_cardinal);
+        TheCellGameMgr.instance.m_FxTeleporter.SetActive(false);
     }
 
 

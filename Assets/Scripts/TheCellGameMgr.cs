@@ -1964,7 +1964,7 @@ public class TheCellGameMgr : MonoBehaviour
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_NorthModels);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back));
+                            StartCoroutine(OpenShutters(point, front, back, m_NorthModels));
                             m_ViewLeft--;
                         }
                         else
@@ -1989,7 +1989,7 @@ public class TheCellGameMgr : MonoBehaviour
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_EastModels);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back));
+                            StartCoroutine(OpenShutters(point, front, back, m_EastModels));
                             m_ViewLeft--;
                         }
                         else
@@ -2014,7 +2014,7 @@ public class TheCellGameMgr : MonoBehaviour
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_SouthModels);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back));
+                            StartCoroutine(OpenShutters(point, front, back, m_SouthModels));
                             m_ViewLeft--;
                         }
                         else
@@ -2039,7 +2039,7 @@ public class TheCellGameMgr : MonoBehaviour
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_WestModels);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back));
+                            StartCoroutine(OpenShutters(point, front, back, m_WestModels));
                             m_ViewLeft--;
                         }
                         else
@@ -2247,7 +2247,7 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    private IEnumerator OpenShutters(CardinalPoint point, GameObject front, GameObject back)
+    private IEnumerator OpenShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel)
     {
         yield return new WaitForSecondsRealtime(0.5f);
 
@@ -2275,12 +2275,12 @@ public class TheCellGameMgr : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is open.");
-        StartCoroutine(CloseShutters(point, front, back));
+        StartCoroutine(CloseShutters(point, front, back, adjModel));
     }
 
 
     // Close the shutters after x sec
-    private IEnumerator CloseShutters(CardinalPoint point, GameObject front, GameObject back)
+    private IEnumerator CloseShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel)
     {
         yield return new WaitForSecondsRealtime(5.0f);
 
@@ -2288,11 +2288,17 @@ public class TheCellGameMgr : MonoBehaviour
         Audio_OpenShutters.Play();
         //--- Snd ---
 
-        float startTime = Time.time;
-        while (Time.time - startTime < 2.0f)
+        float duration = 8.0f;
+        float startTime = Time.fixedTime;
+        float endTime = startTime + duration;
+        Vector3 frontOrigin = m_CentreModels.m_ShutterOriginPos[(int)point];
+        Vector3 backOrigin = adjModel.m_ShutterOriginPos[(int)point];
+
+        while (Time.time < endTime)
         {
-            front.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.3f;
-            back.transform.position -= Vector3.up * Time.fixedDeltaTime * 0.3f;
+            float p = (Time.fixedTime - startTime) / duration;
+            front.transform.localPosition = Vector3.Lerp(front.transform.localPosition, frontOrigin, p);
+            back.transform.localPosition = Vector3.Lerp(back.transform.localPosition, backOrigin, p);
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is closed.");

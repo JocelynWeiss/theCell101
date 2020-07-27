@@ -234,6 +234,12 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellSubTypes.Water:
                 TheCellGameMgr.instance.Audio_Bank[20].Stop();
                 TheCellGameMgr.instance.m_FxWater.SetActive(false);
+                // Reset water levels
+                CellsModels curModel = TheCellGameMgr.instance.m_CentreModels;
+                GameObject water = curModel.m_WaterCell.transform.Find("ground_all/water").gameObject;
+                water.transform.position = TheCellGameMgr.instance.m_waterLevel;
+                GameObject waterStuff = curModel.m_WaterCell.transform.Find("ground_all/water_stuff").gameObject;
+                waterStuff.transform.position = TheCellGameMgr.instance.m_waterStuffLevel;
                 break;
             default:
                 break;

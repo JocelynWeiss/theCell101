@@ -156,8 +156,8 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_EndingLights;
     public LocalizationMenu m_LocMenu;
 
-    Vector3 m_waterLevel;
-    Vector3 m_waterStuffLevel;
+    [HideInInspector] public Vector3 m_waterLevel;
+    [HideInInspector] public Vector3 m_waterStuffLevel;
 
     public CellsModels m_CentreModels;
     public CellsModels m_NorthModels;
@@ -1138,42 +1138,35 @@ public class TheCellGameMgr : MonoBehaviour
                     if (m_MovingOut == false)
                     {
                         float t = Time.fixedTime - current.enterTime;
-                        switch (current.cellSubType)
+                        float secBeforeDeath = 5.0f;
+                        float secDead = 2.0f;
+                        if ((t > secBeforeDeath) && (current.m_DeathTriggered == false))
                         {
-                            case CellSubTypes.Fire:
-                            case CellSubTypes.Lasers:
-                            case CellSubTypes.Gaz:
-                                if ((t > 5.0f) && (current.m_DeathTriggered == false))
-                                {
-                                    Audio_Bank[0].Play(); // play scream
+                            Audio_Bank[0].Play(); // play scream
 
-                                    current.m_DeathTriggered = true;
-                                    IncreaseDeath();
-                                    Debug.Log($"+++ +++ +++ Kill the player in {current.cellSubType}, go back at start Death {m_DeathCount}. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
-                                }
-                                if ((t > 5.0f + 2.0f) && (current.m_DeathTriggered == true))
-                                {
-                                    current.OnPlayerExit();
-                                    StartCoroutine(PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
-                                    m_FXDeathRespawn.SetActive(true);
-                                    TeleportToStart();
-                                }
-                                break;
-                            case CellSubTypes.Water:
-                                if ((t > 5.0f) && (current.m_DeathTriggered == false))
-                                {
-                                    current.m_DeathTriggered = true;
-                                    IncreaseDeath();
-                                    Debug.Log($"+++ +++ +++ Kill the player in {current.cellSubType}, go back at start Death {m_DeathCount}. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
-                                }
-                                if ((t > 5.0f + 2.0f) && (current.m_DeathTriggered == true))
-                                {
-                                    current.OnPlayerExit();
-                                    StartCoroutine(PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
-                                    m_FXDeathRespawn.SetActive(true);
-                                    TeleportToStart();
-                                }
-                                break;
+                            current.m_DeathTriggered = true;
+                            IncreaseDeath();
+                            Debug.Log($"+++ +++ +++ Kill the player in {current.cellSubType}, go back at start Death {m_DeathCount}. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+                            m_CentreModels.m_light_N.color = Color.red;
+                            m_CentreModels.m_light_E.color = Color.red;
+                            m_CentreModels.m_light_S.color = Color.red;
+                            m_CentreModels.m_light_W.color = Color.red;
+                        }
+                        if ((t > secBeforeDeath) && (current.m_DeathTriggered == true)) // red fade out
+                        {
+                            float intensity = 3.0f;
+                            m_CentreModels.m_light_N.intensity += Time.fixedDeltaTime * intensity;
+                            m_CentreModels.m_light_E.intensity += Time.fixedDeltaTime * intensity;
+                            m_CentreModels.m_light_S.intensity += Time.fixedDeltaTime * intensity;
+                            m_CentreModels.m_light_W.intensity += Time.fixedDeltaTime * intensity;
+                        }
+                        if ((t > secBeforeDeath + secDead) && (current.m_DeathTriggered == true))
+                        {
+                            current.OnPlayerExit();
+                            StartCoroutine(PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
+                            m_FXDeathRespawn.SetActive(true);
+                            TeleportToStart();
+                            current.m_DeathTriggered = false;
                         }
                     }
                 }
@@ -1849,7 +1842,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (newSeed)
         {
             seed = System.Environment.TickCount;
-            //seed = 1966;
+            seed = 1966;
             //seed = 13068546;
         }
         InitializeNewGame(seed);

@@ -204,6 +204,7 @@ public class TheCellGameMgr : MonoBehaviour
 
     public bool m_ShowMiniMap = true;
 
+    public ParticleSystem m_FxVentilo;
     public GameObject m_FxTopSteam;
     public GameObject m_FxTeleporter;
     public GameObject m_FxSpawner;
@@ -497,7 +498,6 @@ public class TheCellGameMgr : MonoBehaviour
         }
         Debug.Log($"[GameMgr] deadly {toto}");
 
-
         List<int> effectCells = new List<int>(effectCellNb);
         while (effectCells.Count < effectCellNb)
         {
@@ -516,7 +516,6 @@ public class TheCellGameMgr : MonoBehaviour
             toto += id.ToString() + " ";
         }
         Debug.Log($"[GameMgr] effectCells {toto}");
-
 
         // Init a board
         bool exitChosen = false;
@@ -759,7 +758,10 @@ public class TheCellGameMgr : MonoBehaviour
             m_WestModels.m_VortexCell.transform.SetParent(m_WestModels.transform);
             m_WestModels.m_TunnelCell = GameObject.Instantiate(m_TunnelCellModel);
             m_WestModels.m_TunnelCell.transform.SetParent(m_WestModels.transform);
-            m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);            
+            m_WestModels.transform.position = new Vector3(-2.9f, 0.0f, 0.0f);
+
+            m_FxVentilo.gameObject.SetActive(true);
+            m_FxVentilo.Play();
         }
         //--- show models ---
 
@@ -3121,4 +3123,32 @@ public class TheCellGameMgr : MonoBehaviour
             cell.SmallCell.SetActive(show);
         }
     }
+
+
+    // 
+    public GameObject GetWheelPerCardinal(CardinalPoint point, CellsModels model)
+    {
+        GameObject shutter = GetShutterPerCardinal(point, model);
+        GameObject locker = null;
+        if (shutter == null)
+            return null;
+
+        switch (point)
+        {
+            case CardinalPoint.North:
+                // JowNext: retreive names
+                break;
+            case CardinalPoint.East:
+                break;
+            case CardinalPoint.South:
+                break;
+            case CardinalPoint.West:
+                break;
+        }
+
+        return locker;
+    }
+
+
+    // ---
 }

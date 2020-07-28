@@ -60,3 +60,9 @@ crashlytics-build.properties
 
 Assets/Plugins/Android/assests/oculussig_1PASH9B2TP9414
 ProjectSettings/QualitySettings.asset
+Assets/TutorialInfo/Scripts/Editor.meta
+Assets/TutorialInfo/Scripts.meta
+Assets/TutorialInfo/Icons.meta
+Assets/TutorialInfo.meta
+Assets/Scenes/Profiles.meta
+Assets/Scenes/Main.meta

@@ -3,7 +3,12 @@ guid: 06ebd5ce9d901374cb028b48eb26fbf2
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground_plaque_mat
+    second: {fileID: 2100000, guid: f87b83f715fe5e04d91884271e75e0ac, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

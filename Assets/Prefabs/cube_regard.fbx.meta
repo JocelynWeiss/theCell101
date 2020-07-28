@@ -1,9 +1,74 @@
 fileFormatVersion: 2
 guid: 18211acbbd1175a44b1e6afd107aacbf
 ModelImporter:
-  serializedVersion: 19300
+  serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cable_wall_all_mat
+    second: {fileID: 2100000, guid: 3da1af67445790541acd13dbe1e1c27f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: console_element
+    second: {fileID: 2100000, guid: 649e3ff4ebb002440aea8adf05323407, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground
+    second: {fileID: 2100000, guid: 800ce458ceafc38469070b70e472178c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hand_scaner_all_mat
+    second: {fileID: 2100000, guid: b42322f0fdcc3254287d1bac3201fd41, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light
+    second: {fileID: 2100000, guid: ee4a81a71cc100e4a8382c08575d7af8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lock_wheel_mat
+    second: {fileID: 2100000, guid: de782cb43942a81478526e8c49f1478f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: manche_mat
+    second: {fileID: 2100000, guid: 42d3b0ff194e4e940acb4fe3cfe55d9d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipe_mat
+    second: {fileID: 2100000, guid: 7db2ad15782929943881da665fc5cb14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: teleporteur_mat
+    second: {fileID: 2100000, guid: a277d23d312eb904dbd6632103f34410, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: top_mat
+    second: {fileID: 2100000, guid: 90a86ce38c81f624b8c05ec058a347d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: trap_mat
+    second: {fileID: 2100000, guid: c2a79178530397e4bbd8fd6813759e22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ventilation_mat
+    second: {fileID: 2100000, guid: 151218fda947fe748a9e2137a27d8c32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_0_mat
+    second: {fileID: 2100000, guid: 52f252b84ef50324ba6ceb2afb87db81, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -43,6 +108,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

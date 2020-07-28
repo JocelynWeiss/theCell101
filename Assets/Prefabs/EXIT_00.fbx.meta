@@ -1,9 +1,94 @@
 fileFormatVersion: 2
 guid: 1e90ea849356be94b9f420d63cd500ce
 ModelImporter:
-  serializedVersion: 19300
+  serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Exit_panel
+    second: {fileID: 2100000, guid: 96e5c3faf806c8247b6006be5924997d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: console_ecit_mat
+    second: {fileID: 2100000, guid: 02f1ed6d69689ce40afa1702c3427cd0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: console_element
+    second: {fileID: 2100000, guid: 649e3ff4ebb002440aea8adf05323407, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: door_exit_mat
+    second: {fileID: 2100000, guid: b6dfd8745bd6ecd44b4d7de1ec35e806, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground
+    second: {fileID: 2100000, guid: 8c3224e4cf59f954f9507c15beddb46c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground_plaque_mat
+    second: {fileID: 2100000, guid: 124951298ee82434aa108d4daeee475e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hand_scaner_all_mat
+    second: {fileID: 2100000, guid: b42322f0fdcc3254287d1bac3201fd41, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light
+    second: {fileID: 2100000, guid: ee4a81a71cc100e4a8382c08575d7af8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lock_exit_mat
+    second: {fileID: 2100000, guid: afaa158bf14b27440aae56ec27a660e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lock_wheel_mat
+    second: {fileID: 2100000, guid: de782cb43942a81478526e8c49f1478f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipe_mat
+    second: {fileID: 2100000, guid: 7db2ad15782929943881da665fc5cb14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: teleporteur_mat
+    second: {fileID: 2100000, guid: ee9ac225ac22eb745b7790354b614fe1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: top_mat
+    second: {fileID: 2100000, guid: 90a86ce38c81f624b8c05ec058a347d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: trap_mat
+    second: {fileID: 2100000, guid: c2a79178530397e4bbd8fd6813759e22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ventilation_mat
+    second: {fileID: 2100000, guid: 151218fda947fe748a9e2137a27d8c32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_0_mat
+    second: {fileID: 2100000, guid: 5c155147595c6d8448a4d9aa3d30e8fb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: walll_exit_mat
+    second: {fileID: 2100000, guid: c39959eab716643429ca72e2e33647e2, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -43,6 +128,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

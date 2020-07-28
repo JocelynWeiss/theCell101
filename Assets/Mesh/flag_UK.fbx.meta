@@ -3,7 +3,12 @@ guid: efa9bc6ce75706b47b29ab44f35ab10f
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: flags_mat
+    second: {fileID: 2100000, guid: dcb7a067f75f85041922632c3988dd53, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

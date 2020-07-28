@@ -15,7 +15,6 @@ public class OneCellClass : MonoBehaviour
     public GameObject EastDoor;
     public GameObject SouthDoor;
     public GameObject WestDoor;
-    public GameObject ExitHatch;
     public MechanismMove MechanismNorth;
     public MechanismMove MechanismEast;
     public MechanismMove MechanismSouth;
@@ -28,7 +27,6 @@ public class OneCellClass : MonoBehaviour
     [ViewOnly] public HandsPullWheel m_DoorWest;
     [ViewOnly] public bool m_DoorsInitialized = false;
     [ViewOnly] public bool m_DeathTriggered = false;
-
 
     public Vector3 m_MiniGameTranslation;
 
@@ -166,7 +164,6 @@ public class OneCellClass : MonoBehaviour
         EastDoor.SetActive(false);
         SouthDoor.SetActive(false);
         WestDoor.SetActive(false);
-        ExitHatch.SetActive(false);
         /*
         if (MechanismNorth != null)
         {
@@ -323,7 +320,6 @@ public class OneCellClass : MonoBehaviour
         switch (cellType)
         {
             case TheCellGameMgr.CellTypes.Exit:
-                //ExitHatch.SetActive(true); // CellInteract for exit isn't actif anymore
                 TheCellGameMgr.instance.m_PlayaModel.SetActive(true);
                 TheCellGameMgr.instance.m_EndingLights.SetActive(true);
                 break;
@@ -632,6 +628,27 @@ public class OneCellClass : MonoBehaviour
                     break;
                 }
         }
+    }
+
+
+    // ---
+    public HandsPullWheel GetWheelByCardinal(TheCellGameMgr.CardinalPoint point)
+    {
+        switch (point)
+        {
+            case TheCellGameMgr.CardinalPoint.North:
+                return m_DoorNorth;
+            case TheCellGameMgr.CardinalPoint.East:
+                return m_DoorEast;
+            case TheCellGameMgr.CardinalPoint.South:
+                return m_DoorSouth;
+            case TheCellGameMgr.CardinalPoint.West:
+                return m_DoorWest;
+            default:
+                Debug.LogError($"Wrong cardinal poit to get the wheel: {point}");
+                break;
+        }
+        return null;
     }
 
 

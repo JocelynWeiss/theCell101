@@ -285,7 +285,7 @@ public class TheCellGameMgr : MonoBehaviour
             //GameObject obj = GameObject.Instantiate(m_ElementPrefab);
             GameObject obj = GameObject.Instantiate(m_ElementPrefab, m_GroupElements.transform);
             obj.name = $"Elem_{i}";
-            Vector3 pos = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-0.8f, 1.0f));
+            Vector3 pos = new Vector3(UnityEngine.Random.Range(-1.1f, 1.1f), 0.0f, UnityEngine.Random.Range(-0.7f, 1.1f));
             pos.y = UnityEngine.Random.Range(1.0f, 2.0f);
             obj.transform.SetPositionAndRotation(pos, Quaternion.Euler(pos * 360.0f));
             obj.SetActive(true);
@@ -1380,7 +1380,7 @@ public class TheCellGameMgr : MonoBehaviour
         CellTypes curType = current.cellType;
         //int curId = current.cellId;
         m_CentreModels.SetActiveModel(curType, current.cellSubType);
-        //InitDoorsScript(current, m_CentreModels.GetActiveModel());
+        InitDoorsScript(current, m_CentreModels.GetActiveModel());
         //Debug.Log($"UpdateCellsModels: {current}, type: {curType}, id: {curId}, playerCellId: {playerCellId}");
 
         // DeActivate elements
@@ -1844,7 +1844,7 @@ public class TheCellGameMgr : MonoBehaviour
         if (newSeed)
         {
             seed = System.Environment.TickCount;
-            seed = 1966;
+            //seed = 1966;
             //seed = 13068546;
         }
         InitializeNewGame(seed);
@@ -1933,7 +1933,8 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         // Warning alarm in OneLook at the second time
-        if (GetCurrentCell().cellSubType == CellSubTypes.OneLook)
+        OneCellClass cell = GetCurrentCell();
+        if (cell.cellSubType == CellSubTypes.OneLook)
         {
             if (m_ViewLeft == 1)
             {
@@ -1957,9 +1958,10 @@ public class TheCellGameMgr : MonoBehaviour
 
                         GameObject front = GetShutterPerCardinal(point, m_CentreModels);
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_NorthModels);
+                        HandsPullWheel wheel = cell.GetWheelByCardinal(point);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back, m_NorthModels));
+                            StartCoroutine(OpenShutters(point, front, back, m_NorthModels, wheel));
                             m_ViewLeft--;
                         }
                         else
@@ -1982,9 +1984,10 @@ public class TheCellGameMgr : MonoBehaviour
 
                         GameObject front = GetShutterPerCardinal(point, m_CentreModels);
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_EastModels);
+                        HandsPullWheel wheel = cell.GetWheelByCardinal(point);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back, m_EastModels));
+                            StartCoroutine(OpenShutters(point, front, back, m_EastModels, wheel));
                             m_ViewLeft--;
                         }
                         else
@@ -2007,9 +2010,10 @@ public class TheCellGameMgr : MonoBehaviour
 
                         GameObject front = GetShutterPerCardinal(point, m_CentreModels);
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_SouthModels);
+                        HandsPullWheel wheel = cell.GetWheelByCardinal(point);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back, m_SouthModels));
+                            StartCoroutine(OpenShutters(point, front, back, m_SouthModels, wheel));
                             m_ViewLeft--;
                         }
                         else
@@ -2032,9 +2036,10 @@ public class TheCellGameMgr : MonoBehaviour
 
                         GameObject front = GetShutterPerCardinal(point, m_CentreModels);
                         GameObject back = GetShutterPerCardinal(GetOppositeCardinalPoint(point), m_WestModels);
+                        HandsPullWheel wheel = cell.GetWheelByCardinal(point);
                         if ((front != null) && (back != null))
                         {
-                            StartCoroutine(OpenShutters(point, front, back, m_WestModels));
+                            StartCoroutine(OpenShutters(point, front, back, m_WestModels, wheel));
                             m_ViewLeft--;
                         }
                         else
@@ -2242,12 +2247,18 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    private IEnumerator OpenShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel)
+    private IEnumerator OpenShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel, HandsPullWheel lockerWheel)
     {
         yield return new WaitForSecondsRealtime(0.5f);
 
         if ((front == null) || (back == null))
         {
+            yield return 0;
+        }
+
+        if (lockerWheel == null)
+        {
+            Debug.LogError($"lockerWheel is null in OpenShutters {GetCurrentCell().name} {GetCurrentCell().cellType} {GetCurrentCell().cellSubType}");
             yield return 0;
         }
 
@@ -2267,6 +2278,10 @@ public class TheCellGameMgr : MonoBehaviour
         {
             front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
             back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
+
+            Vector3 forward = lockerWheel.GetForwardToDoor();
+            lockerWheel.transform.RotateAround(lockerWheel.transform.position, forward, Time.fixedDeltaTime * 100.0f);
+
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is open.");
@@ -2344,12 +2359,14 @@ public class TheCellGameMgr : MonoBehaviour
         back = GetShutterPerCardinal(inverseCardinal, model);
         if ((front != null) && (back != null))
         {
-            StartCoroutine(AnimateShutters(cardinal, front, back, model));
+            OneCellClass cell = GetCurrentCell();
+            HandsPullWheel wheel = cell.GetWheelByCardinal(cardinal);
+            StartCoroutine(AnimateShutters(cardinal, front, back, model, wheel));
         }
     }
 
 
-    IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels backModel)
+    IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels backModel, HandsPullWheel lockerWheel)
     {
         if ((front == null) || (back == null))
         {
@@ -2372,6 +2389,10 @@ public class TheCellGameMgr : MonoBehaviour
         {
             front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
             back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
+
+            Vector3 forward = lockerWheel.GetForwardToDoor();
+            lockerWheel.transform.RotateAround(lockerWheel.transform.position, forward, Time.fixedDeltaTime * 100.0f);
+
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is going back to {frontPos}");
@@ -2792,8 +2813,8 @@ public class TheCellGameMgr : MonoBehaviour
     // retreive all pullers from models
     void InitDoorsScript(OneCellClass cell, GameObject model)
     {
-        //if (cell.m_DoorsInitialized)
-            //return;
+        if (cell.m_DoorsInitialized)
+            return;
 
         HandsPullWheel[] pullers = model.GetComponentsInChildren<HandsPullWheel>();
         foreach (HandsPullWheel puller in pullers)
@@ -3125,7 +3146,7 @@ public class TheCellGameMgr : MonoBehaviour
     }
 
 
-    // 
+    // Return the game object of the lock wheel for model at point
     public GameObject GetWheelPerCardinal(CardinalPoint point, CellsModels model)
     {
         GameObject shutter = GetShutterPerCardinal(point, model);
@@ -3136,13 +3157,16 @@ public class TheCellGameMgr : MonoBehaviour
         switch (point)
         {
             case CardinalPoint.North:
-                // JowNext: retreive names
+                locker = shutter.transform.Find("lock_1 1").gameObject;
                 break;
             case CardinalPoint.East:
+                locker = shutter.transform.Find("lock_1 2").gameObject;
                 break;
             case CardinalPoint.South:
+                locker = shutter.transform.Find("lock_1").gameObject;
                 break;
             case CardinalPoint.West:
+                locker = shutter.transform.Find("lock_1 3").gameObject;
                 break;
         }
 

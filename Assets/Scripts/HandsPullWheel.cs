@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class HandsPullWheel : MonoBehaviour
 {
@@ -20,6 +21,22 @@ public class HandsPullWheel : MonoBehaviour
     {
         m_Renderer = GetComponent<MeshRenderer>();
         transform.localRotation = Quaternion.identity; // Should start from the identity
+    }
+
+
+    public Vector3 GetForwardToDoor()
+    {
+        switch (m_forward)
+        {
+            case 1:
+                return transform.right;
+            case 2:
+                return -transform.right;
+            case 3:
+                return -transform.forward;
+            default:
+                return transform.forward;
+        }
     }
 
 
@@ -146,13 +163,7 @@ public class HandsPullWheel : MonoBehaviour
             active = true;
         }
 
-        Vector3 forward = transform.forward;
-        if (m_forward == 1)
-            forward = transform.right;
-        else if (m_forward == 2)
-            forward = -transform.right;
-        else if (m_forward == 3)
-            forward = -transform.forward;
+        Vector3 forward = GetForwardToDoor();
 
         if ((active) && (m_enterTime > 0.0f))
         {

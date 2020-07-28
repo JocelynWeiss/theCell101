@@ -64,8 +64,15 @@ public class CellsModels : MonoBehaviour
     // ---
     public GameObject GetActiveModel()
     {
+        return GetModelByTypes(m_CurrentType);
+    }
+
+
+    // ---
+    public GameObject GetModelByTypes(CellsModelsType type)
+    {
         GameObject obj = null;
-        switch (m_CurrentType)
+        switch (type)
         {
             case CellsModelsType.None:
             default:
@@ -115,6 +122,69 @@ public class CellsModels : MonoBehaviour
         }
 
         return obj;
+    }
+
+
+    // ---
+    public static CellsModelsType GetModelTypeByTypes(TheCellGameMgr.CellTypes cellType, TheCellGameMgr.CellSubTypes subType)
+    {
+        CellsModelsType ret = CellsModelsType.None;
+        switch (cellType)
+        {
+            case TheCellGameMgr.CellTypes.Undefined:
+                ret = CellsModelsType.None;
+                break;
+            case TheCellGameMgr.CellTypes.Start:
+                ret = CellsModelsType.Entry;
+                break;
+            case TheCellGameMgr.CellTypes.Exit:
+                ret = CellsModelsType.Exit;
+                break;
+            case TheCellGameMgr.CellTypes.Deadly:
+            case TheCellGameMgr.CellTypes.Effect:
+            case TheCellGameMgr.CellTypes.Safe:
+                {
+                    switch (subType)
+                    {
+                        case TheCellGameMgr.CellSubTypes.Blind:
+                            ret = CellsModelsType.BlindM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Illusion:
+                            ret = CellsModelsType.IllusionM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Vortex:
+                            ret = CellsModelsType.VortexM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.OneLook:
+                            ret = CellsModelsType.OneLook;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Water:
+                            ret = CellsModelsType.WaterM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Lasers:
+                            ret = CellsModelsType.LaserM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Gaz:
+                            ret = CellsModelsType.GazM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Screen:
+                            ret = CellsModelsType.PlanM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Fire:
+                            ret = CellsModelsType.FireM;
+                            break;
+                        case TheCellGameMgr.CellSubTypes.Tunnel:
+                            ret = CellsModelsType.TunnelM;
+                            break;
+                        default:
+                            ret = CellsModelsType.GenA;
+                            break;
+                    }
+                    break;
+                }
+        }
+
+        return ret;
     }
 
 

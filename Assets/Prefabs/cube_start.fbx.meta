@@ -1,9 +1,89 @@
 fileFormatVersion: 2
 guid: 0794b8d3adf0103409304ad3f3f8e42e
 ModelImporter:
-  serializedVersion: 19300
+  serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Id_mat
+    second: {fileID: 2100000, guid: 0206b48bdb241314c9208085ea3b0e4d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WC_mat
+    second: {fileID: 2100000, guid: ad7490c5725b0d446be4d47ea7ae3e03, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chair_solo_phong12SG1
+    second: {fileID: 2100000, guid: 3a9292392f9f9f343bb22a2491d6d365, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: console_element
+    second: {fileID: 2100000, guid: 649e3ff4ebb002440aea8adf05323407, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground
+    second: {fileID: 2100000, guid: 8b4f27e95a6f4b7428c7b45118d61eca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hand_scaner_all_mat
+    second: {fileID: 2100000, guid: 658e45aa22a267549aa59545eda061de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lavabo_mat
+    second: {fileID: 2100000, guid: 8c2d2034182c0ee428d0030fb0b0fd54, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light
+    second: {fileID: 2100000, guid: ee4a81a71cc100e4a8382c08575d7af8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lock_wheel_mat
+    second: {fileID: 2100000, guid: de782cb43942a81478526e8c49f1478f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: phong87
+    second: {fileID: 2100000, guid: aa153803d28db7448ae8c33b03b89385, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipe_mat
+    second: {fileID: 2100000, guid: 7db2ad15782929943881da665fc5cb14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rules_mat
+    second: {fileID: 2100000, guid: a6518bf499e9c334bba3973beee446c4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: teleporteur_mat
+    second: {fileID: 2100000, guid: ee9ac225ac22eb745b7790354b614fe1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: top_mat
+    second: {fileID: 2100000, guid: 90a86ce38c81f624b8c05ec058a347d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: trap_mat
+    second: {fileID: 2100000, guid: c2a79178530397e4bbd8fd6813759e22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ventilation_mat
+    second: {fileID: 2100000, guid: 151218fda947fe748a9e2137a27d8c32, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -43,6 +123,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

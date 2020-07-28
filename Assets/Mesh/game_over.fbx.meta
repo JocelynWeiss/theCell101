@@ -1,9 +1,99 @@
 fileFormatVersion: 2
 guid: b8c0fc6ad60d3384b85c01ab627da207
 ModelImporter:
-  serializedVersion: 19300
+  serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bloc_mat
+    second: {fileID: 2100000, guid: f87b83f715fe5e04d91884271e75e0ac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: caisson_cable_mat
+    second: {fileID: 2100000, guid: fa6804230b13065489843cc6e9521f58, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cam_mat
+    second: {fileID: 2100000, guid: 4fed61becef0a604db58322349766dfa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chair_end_mat
+    second: {fileID: 2100000, guid: e0cc82b68a1dae44eb533a49ace8b935, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cut_scene_mat
+    second: {fileID: 2100000, guid: 94e51381cab8a5644b9ca52db4e3c2d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: door_mat
+    second: {fileID: 2100000, guid: 77d742c5109e3574bb0ec3d0d1d8cc9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground2_mat
+    second: {fileID: 2100000, guid: eddc61092c1c7b4459f92b22d2c25a77, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground_end_mat
+    second: {fileID: 2100000, guid: be96998eec83a8b408aade1fed21d630, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: 646202b913f247d49b6fd39cc79ed8b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lamp_end_mat
+    second: {fileID: 2100000, guid: 14d148e4156ba4049afede71717b5655, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lavabo_mat
+    second: {fileID: 2100000, guid: 8c2d2034182c0ee428d0030fb0b0fd54, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light
+    second: {fileID: 2100000, guid: ee4a81a71cc100e4a8382c08575d7af8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipe_mat
+    second: {fileID: 2100000, guid: 7db2ad15782929943881da665fc5cb14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: posit
+    second: {fileID: 2100000, guid: 899513655fa64fa468a7d74af16bfb6f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: spot_mat
+    second: {fileID: 2100000, guid: 14d148e4156ba4049afede71717b5655, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: top_end_mat
+    second: {fileID: 2100000, guid: 90a86ce38c81f624b8c05ec058a347d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ventilation_mat
+    second: {fileID: 2100000, guid: 151218fda947fe748a9e2137a27d8c32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_end_mat
+    second: {fileID: 2100000, guid: 821c9ab568c511143b78d4fbe1d1115c, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -43,6 +133,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

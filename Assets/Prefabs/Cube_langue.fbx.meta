@@ -3,7 +3,12 @@ guid: e4358b5a54b17ee48acac1dea0e6448e
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: teleporteur_mat
+    second: {fileID: 2100000, guid: ee9ac225ac22eb745b7790354b614fe1, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

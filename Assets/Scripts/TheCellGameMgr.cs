@@ -2285,12 +2285,12 @@ public class TheCellGameMgr : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is open.");
-        StartCoroutine(CloseShutters(point, front, back, adjModel));
+        StartCoroutine(CloseShutters(point, front, back, adjModel, lockerWheel));
     }
 
 
     // Close the shutters after x sec
-    private IEnumerator CloseShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel)
+    private IEnumerator CloseShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel, HandsPullWheel lockerWheel)
     {
         yield return new WaitForSecondsRealtime(5.0f);
 
@@ -2298,17 +2298,25 @@ public class TheCellGameMgr : MonoBehaviour
         Audio_OpenShutters.Play();
         //--- Snd ---
 
-        float duration = 8.0f;
+        float duration = 2.0f;
         float startTime = Time.fixedTime;
         float endTime = startTime + duration;
         Vector3 frontOrigin = m_CentreModels.m_ShutterOriginPos[(int)point];
-        Vector3 backOrigin = adjModel.m_ShutterOriginPos[(int)point];
+        CardinalPoint invCard = GetOppositeCardinalPoint(point);
+        Vector3 backOrigin = adjModel.m_ShutterOriginPos[(int)invCard];
 
-        while (Time.time < endTime)
+        while (Time.fixedTime < endTime)
         {
-            float p = (Time.fixedTime - startTime) / duration;
+            float p = (Time.fixedTime - startTime) / (duration * 12.0f);
             front.transform.localPosition = Vector3.Lerp(front.transform.localPosition, frontOrigin, p);
             back.transform.localPosition = Vector3.Lerp(back.transform.localPosition, backOrigin, p);
+            //*
+            Vector3 forward = lockerWheel.GetForwardToDoor();
+            p = (1.0f - p * 2.0f);
+            if (p > 0.0f)
+                lockerWheel.transform.RotateAround(lockerWheel.transform.position, forward, Time.fixedDeltaTime * -150.0f * p);
+            //*/
+            //Debug.Log($"[GameMgr][{startTime}s to {endTime}s]--- {Time.fixedTime}s {Time.fixedTime - startTime} closing {p}.");
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is closed.");

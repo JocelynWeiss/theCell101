@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Linq;
 
 public class TheCellGameMgr : MonoBehaviour
 {
@@ -201,6 +202,9 @@ public class TheCellGameMgr : MonoBehaviour
     //24= 23 Lasers cut
     //25= 24 Tunnel effect
     [HideInInspector] public AudioSource[] Audio_Bank;
+    [HideInInspector] public List<AudioClip> Audio_Voices;
+    int m_playedVoice;
+    float m_nextVoiceToPlay; // int seconds
 
     public bool m_ShowMiniMap = true;
 
@@ -328,6 +332,8 @@ public class TheCellGameMgr : MonoBehaviour
         Audio_OpenShutters = Snd_OpenShutters.GetComponent<AudioSource>();
         Audio_UseLevers = Snd_UseLevers.GetComponent<AudioSource>();
         Audio_Bank = Snd_SoundBank.GetComponents<AudioSource>();
+        m_playedVoice = 1;
+        m_nextVoiceToPlay = 120.0f;
 
         n = 1;
         foreach (GameObject obj in m_ElemCubes)
@@ -466,11 +472,13 @@ public class TheCellGameMgr : MonoBehaviour
         m_EndingLights.SetActive(false);
         m_LocMenu.m_TransitionStarted = false;
 
+        bool playFirstVoice = false;
         if (startingSeed != gameSeed)
         {
             // New game
             startingSeed = gameSeed;
             startingTime = Time.fixedTime;
+            playFirstVoice = true;
         }
         UnityEngine.Random.InitState(startingSeed);
 
@@ -801,8 +809,17 @@ public class TheCellGameMgr : MonoBehaviour
             Audio_Bank[7].Stop();
         }
 
+        if (playFirstVoice == true)
+        {
+            AudioSource.PlayClipAtPoint(Audio_Voices[0], Vector3.up);
+        }
+        else if (m_DeathCount == 1)
+        {
+            AudioSource.PlayClipAtPoint(Audio_Voices[1], Vector3.up);
+        }
+
         // Flickering lights
-		InvokeRepeating("CheckLightState", 3.0f, 2.0f);											   
+        InvokeRepeating("CheckLightState", 3.0f, 2.0f);											   
     }
 
 
@@ -1130,6 +1147,7 @@ public class TheCellGameMgr : MonoBehaviour
                     m_CentreModels.m_light_W.intensity = 0.1f;
                     GameObject intro = m_AllNotes.transform.GetChild(0).gameObject;
                     intro.GetComponent<TextMeshProUGUI>().text = m_LocalizedText["gameOver_1"];
+                    StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 15, false)); // play voice 1 in 2sec
                 }
             }
 
@@ -1165,11 +1183,27 @@ public class TheCellGameMgr : MonoBehaviour
                         if ((t > secBeforeDeath + secDead) && (current.m_DeathTriggered == true))
                         {
                             current.OnPlayerExit();
-                            StartCoroutine(PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
+                            //StartCoroutine(PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
                             m_FXDeathRespawn.SetActive(true);
                             TeleportToStart();
                             current.m_DeathTriggered = false;
                         }
+                    }
+                }
+                else
+                {
+                    // Play a voice every x minutes
+                    float playVoiceEachSec = 120.0f;
+                    if (gameLength > m_nextVoiceToPlay)
+                    {
+                        m_nextVoiceToPlay += playVoiceEachSec + Audio_Voices[m_playedVoice].length;
+                        m_playedVoice++;
+                        if (m_playedVoice == 9)
+                        {
+                            m_playedVoice = 2;
+                        }
+                        //Debug.Log($"Playing voice at {gameLength}, id {m_playedVoice} / {Audio_Voices.Count}");
+                        AudioSource.PlayClipAtPoint(Audio_Voices[m_playedVoice], Vector3.up);
                     }
                 }
             }
@@ -2767,6 +2801,25 @@ public class TheCellGameMgr : MonoBehaviour
         {
             Debug.LogError($"Cannot find file {filePath}.");
         }
+
+        // Load voices
+        if (m_Language != GameLanguages.Undefined)
+        {
+            string path = "voices_";
+            if (m_Language == GameLanguages.French)
+                path += "fr";
+            if (m_Language == GameLanguages.English)
+                path += "en";
+
+            UnityEngine.Object[] clips;
+            clips = Resources.LoadAll(path, typeof(AudioClip));
+            Audio_Voices = new List<AudioClip>(clips.Length);
+            foreach (var t in clips)
+            {
+                Audio_Voices.Add(t as AudioClip);
+                //Debug.Log($"{Audio_Voices[Audio_Voices.Count-1]}");
+            }
+        }
     }
 
 
@@ -3048,10 +3101,17 @@ public class TheCellGameMgr : MonoBehaviour
 
     
     // Play a clip in sec seconds
-    public IEnumerator PlayDelayedClip(float sec, int clipIndex)
+    public IEnumerator PlayDelayedClip(float sec, int clipIndex, bool isVoice)
     {
         yield return new WaitForSecondsRealtime(sec);
-        Audio_Bank[clipIndex].Play();
+        if (isVoice == true)
+        {
+            AudioSource.PlayClipAtPoint(Audio_Voices[clipIndex], Vector3.up);
+        }
+        else
+        {
+            Audio_Bank[clipIndex].Play();
+        }
     }
 
 

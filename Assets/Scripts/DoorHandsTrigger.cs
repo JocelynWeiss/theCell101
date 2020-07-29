@@ -105,6 +105,11 @@ public class DoorHandsTrigger : MonoBehaviour
             TheCellGameMgr.instance.m_EastModels.transform.position += vel * Time.deltaTime;
             TheCellGameMgr.instance.m_SouthModels.transform.position += vel * Time.deltaTime;
             TheCellGameMgr.instance.m_WestModels.transform.position += vel * Time.deltaTime;
+
+            if (TheCellGameMgr.instance.m_FxLasers.activeSelf == true)
+            {
+                TheCellGameMgr.instance.m_FxLasers.transform.position += vel * Time.deltaTime;
+            }
         }
     }
 

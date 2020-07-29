@@ -374,7 +374,7 @@ public class OneCellClass : MonoBehaviour
             case TheCellGameMgr.CellSubTypes.Water:
                 TheCellGameMgr.instance.Audio_Bank[20].Play();
                 TheCellGameMgr.instance.m_FxWater.SetActive(true);
-                StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 21));
+                StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 21, false));
                 StartCoroutine(TheCellGameMgr.instance.RaiseWaterLevel());
                 break;
             case TheCellGameMgr.CellSubTypes.Blind:
@@ -390,6 +390,7 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.Audio_Bank[13].Play();
                 StartCoroutine(TeleportToStart());
                 TheCellGameMgr.instance.Audio_Bank[2].PlayDelayed(2.0f);
+                StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(3.0f, 1, true)); // play voice 2 in 3sec
                 break;
             case TheCellGameMgr.CellSubTypes.Illusion:
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
@@ -425,7 +426,7 @@ public class OneCellClass : MonoBehaviour
     }
 
 
-    // Shouldn't use this anymore as we can flee from deadly rooms
+    // [DEPRECATED] Shouldn't use this anymore as we can flee from deadly rooms
     private IEnumerator DelayedDeath(float seconds = 3.0f, bool playScream = true)
     {
         if (playScream)
@@ -445,7 +446,7 @@ public class OneCellClass : MonoBehaviour
         Debug.Log($"[OneCellClass] Kill the player sub {cellSubType}, go back at start. DeathTime = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
         TheCellGameMgr.instance.IncreaseDeath();
 
-        StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
+        //StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(2.0f, 15)); // play voice 1 in 2sec
 
         StartCoroutine(TeleportToStart());
 

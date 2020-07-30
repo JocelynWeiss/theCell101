@@ -2405,13 +2405,37 @@ public class TheCellGameMgr : MonoBehaviour
         GameObject back = null;
         CellsModels model = m_CentreModels;
         if (cardinal == CardinalPoint.North)
+        {
             model = m_NorthModels;
+            if (m_displayCell_N == true)
+            {
+                return;
+            }
+        }
         else if (cardinal == CardinalPoint.East)
+        {
             model = m_EastModels;
+            if (m_displayCell_E == true)
+            {
+                return;
+            }
+        }
         else if (cardinal == CardinalPoint.South)
+        {
             model = m_SouthModels;
+            if (m_displayCell_S == true)
+            {
+                return;
+            }
+        }
         else if (cardinal == CardinalPoint.West)
+        {
             model = m_WestModels;
+            if (m_displayCell_W == true)
+            {
+                return;
+            }
+        }
 
         back = GetShutterPerCardinal(inverseCardinal, model);
         if ((front != null) && (back != null))

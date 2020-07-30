@@ -487,30 +487,43 @@ public class TheCellGameMgr : MonoBehaviour
 
         playerCellId = 12; // replace the player in the middle
 
+        // Reserve at least one of the adjacent starting room for a safe one
+        int reserveSafe = (int)(UnityEngine.Random.value * 3.0f);
+        if (reserveSafe == 0)
+            reserveSafe = 7;
+        else if (reserveSafe == 1)
+            reserveSafe = 11;
+        else if (reserveSafe == 2)
+            reserveSafe = 13;
+        else
+            reserveSafe = 17;
+
         int reserveExit = 24; // make sure we'll always have a valid exit
         List<int> deadly = new List<int>(deadlyCellNb);
         while (deadly.Count < deadlyCellNb)
         {
             int id = (int)(UnityEngine.Random.value * 24.0f);
-            if ((deadly.Contains(id)) || (id == 12) || (id == reserveExit))
+            if ((deadly.Contains(id)) || (id == 12) || (id == reserveExit) || (id == reserveSafe))
             {
                 continue;
             }
 
             deadly.Add(id);
         }
+#if UNITY_EDITOR
         string toto = "";
         foreach (int id in deadly)
         {
             toto += id.ToString() + " ";
         }
         Debug.Log($"[GameMgr] deadly {toto}");
+#endif
 
         List<int> effectCells = new List<int>(effectCellNb);
         while (effectCells.Count < effectCellNb)
         {
             int id = (int)(UnityEngine.Random.value * 24.0f);
-            if ((id == 12) || deadly.Contains(id) || effectCells.Contains(id) || (id == reserveExit))
+            if ((id == 12) || deadly.Contains(id) || effectCells.Contains(id) || (id == reserveExit) || (id == reserveSafe))
             {
                 continue;
             }
@@ -518,12 +531,14 @@ public class TheCellGameMgr : MonoBehaviour
             effectCells.Add(id);
         }
 
+#if UNITY_EDITOR
         toto = "";
         foreach(int id in effectCells)
         {
             toto += id.ToString() + " ";
         }
         Debug.Log($"[GameMgr] effectCells {toto}");
+#endif
 
         // Init a board
         bool exitChosen = false;
@@ -585,10 +600,10 @@ public class TheCellGameMgr : MonoBehaviour
                 // Choose an exit
                 if (!exitChosen)
                 {
-                    if ((i == 0) || (j == 0) || (i == 4) || (j == 4) || ((i != 2) && (j != 2)))
+                    if (((i != 2) && (j != 2)) && ((i == 0) || (j == 0) || (i == 4) || (j == 4)))
                     {
                         exitCount++;
-                        if ((exitCount >= (int)(aRndNb * 20.0f)) || (id == 24))
+                        if ((exitCount >= (int)(aRndNb * 10.0f)) || (id == 24))
                         {
                             cell.InitCell(CellTypes.Exit, 0, aRndNb);
                             exitChosen = true;

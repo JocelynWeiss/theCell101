@@ -5,6 +5,8 @@ using TMPro;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using Oculus.Platform.Models;
 
 public class TheCellGameMgr : MonoBehaviour
 {
@@ -205,6 +207,9 @@ public class TheCellGameMgr : MonoBehaviour
     [HideInInspector] public List<AudioClip> Audio_Voices;
     int m_playedVoice;
     float m_nextVoiceToPlay; // int seconds
+    float m_nextSoundTime; // When the next random sound will be triggered
+    int m_nextSoundId; // Id of the next random sound to be played
+    public List<AudioClip> m_AudioRandomSounds;
 
     public bool m_ShowMiniMap = true;
 
@@ -479,6 +484,8 @@ public class TheCellGameMgr : MonoBehaviour
             startingSeed = gameSeed;
             startingTime = Time.fixedTime;
             playFirstVoice = true;
+            m_nextSoundTime = startingTime + 60.0f + m_RandomBis.Next(5) * 15.0f;
+            m_nextSoundId = m_RandomBis.Next(5);
         }
         UnityEngine.Random.InitState(startingSeed);
 
@@ -1220,6 +1227,7 @@ public class TheCellGameMgr : MonoBehaviour
                         //Debug.Log($"Playing voice at {gameLength}, id {m_playedVoice} / {Audio_Voices.Count}");
                         AudioSource.PlayClipAtPoint(Audio_Voices[m_playedVoice], Vector3.up);
                     }
+                    UpdateAudioManager();
                 }
             }
             
@@ -3278,6 +3286,29 @@ public class TheCellGameMgr : MonoBehaviour
         }
 
         return locker;
+    }
+
+
+    // Handle playing random sounds etc...
+    void UpdateAudioManager()
+    {
+        float gameLength = Time.fixedTime - startingTime;
+
+        if (gameLength > m_nextSoundTime)
+        {
+            int roll = m_RandomBis.Next(999);
+            if (roll < 10)
+            {
+                // Choose a sound
+                if (m_nextSoundId == 2)
+                    m_nextSoundId = 3;
+                else
+                    m_nextSoundId = m_RandomBis.Next(3);
+                m_nextSoundTime = Time.fixedTime + 30.0f + m_RandomBis.Next(5) * 15.0f; // [30..90]s
+                AudioSource.PlayClipAtPoint(m_AudioRandomSounds[m_nextSoundId], Vector3.up);
+                Debug.Log($"£££££££ m_nextSoundId {m_nextSoundId} will be played in {(m_nextSoundTime - gameLength) / 60.0f}m, gameLength {gameLength}s. nextSoundTime {m_nextSoundTime}s");
+            }
+        }
     }
 
 

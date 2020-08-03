@@ -218,6 +218,7 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
                 TheCellGameMgr.instance.m_FxGaz.SetActive(false);
+                TheCellGameMgr.instance.SetupLightsBySubType(TheCellGameMgr.instance.m_CentreModels, TheCellGameMgr.CellSubTypes.Empty);
                 break;
             case TheCellGameMgr.CellSubTypes.Fire:
                 TheCellGameMgr.instance.m_FxFlame.SetActive(false);

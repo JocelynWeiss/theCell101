@@ -31,6 +31,7 @@ public class LocalizationMenu : MonoBehaviour
                 m_StartButton.m_IsReady = false;
                 GameObject.Find("LocalizationMenu").gameObject.SetActive(false); // Hide loc
                 TheCellGameMgr.instance.m_codes.SetActive(true);
+                TheCellGameMgr.instance.m_DirectionsSign.SetActive(true);
             }
         }
     }

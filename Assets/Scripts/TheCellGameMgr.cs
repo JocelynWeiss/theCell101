@@ -157,6 +157,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_MenuArea1;  // Menu to select languages.
     public GameObject m_PlayaModel;
     public GameObject m_EndingLights;
+    public GameObject m_DirectionsSign;
     public LocalizationMenu m_LocMenu;
 
     [HideInInspector] public Vector3 m_waterLevel;
@@ -354,6 +355,7 @@ public class TheCellGameMgr : MonoBehaviour
         //GameObject.Find("code_00").gameObject.SetActive(false);
         m_MenuArea1.SetActive(true);
         m_codes.SetActive(false);
+        m_DirectionsSign.SetActive(false);
         m_PlayaModel.transform.Rotate(Vector3.up, 180.0f);
         m_PlayaModel.transform.position = new Vector3(0.0f, 0.0f, -1.2f);
         Audio_Bank[7].Play();
@@ -658,6 +660,7 @@ public class TheCellGameMgr : MonoBehaviour
             m_CentreModels.m_VortexCell.transform.SetParent(m_CentreModels.transform);
             m_CentreModels.m_TunnelCell = GameObject.Instantiate(m_TunnelCellModel);
             m_CentreModels.m_TunnelCell.transform.SetParent(m_CentreModels.transform);
+            m_DirectionsSign.transform.SetParent(m_CentreModels.transform);
 
             // Save initial water position
             Transform waterT = m_CentreModels.m_WaterCell.transform.Find("ground_all/water");
@@ -1154,6 +1157,7 @@ public class TheCellGameMgr : MonoBehaviour
                     m_Console_E.SetActive(false);
                     m_Console_S.SetActive(false);
                     m_Console_W.SetActive(false);
+                    m_DirectionsSign.SetActive(false);
                     m_codes.SetActive(false);
                     m_MenuArea1.SetActive(true);
                     m_LocMenu.m_StartButton.enabled = false;

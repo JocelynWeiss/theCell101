@@ -126,6 +126,11 @@ public class OneCellClass : MonoBehaviour
                 ret = Color.blue;
                 break;
             case TheCellGameMgr.CellTypes.Effect:
+                if (cellSubType == TheCellGameMgr.CellSubTypes.Vortex)
+                {
+                    ret = Color.grey;
+                    break;
+                }
                 ret = Color.yellow;
                 break;
             default:
@@ -266,56 +271,59 @@ public class OneCellClass : MonoBehaviour
         shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.West];
 
         int idOnChess = TheCellGameMgr.instance.playerCellId;
-        if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+        if ((m_TunnelEnabled == false) && (cellSubType != TheCellGameMgr.CellSubTypes.Vortex))// don't activate consoles if tunnel is enabled or if in Vortex room
         {
-            //NorthDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, true));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
-        }
-        else
-        {
-            //NorthDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, false));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, false);
-        }
+            if (TheCellGameMgr.instance.GetNorthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //NorthDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.North, true);
+            }
+            else
+            {
+                NorthDoor.SetActive(false);
+                TheCellGameMgr.instance.m_Console_N.SetActive(false);
+                //StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.North, false));
+            }
 
-        if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-        {
-            //EastDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, true));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
-        }
-        else
-        {
-            //EastDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, false));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, false);
-        }
+            if (TheCellGameMgr.instance.GetEastType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //EastDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.East, true);
+            }
+            else
+            {
+                EastDoor.SetActive(false);
+                TheCellGameMgr.instance.m_Console_E.SetActive(false);
+                //StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.East, false));
+            }
 
-        if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-        {
-            //SouthDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, true));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
-        }
-        else
-        {
-            //SouthDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, false));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, false);
-        }
+            if (TheCellGameMgr.instance.GetSouthType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //SouthDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.South, true);
+            }
+            else
+            {
+                SouthDoor.SetActive(false);
+                TheCellGameMgr.instance.m_Console_S.SetActive(false);
+                //StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.South, false));
+            }
 
-        if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
-        {
-            //WestDoor.SetActive(true);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, true));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
-        }
-        else
-        {
-            //WestDoor.SetActive(false);
-            StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, false));
-            //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, false);
+            if (TheCellGameMgr.instance.GetWestType(idOnChess) != TheCellGameMgr.CellTypes.Undefined)
+            {
+                //WestDoor.SetActive(true);
+                StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, true));
+                //EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint.West, true);
+            }
+            else
+            {
+                WestDoor.SetActive(false);
+                TheCellGameMgr.instance.m_Console_W.SetActive(false);
+                //StartCoroutine(ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint.West, false));
+            }
         }
 
         switch (cellType)
@@ -389,7 +397,7 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.m_FxSpawner.SetActive(true);
                 TheCellGameMgr.instance.m_FxRespawn.SetActive(true);
                 TheCellGameMgr.instance.Audio_Bank[13].Play();
-                StartCoroutine(TeleportToStart());
+                StartCoroutine(TeleportToStartWithFade(3.0f));
                 TheCellGameMgr.instance.Audio_Bank[2].PlayDelayed(2.0f);
                 StartCoroutine(TheCellGameMgr.instance.PlayDelayedClip(3.0f, 1, true)); // play voice 2 in 3sec
                 break;
@@ -508,6 +516,36 @@ public class OneCellClass : MonoBehaviour
     }
 
 
+    // Teleport the player to the start cell after x seconds with a fade to white
+    private IEnumerator TeleportToStartWithFade(float waitSec)
+    {
+        float duration = waitSec;
+        float startTime = Time.fixedTime;
+        float endTime = startTime + duration;
+        while (Time.fixedTime < endTime)
+        {
+            float p = (Time.fixedTime - startTime) / duration;
+
+            float intensity = 3.0f * p;
+            TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity += Time.fixedDeltaTime * intensity;
+
+            //Debug.Log($"___Tunnel effect {startTime}s current: {Time.fixedTime}s elapsed {Time.fixedTime - startTime} p = {p}%");
+            yield return new WaitForFixedUpdate();
+        }
+        TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity = 0.6f;
+
+        Debug.Log($"[OneCellClass] Teleport player back at start. Time = {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}");
+        OnPlayerExit();
+        TheCellGameMgr.instance.TeleportToStart();
+    }
+
+
     // Start the tunnel effect so the player is teleported to the other tunnel cell
     private IEnumerator ActivateTunnel(float waitSec)
     {
@@ -525,13 +563,35 @@ public class OneCellClass : MonoBehaviour
         pos = TheCellGameMgr.instance.GetCellPosById(id);
         Debug.Log($"___going to {dest.name} UID:{dest.cellId} in pos {pos}");
         */
+        float duration = waitSec;
+        float startTime = Time.fixedTime;
+        float endTime = startTime + duration;
+        while (Time.fixedTime < endTime)
+        {
+            float p = (Time.fixedTime - startTime) / duration;
 
-        yield return new WaitForSecondsRealtime(waitSec);
+            float intensity = 3.0f * p;
+            TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity += Time.fixedDeltaTime * intensity;
+
+            //Debug.Log($"___Tunnel effect {startTime}s current: {Time.fixedTime}s elapsed {Time.fixedTime - startTime} p = {p}%");
+            yield return new WaitForFixedUpdate();
+        }
+        Debug.Log($"Tunnel DONE {startTime}s current: {Time.fixedTime}s elapsed {Time.fixedTime - startTime}s");
+
+        //yield return new WaitForSecondsRealtime(waitSec);
         TheCellGameMgr.instance.Audio_Bank[25].Play();
         TheCellGameMgr.instance.TeleportToCell(id);
+        TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity = 0.6f;
     }
 
 
+    // Deprecated
     public void EnableDoorPerCardinal(TheCellGameMgr.CardinalPoint cardinal, bool enable)
     {
         enable = false;
@@ -578,7 +638,7 @@ public class OneCellClass : MonoBehaviour
     }
 
 
-    // Activate door system after few secs
+    // Activate door system after few secs (just shows the red hands)
     public IEnumerator ActivateDoorsByCardinal(TheCellGameMgr.CardinalPoint cardinal, bool enable, float delay = 2.0f)
     {
         yield return new WaitForSecondsRealtime(delay);

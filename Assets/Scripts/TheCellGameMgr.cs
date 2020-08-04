@@ -1298,7 +1298,10 @@ public class TheCellGameMgr : MonoBehaviour
                             tmp.color = Color.green;
                             string duration = Mathf.Floor(gameDur / 60.0f).ToString("00") + "m";
                             duration += (gameDur % 60.0f).ToString("00") + "s";
-                            tmp.text = $"Time {duration}\nScore {brutScore + codePoints}";
+                            string timeLabel = m_LocalizedText["time"];
+                            string scoreLabel = m_LocalizedText["score"];
+                            string deathsLabel = m_LocalizedText["deaths"];
+                            tmp.text = $"{timeLabel} {duration}\n{scoreLabel} {brutScore + codePoints}\n{deathsLabel} {m_DeathCount}";
                             m_AllNotes.enabled = true;
                         }
                     }
@@ -1311,7 +1314,7 @@ public class TheCellGameMgr : MonoBehaviour
                             if (elem.m_State == 0)
                             {
                                 int c = instance.m_RandomBis.Next(99);
-                                if (c < 3)
+                                if (c < 2)
                                 {
                                     elem.SetUseGravity();
                                     break;

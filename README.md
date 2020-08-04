@@ -55,3 +55,15 @@ To activate them, the thumb and the index must be pinching inside the trigger wh
 The action take place at the end of the mouvement. Code is in the CellInteract group on the game object Mechanism_N for instance.
 
 ---------------------------------------------  
+
+## adb command for shots or videos
+To list a folder  
+``` adb shell ls /sdcard/oculus/ -R ```  
+To list ScreenShots  
+``` adb shell ls /sdcard/oculus/Screenshots -R ```  
+Pull ScreenShots at the location you run adb tool  
+``` adb pull /sdcard/oculus/Screenshots/ . ```  
+Pull VideoShots at the location you run adb tool  
+``` adb pull /sdcard/oculus/Videoshots/ . ```  
+
+---------------------------------------------  

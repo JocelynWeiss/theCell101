@@ -646,6 +646,11 @@ public class OneCellClass : MonoBehaviour
         if (cellType == TheCellGameMgr.CellTypes.Exit)
             enable = false; // Deactivate doors in exit room
 
+        if ((cellSubType == TheCellGameMgr.CellSubTypes.Lasers) || (cellSubType == TheCellGameMgr.CellSubTypes.Fire))
+        {
+            enable = false; // Deactivate doors for fire and laser room
+        }
+
         //Debug.Log($"{name} {cardinal} set {enable} @ {Time.fixedTime}s");
         switch (cardinal)
         {

@@ -3081,10 +3081,23 @@ public class TheCellGameMgr : MonoBehaviour
 
 
     // Pick a random room 
-    public OneCellClass PickRandomCell()
+    public OneCellClass PickRandomCell(CellTypes typeExclude)
     {
-        int id = instance.m_RandomBis.Next(allCells.Count);
-        return allCells[id];
+        OneCellClass cell = null;
+        while (cell == null)
+        {
+            int id = instance.m_RandomBis.Next(allCells.Count);
+            cell = allCells[id];
+            if (cell.cellType != typeExclude)
+            {
+                break;
+            }
+            else
+            {
+                cell = null;
+            }
+        }
+        return cell;
     }
 
 

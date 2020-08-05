@@ -133,6 +133,14 @@ public class OneCellClass : MonoBehaviour
                 }
                 ret = Color.yellow;
                 break;
+            case TheCellGameMgr.CellTypes.Deadly:
+                if (cellSubType == TheCellGameMgr.CellSubTypes.Illusion)
+                {
+                    ret = Color.grey * 0.5f;
+                    break;
+                }
+                ret = Color.red;
+                break;
             default:
                 ret = Color.red;
                 break;
@@ -403,9 +411,9 @@ public class OneCellClass : MonoBehaviour
                 break;
             case TheCellGameMgr.CellSubTypes.Illusion:
                 TheCellGameMgr.instance.m_FxIllusion.SetActive(true);
-                int id = TheCellGameMgr.instance.PickRandomCell().cellId;
+                int id = TheCellGameMgr.instance.PickRandomCell(TheCellGameMgr.CellTypes.Exit).cellId;
                 TheCellGameMgr.instance.Audio_Bank[13].Play();
-                StartCoroutine(TeleportToCell(2.0f, id));
+                StartCoroutine(TeleportToCell(3.0f, id));
                 TheCellGameMgr.instance.Audio_Bank[2].PlayDelayed(2.0f);
                 break;
             case TheCellGameMgr.CellSubTypes.OneLook:
@@ -511,7 +519,27 @@ public class OneCellClass : MonoBehaviour
     // Teleport the player in waitSec seconds to the cell id
     private IEnumerator TeleportToCell(float waitSec, int id)
     {
-        yield return new WaitForSecondsRealtime(waitSec);
+        float duration = waitSec;
+        float startTime = Time.fixedTime;
+        float endTime = startTime + duration;
+        while (Time.fixedTime < endTime)
+        {
+            float p = (Time.fixedTime - startTime) / duration;
+
+            float intensity = 3.0f * p;
+            TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity += Time.fixedDeltaTime * intensity;
+            TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity += Time.fixedDeltaTime * intensity;
+
+            //Debug.Log($"___Fade effect {startTime}s current: {Time.fixedTime}s elapsed {Time.fixedTime - startTime} p = {p}%");
+            yield return new WaitForFixedUpdate();
+        }
+        TheCellGameMgr.instance.m_CentreModels.m_light_N.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_E.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_S.intensity = 0.6f;
+        TheCellGameMgr.instance.m_CentreModels.m_light_W.intensity = 0.6f;
+
         TheCellGameMgr.instance.TeleportToCell(id);
     }
 

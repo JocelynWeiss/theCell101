@@ -204,6 +204,8 @@ public class TheCellGameMgr : MonoBehaviour
     //23= 19 Warning alarm
     //24= 23 Lasers cut
     //25= 24 Tunnel effect
+    //26= 25 Fire room
+    //27= 32 Toxic room
     [HideInInspector] public AudioSource[] Audio_Bank;
     [HideInInspector] public List<AudioClip> Audio_Voices;
     int m_playedVoice;
@@ -2477,7 +2479,8 @@ public class TheCellGameMgr : MonoBehaviour
 
         //Vector3 frontPos = front.transform.localPosition;
         Vector3 frontPos = m_CentreModels.m_ShutterOriginPos[(int)point];
-        Vector3 backPos = backModel.m_ShutterOriginPos[(int)point];
+        CardinalPoint invCard = GetOppositeCardinalPoint(point);
+        Vector3 backPos = backModel.m_ShutterOriginPos[(int)invCard];
         //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} pos {frontPos}");
 
         float startTime = Time.time;

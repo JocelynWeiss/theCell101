@@ -230,10 +230,12 @@ public class OneCellClass : MonoBehaviour
                 TheCellGameMgr.instance.SetupLightsBySubType(TheCellGameMgr.instance.m_CentreModels, TheCellGameMgr.CellSubTypes.Empty);
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
+                TheCellGameMgr.instance.Audio_Bank[27].Stop();
                 TheCellGameMgr.instance.m_FxGaz.SetActive(false);
                 TheCellGameMgr.instance.SetupLightsBySubType(TheCellGameMgr.instance.m_CentreModels, TheCellGameMgr.CellSubTypes.Empty);
                 break;
             case TheCellGameMgr.CellSubTypes.Fire:
+                TheCellGameMgr.instance.Audio_Bank[26].Stop();
                 TheCellGameMgr.instance.m_FxFlame.SetActive(false);
                 break;
             case TheCellGameMgr.CellSubTypes.Lasers:
@@ -383,9 +385,11 @@ public class OneCellClass : MonoBehaviour
                 StartCoroutine(StartDelayedFx());
                 break;
             case TheCellGameMgr.CellSubTypes.Fire:
+                TheCellGameMgr.instance.Audio_Bank[26].Play();
                 StartCoroutine(StartDelayedFx());
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
+                TheCellGameMgr.instance.Audio_Bank[27].Play();
                 StartCoroutine(StartDelayedFx());
                 break;
             case TheCellGameMgr.CellSubTypes.Water:

@@ -17,6 +17,7 @@ public class MechanismMove : MonoBehaviour
     public bool m_IsOn = true;
     public float m_TriggerPoint = -0.1f; // in rad
     public float m_TriggerFinal = -0.5f; // in rad
+    private Vector3 m_rotateAxis;
 
 
     private void Awake()
@@ -61,24 +62,38 @@ public class MechanismMove : MonoBehaviour
 
         //Debug.Log($"[MechanismMove] Awake-> {transform.name}\\{transform.parent.name}");
         //gameObject.SetActive(false);
-
-        m_TriggerPoint = -0.05f;
     }
 
 
-    private void OnEnable()
+    private void Start()
     {
-    }
+        m_autoMove = false;
+        transform.localRotation = Quaternion.identity;
+        m_TriggerPoint = 0.98f;
 
-
-    private void OnDisable()
-    {
-        //Debug.Log($"{gameObject.name} -> {cardinal}");
+        switch (cardinal)
+        {
+            case TheCellGameMgr.CardinalPoint.North:
+                m_rotateAxis = -Vector3.right;
+                break;
+            case TheCellGameMgr.CardinalPoint.East:
+                m_rotateAxis = Vector3.forward;
+                break;
+            case TheCellGameMgr.CardinalPoint.South:
+                m_rotateAxis = Vector3.right;
+                break;
+            case TheCellGameMgr.CardinalPoint.West:
+                m_rotateAxis = -Vector3.forward;
+                break;
+            default:
+                Debug.LogError($"Wrong cardinal point (not set) for {this}");
+                break;
+        }
     }
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         bool actionning = false;
 
@@ -107,18 +122,15 @@ public class MechanismMove : MonoBehaviour
             }
             //--- Snd ---
 
-            float ex = transform.localRotation.x;
-            if (ex < m_TriggerFinal)
+            float ex = Quaternion.Dot(transform.localRotation, Quaternion.identity);
+            //if (ex < m_TriggerFinal)
+            if (ex < 0.85f)
             {
                 m_forceActionning = false;
                 m_autoMove = false;
                 m_leftIndexIn = false;
                 m_rightIndexIn = false;
-                if (m_actionTriggered)
-                {
-                    return;
-                }
-                else
+                if (m_actionTriggered == false)
                 {
                     if (snd.isPlaying)
                     {
@@ -129,28 +141,36 @@ public class MechanismMove : MonoBehaviour
                     return;
                 }
             }
-
-            if (ex < m_TriggerPoint)
+            else
             {
-                m_autoMove = true;
+                if (m_actionTriggered == false)
+                {
+                    //Debug.Log($"==============-> {transform.name}: {ex}");
+                    if (ex < m_TriggerPoint)
+                    {
+                        m_autoMove = true;
+                    }
+                    transform.RotateAround(transform.position, m_rotateAxis, Time.fixedDeltaTime * 90.0f);
+                }
             }
-
-            //Debug.Log($"==============-> {transform.name}: {m_IsOn} {transform.rotation.eulerAngles}   {transform.localRotation}");
-
-            transform.RotateAround(transform.position, transform.right, Time.deltaTime * -90.0f);
         }
         else
         {
             // Slowly go back in position
-            float ex = transform.localRotation.x;
+            float ex = Quaternion.Dot(transform.localRotation, Quaternion.identity);
+            if (ex >= 1.0f)
+                return;
+
             bool inPlace = true;
-            if (ex < 0.0f)
+            if (ex < 1.0f)
             {
-                float f = 1.0f - ex * 2.0f;
-                transform.RotateAround(transform.position, transform.right, Time.deltaTime * f * m_BackSpeedFactor);
                 inPlace = false;
+                float f = 1.0f;
+                transform.RotateAround(transform.position, m_rotateAxis, Time.fixedDeltaTime * f * -m_BackSpeedFactor);
             }
-            if ((inPlace == false) && (transform.localRotation.x >= 0.0f))
+            ex = Quaternion.Dot(transform.localRotation, Quaternion.identity);
+            //Debug.Log($"++++++++++++-> {transform.name}: {ex}");
+            if ((inPlace == false) && (ex >= 0.999f))
             {
                 if (snd.isPlaying)
                 {
@@ -158,10 +178,10 @@ public class MechanismMove : MonoBehaviour
                     //Debug.Log($"[MechanismMove] Stop sound-> {transform.name}\\{transform.parent.name} = {snd.name} at {ex}");
                 }
 
-                //transform.rotation = Quaternion.identity;
                 transform.localRotation = Quaternion.identity;
                 m_actionTriggered = false; // System is back and can be re used
-                //Debug.Log($"[MechanismMove] System back-> {transform.name}\\{transform.parent.name} = {transform.localRotation}");
+                m_autoMove = false;
+                Debug.Log($"[MechanismMove] System back-> {transform.name}\\{transform.parent.name} = {transform.localRotation}");
             }            
         }
     }
@@ -204,6 +224,9 @@ public class MechanismMove : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        if (m_actionTriggered == true)
+            return;
+
         //get hand associated with trigger
         int handIdx = TheCellGameMgr.instance.GetFingerHandId(collider, OVRPlugin.BoneId.Hand_Index3);
 

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: wall_regard
+  m_Name: wall2_regard
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ShaderKeywords: _EMISSION _METALLICSPECGLOSSMAP _NORMALMAP
   m_LightmapFlags: 2
@@ -34,11 +34,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 839a2b579095d3948aa88e77cdf5e7cb, type: 3}
+        m_Texture: {fileID: 2800000, guid: b877742e9d85afe4aaa0b51599d77f96, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 187648b3d2b55504ca4db2ed7ca4a16a, type: 3}
+        m_Texture: {fileID: 2800000, guid: b032f87c0d8618844a2a4ed671b900f2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -46,11 +46,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 839a2b579095d3948aa88e77cdf5e7cb, type: 3}
+        m_Texture: {fileID: 2800000, guid: b877742e9d85afe4aaa0b51599d77f96, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: f94b97d9935815843a47400ef660615d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5705831ebbe5a684ba1406221a6d6f9a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:

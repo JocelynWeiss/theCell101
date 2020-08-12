@@ -265,6 +265,10 @@ public class DoorHandsTrigger : MonoBehaviour
         m_renderer.enabled = false;
         TheCellGameMgr.instance.m_MovingOut = true;
         Debug.Log($"Player start action going out cardinal {m_cardinal} @ {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}s");
+        TheCellGameMgr.instance.m_FxDust_N.SetActive(false);
+        TheCellGameMgr.instance.m_FxDust_E.SetActive(false);
+        TheCellGameMgr.instance.m_FxDust_S.SetActive(false);
+        TheCellGameMgr.instance.m_FxDust_W.SetActive(false);
         TheCellGameMgr.instance.m_Console_N.SetActive(false);
         TheCellGameMgr.instance.m_Console_E.SetActive(false);
         TheCellGameMgr.instance.m_Console_S.SetActive(false);

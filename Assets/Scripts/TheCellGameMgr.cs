@@ -7,6 +7,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using Oculus.Platform.Models;
+using System.Configuration;
+using System.Globalization;
 
 public class TheCellGameMgr : MonoBehaviour
 {
@@ -132,6 +134,8 @@ public class TheCellGameMgr : MonoBehaviour
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
     [ViewOnly] public Canvas m_basicCanvas = null;
 	System.Random m_RandomBis = new System.Random();
+    static ScoringClass m_Scoring;
+    public GameObject m_HmdSettings;
 
     private MyHands[] m_hands = new MyHands[2];
 
@@ -228,6 +232,10 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_FxWater;
     public GameObject m_FXDeathRespawn;
     public GameObject m_FxRespawn;
+    public GameObject m_FxDust_N;
+    public GameObject m_FxDust_E;
+    public GameObject m_FxDust_S;
+    public GameObject m_FxDust_W;
 
     List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
@@ -256,6 +264,10 @@ public class TheCellGameMgr : MonoBehaviour
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
         Debug.Log($"[GameMgr] Awake. {gameState}");
         transform.position = new Vector3(-1.0f, 0.0f, 1.2f); // position of the mini game
 
@@ -322,13 +334,67 @@ public class TheCellGameMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
+        DateTime date1 = System.DateTime.UtcNow;
+        double toto1 = date1.ToOADate();
+        DateTime date2 = date1.AddSeconds(2.0f);
+        double toto2 = date2.ToOADate();
+        TimeSpan span = date2 - date1;
+        Debug.Log($"_________________Dates1= {toto1}");
+        Debug.Log($"_________________Dates2= {toto2}");
+        Debug.Log($"span= {span}");
+        DateTime oleDate = DateTime.FromOADate(toto1);
+        Debug.Log($"_________________Dates1= {oleDate}");
+        string productName = OVRPlugin.productName;
+        Debug.Log($"_________________Product Name = {productName} with version {OVRPlugin.version.ToString()}");
+        Debug.Log($"_________________OVRPlugin.batteryLevel = {OVRPlugin.batteryLevel}");
+        RuntimePlatform currPlatform = Application.platform;
+        Debug.Log($"_________________currPlatform = {currPlatform} with currId {SystemInfo.deviceUniqueIdentifier}");
+
+        string adbDeviceId = "None";
+        */
+        /*
+        OVRADBTool adbTool = new OVRADBTool(OVRConfig.Instance.GetAndroidSDKPath());
+        if (adbTool.isReady)
+        {
+            List<string> ids = adbTool.GetDevices();
+            foreach(string id in ids)
+            {
+                adbDeviceId = id;
+                Debug.Log($"\tdevice= {id}");
+            }
+        }
+        //*/
+
+        // Instanciate scoring if not already there
+        if (m_Scoring == null)
+        {
+            m_Scoring = new ScoringClass();
+            m_Scoring.Init();
+
+            if (m_Scoring.m_IdIsSet == false)
+            {
+                // Display the selection cubes
+                m_HmdSettings.SetActive(true);
+            }
+            Debug.Log($"_________________Scoring on {m_Scoring.m_HMDid}");
+        }
+
         // Grab text from canvas and change it
         //GameObject canvas = GameObject.Find("Canvas");
         m_basicCanvas = GameObject.FindObjectOfType<Canvas>();
         int n = m_basicCanvas.transform.childCount;
-        GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
-        directions.GetComponent<TextMeshProUGUI>().text = $"Bonne journée\n {Time.fixedTime}s";
-        m_basicCanvas.enabled = false;
+        //GameObject directions = m_basicCanvas.transform.GetChild(1).gameObject;
+        //directions.GetComponent<TextMeshProUGUI>().text = $"Bonne journée\n {Time.fixedTime}s";
+        m_basicCanvas.enabled = false; // Uncomment before COMMIT
+
+        // Display System infos
+        /*
+        string dirTxt = $"{SystemInfo.deviceUniqueIdentifier}\n{SystemInfo.deviceName}\n{SystemInfo.deviceModel}\n{SystemInfo.deviceType}";
+        m_basicCanvas.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = dirTxt;
+        m_basicCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = adbDeviceId;
+        */
+        //m_basicCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = m_Scoring.m_HMDid;
 
         // Init hands
         m_hands[0].handType = OVRHand.Hand.HandLeft;
@@ -351,6 +417,12 @@ public class TheCellGameMgr : MonoBehaviour
             //obj.transform.Find("air").gameObject.SetActive(true);
             n++;
         }
+
+        // Switch off some Fx
+        m_FxDust_N.SetActive(false);
+        m_FxDust_E.SetActive(false);
+        m_FxDust_S.SetActive(false);
+        m_FxDust_W.SetActive(false);
 
         // Go to the localization phase
         gameState = GameStates.Localization;
@@ -1649,6 +1721,8 @@ public class TheCellGameMgr : MonoBehaviour
 
         if (onEast)
         {
+            m_FxDust_E.SetActive(false); // so it will restart the fx properly
+            m_FxDust_E.SetActive(true);
             lookupTab[from + 0] = row[4];
             lookupTab[from + 1] = row[0];
             lookupTab[from + 2] = row[1];
@@ -1657,6 +1731,8 @@ public class TheCellGameMgr : MonoBehaviour
         }
         else
         {
+            m_FxDust_W.SetActive(false); // so it will restart the fx properly
+            m_FxDust_W.SetActive(true);
             lookupTab[from + 0] = row[1];
             lookupTab[from + 1] = row[2];
             lookupTab[from + 2] = row[3];
@@ -1736,6 +1812,8 @@ public class TheCellGameMgr : MonoBehaviour
 
         if (onNorth)
         {
+            m_FxDust_N.SetActive(false); // so it will restart the fx properly
+            m_FxDust_N.SetActive(true);
             lookupTab[from + 0] = column[1];
             lookupTab[from + 5] = column[2];
             lookupTab[from + 10] = column[3];
@@ -1744,6 +1822,8 @@ public class TheCellGameMgr : MonoBehaviour
         }
         else
         {
+            m_FxDust_S.SetActive(false); // so it will restart the fx properly
+            m_FxDust_S.SetActive(true);
             lookupTab[from + 0] = column[4];
             lookupTab[from + 5] = column[0];
             lookupTab[from + 10] = column[1];
@@ -3332,6 +3412,14 @@ public class TheCellGameMgr : MonoBehaviour
                 Debug.Log($"£££££££ m_nextSoundId {m_nextSoundId} will be played in {(m_nextSoundTime - gameLength) / 60.0f}m, gameLength {gameLength}s. nextSoundTime {m_nextSoundTime}s");
             }
         }
+    }
+
+
+    // ---
+    public void SetHmdId(string id)
+    {
+        m_Scoring.SetHmdId(id);
+        m_HmdSettings.SetActive(false);
     }
 
 

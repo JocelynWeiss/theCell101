@@ -2535,6 +2535,7 @@ MonoBehaviour:
   Snd_SoundBank: {fileID: 402926736}
   Audio_Bank: []
   Audio_Voices: []
+  Audio_Minutes: []
   m_AudioRandomSounds:
   - {fileID: 8300000, guid: 084c4d63834e05d4d94bcd0480f10aec, type: 3}
   - {fileID: 8300000, guid: ead05b1bc4e5ac94eb1034e0d9ceee48, type: 3}
@@ -2557,6 +2558,7 @@ MonoBehaviour:
   m_FxDust_E: {fileID: 1047820019}
   m_FxDust_S: {fileID: 1710559906}
   m_FxDust_W: {fileID: 990709298}
+  m_FxDust_Top: {fileID: 300624885}
   m_ElemCubeNb: 16
   m_Console_N: {fileID: 400553795}
   m_Console_N_Lhand: {fileID: 568349310}
@@ -8029,6 +8031,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &300624885 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7475486761149667769, guid: c7a1ec6759a604e45b06423a1e2269ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 105197330626974330}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &305303043 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -2318970982092536850, guid: ae13480fef377d44abb755da0a3f0af5,

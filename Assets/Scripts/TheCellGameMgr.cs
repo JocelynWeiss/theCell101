@@ -212,6 +212,7 @@ public class TheCellGameMgr : MonoBehaviour
     //27= 32 Toxic room
     [HideInInspector] public AudioSource[] Audio_Bank;
     [HideInInspector] public List<AudioClip> Audio_Voices;
+    [HideInInspector] public List<AudioClip> Audio_Minutes;
     int m_playedVoice;
     float m_nextVoiceToPlay; // int seconds
     float m_nextSoundTime; // When the next random sound will be triggered
@@ -236,6 +237,7 @@ public class TheCellGameMgr : MonoBehaviour
     public GameObject m_FxDust_E;
     public GameObject m_FxDust_S;
     public GameObject m_FxDust_W;
+    public GameObject m_FxDust_Top;
 
     List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
@@ -423,6 +425,7 @@ public class TheCellGameMgr : MonoBehaviour
         m_FxDust_E.SetActive(false);
         m_FxDust_S.SetActive(false);
         m_FxDust_W.SetActive(false);
+        m_FxDust_Top.SetActive(false);
 
         // Go to the localization phase
         gameState = GameStates.Localization;
@@ -1719,10 +1722,13 @@ public class TheCellGameMgr : MonoBehaviour
             row.Add(lookupTab[from + i]);
         }
 
+        m_FxDust_Top.SetActive(false);
+
         if (onEast)
         {
             m_FxDust_E.SetActive(false); // so it will restart the fx properly
             m_FxDust_E.SetActive(true);
+            m_FxDust_Top.SetActive(true);
             lookupTab[from + 0] = row[4];
             lookupTab[from + 1] = row[0];
             lookupTab[from + 2] = row[1];
@@ -1733,6 +1739,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_FxDust_W.SetActive(false); // so it will restart the fx properly
             m_FxDust_W.SetActive(true);
+            m_FxDust_Top.SetActive(true);
             lookupTab[from + 0] = row[1];
             lookupTab[from + 1] = row[2];
             lookupTab[from + 2] = row[3];
@@ -1810,10 +1817,13 @@ public class TheCellGameMgr : MonoBehaviour
             column.Add(lookupTab[from + i * 5]);
         }
 
+        m_FxDust_Top.SetActive(false);
+
         if (onNorth)
         {
             m_FxDust_N.SetActive(false); // so it will restart the fx properly
             m_FxDust_N.SetActive(true);
+            m_FxDust_Top.SetActive(true);
             lookupTab[from + 0] = column[1];
             lookupTab[from + 5] = column[2];
             lookupTab[from + 10] = column[3];
@@ -1824,6 +1834,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             m_FxDust_S.SetActive(false); // so it will restart the fx properly
             m_FxDust_S.SetActive(true);
+            m_FxDust_Top.SetActive(true);
             lookupTab[from + 0] = column[4];
             lookupTab[from + 5] = column[0];
             lookupTab[from + 10] = column[1];
@@ -2943,10 +2954,16 @@ public class TheCellGameMgr : MonoBehaviour
         if (m_Language != GameLanguages.Undefined)
         {
             string path = "voices_";
+            string pathMinutes = "Minutes_";
+            string suffix = "fr";
             if (m_Language == GameLanguages.French)
-                path += "fr";
+                suffix = "fr";
             if (m_Language == GameLanguages.English)
-                path += "en";
+                suffix = "en";
+
+            path += suffix;
+            pathMinutes += "fr";
+            //pathMinutes += suffix; // JowTodo: When we have the corresponding languages
 
             UnityEngine.Object[] clips;
             clips = Resources.LoadAll(path, typeof(AudioClip));
@@ -2955,6 +2972,14 @@ public class TheCellGameMgr : MonoBehaviour
             {
                 Audio_Voices.Add(t as AudioClip);
                 //Debug.Log($"{Audio_Voices[Audio_Voices.Count-1]}");
+            }
+
+            clips = Resources.LoadAll(pathMinutes, typeof(AudioClip));
+            Audio_Minutes = new List<AudioClip>(clips.Length);
+            foreach (var t in clips)
+            {
+                Audio_Minutes.Add(t as AudioClip);
+                Debug.Log($"{Audio_Minutes[Audio_Minutes.Count-1]}");
             }
         }
     }

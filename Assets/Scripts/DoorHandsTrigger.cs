@@ -269,6 +269,7 @@ public class DoorHandsTrigger : MonoBehaviour
         TheCellGameMgr.instance.m_FxDust_E.SetActive(false);
         TheCellGameMgr.instance.m_FxDust_S.SetActive(false);
         TheCellGameMgr.instance.m_FxDust_W.SetActive(false);
+        TheCellGameMgr.instance.m_FxDust_Top.SetActive(false);
         TheCellGameMgr.instance.m_Console_N.SetActive(false);
         TheCellGameMgr.instance.m_Console_E.SetActive(false);
         TheCellGameMgr.instance.m_Console_S.SetActive(false);

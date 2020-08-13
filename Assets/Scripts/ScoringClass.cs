@@ -28,9 +28,17 @@ public class ScoreInfoRecord
     public List<ScoreInfo> AllScores;
 
 
-    public static int CompareByFinalScore(ScoreInfo s1, ScoreInfo s2)
+    // To sort records using Final score from min to max
+    public static int CompareByFinalScoreMinToMax(ScoreInfo s1, ScoreInfo s2)
     {
         return s1.FinalScore.CompareTo(s2.FinalScore);
+    }
+
+
+    // To sort records using Final score from max to min
+    public static int CompareByFinalScoreMaxToMin(ScoreInfo s1, ScoreInfo s2)
+    {
+        return s2.FinalScore.CompareTo(s1.FinalScore);
     }
 
 
@@ -67,17 +75,11 @@ public class ScoringClass
         Yverdon,
     }
 
-    public bool m_Testing = true;
+    public string m_fileName = "Scores.json";
     public string PPKEY_HMD_ID = "TheCell_HmdId";
     public string m_HMDid = "Dev_1";
     public bool m_IdIsSet = false;
     public ScoreInfoRecord m_AllScores = new ScoreInfoRecord();
-
-
-    public ScoringClass()
-    {
-        m_Testing = false;
-    }
 
 
     // Start is called before the first frame update
@@ -88,6 +90,8 @@ public class ScoringClass
         m_HMDid = GetHmdId();
         //TestScoreInfo();
         //TestScoreFile();
+
+        LoadScoresToJson();
     }
 
 
@@ -201,13 +205,52 @@ public class ScoringClass
     }
 
 
+    // Loading this headset scrores from file
+    public void LoadScoresToJson()
+    {
+        m_AllScores.AllScores = new List<ScoreInfo>();
+
+        string filePath;
+        filePath = System.IO.Path.Combine(Application.streamingAssetsPath, m_fileName);
+        if (System.IO.File.Exists(filePath))
+        {
+            string allLines = System.IO.File.ReadAllText(filePath);
+            m_AllScores = JsonUtility.FromJson<ScoreInfoRecord>(allLines);
+        }
+
+#if UNITY_EDITOR
+        m_AllScores.AllScores.Sort(ScoreInfoRecord.CompareByFinalScoreMinToMax);
+        string jsonDic = JsonUtility.ToJson(m_AllScores, true);
+        Debug.Log($"Scores file: {jsonDic}");
+
+        m_AllScores.AllScores.Sort(ScoreInfoRecord.CompareByFinalScoreMaxToMin);
+        jsonDic = JsonUtility.ToJson(m_AllScores, true);
+        Debug.Log($"CompInv===== \n{jsonDic}");
+#endif
+    }
+
+
+    //
+    public void SaveScoresToFile()
+    {
+        string filePath;
+        filePath = System.IO.Path.Combine(Application.streamingAssetsPath, m_fileName);
+        string jsonDic = JsonUtility.ToJson(m_AllScores, true);
+        System.IO.File.WriteAllText(filePath, jsonDic); // Automatically overwriting if access is ok
+
+#if UNITY_EDITOR
+        Debug.Log($"Saving scores to {filePath}\n{jsonDic}");
+#endif
+    }
+
+
     // Testing all scores
     void TestScoreFile()
     {
         // --1-- Load 
         m_AllScores.AllScores = new List<ScoreInfo>();
 
-        string fileName = "Scores.json";
+        string fileName = m_fileName;
         string filePath;
         filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
 
@@ -317,5 +360,31 @@ public class ScoringClass
 
         // Set in player pref
         PlayerPrefs.SetString(PPKEY_HMD_ID, m_HMDid);
+    }
+
+
+    // Add a new score to the actual list and return its ranking
+    public int AddNewScore(float gameDurInSec, int deathNb, int points, int total)
+    {
+        ScoreInfo info = new ScoreInfo();
+        info.AndroidId = m_HMDid;
+        DateTime dateUtc = System.DateTime.UtcNow;
+        double dateOA = dateUtc.ToOADate();
+        info.TimeOLEDateUTC = dateOA.ToString();
+        info.GameLength = (int)gameDurInSec;
+        info.Deaths = deathNb;
+        info.CodeBonus = points;
+        info.FinalScore = total;
+
+        m_AllScores.AllScores.Add(info);
+
+        SaveScoresToFile();
+
+        // return its ranking
+        m_AllScores.AllScores.Sort(ScoreInfoRecord.CompareByFinalScoreMaxToMin);
+        int rank = m_AllScores.AllScores.IndexOf(info) + 1;
+        Debug.Log($"Ranking: {rank} / {m_AllScores.AllScores.Count}");
+
+        return rank;
     }
 }

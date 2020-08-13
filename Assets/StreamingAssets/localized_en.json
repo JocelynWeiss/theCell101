@@ -16,6 +16,7 @@
 {"key":"time","value":"Time"},
 {"key":"score","value":"Score"},
 {"key":"deaths","value":"Deaths"},
+{"key":"rank","value":"Rank"},
 {"key":"gameOver_1","value":"\t<b>Game over<\/b><br>You didn't manage to exit within half an hour."}
 
 ]

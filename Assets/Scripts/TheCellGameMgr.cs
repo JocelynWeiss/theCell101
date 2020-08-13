@@ -1347,6 +1347,10 @@ public class TheCellGameMgr : MonoBehaviour
                             gameState = GameStates.CodeAllSet;
                             Debug.Log($"StartTime {startingTime}, end {m_EndGameTime} -> BrutScore: {brutScore}. Total: {brutScore + codePoints}");
 
+                            // Add score to current ones and save to file
+                            int finalScore = (int)brutScore + codePoints;
+                            int rank = m_Scoring.AddNewScore(gameDur, m_DeathCount, codePoints, finalScore);
+
                             // Change audio ambiance
                             if (Audio_Bank[6].isPlaying)
                             {
@@ -1388,7 +1392,8 @@ public class TheCellGameMgr : MonoBehaviour
                             string timeLabel = m_LocalizedText["time"];
                             string scoreLabel = m_LocalizedText["score"];
                             string deathsLabel = m_LocalizedText["deaths"];
-                            tmp.text = $"{timeLabel} {duration}\n{scoreLabel} {brutScore + codePoints}\n{deathsLabel} {m_DeathCount}";
+                            string rankLabel = m_LocalizedText["rank"];
+                            tmp.text = $"{timeLabel} {duration}\n{scoreLabel} {finalScore}\n{deathsLabel} {m_DeathCount}\n{rankLabel} {rank}";
                             m_AllNotes.enabled = true;
                         }
                     }
@@ -2872,8 +2877,8 @@ public class TheCellGameMgr : MonoBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 3.5f)
         {
-            water.transform.position += new Vector3(0.0f, Time.fixedDeltaTime * 0.4f, 0.0f);
-            waterStuff.transform.position += new Vector3(0.0f, Time.fixedDeltaTime * 0.4f, 0.0f);
+            water.transform.position += new Vector3(0.0f, Time.fixedDeltaTime * 0.3f, 0.0f);
+            waterStuff.transform.position += new Vector3(0.0f, Time.fixedDeltaTime * 0.3f, 0.0f);
             //Debug.Log($"raising {water.name} @ {Time.fixedTime}s.");
             yield return new WaitForFixedUpdate();
         }

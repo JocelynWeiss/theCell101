@@ -16,6 +16,7 @@
 {"key":"time","value":"Time"},
 {"key":"score","value":"Score"},
 {"key":"deaths","value":"Morts"},
+{"key":"rank","value":"Rang"},
 {"key":"gameOver_1","value":"\t<b>Fin de la partie<\/b><br>Vous n'êtes pas parvenu à sortir dans la demi-heure."}
 
 ]

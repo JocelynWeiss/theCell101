@@ -213,6 +213,8 @@ public class TheCellGameMgr : MonoBehaviour
     [HideInInspector] public AudioSource[] Audio_Bank;
     [HideInInspector] public List<AudioClip> Audio_Voices;
     [HideInInspector] public List<AudioClip> Audio_Minutes;
+    [HideInInspector] public List<bool> m_MinutesPlayed;
+    int m_nextMinutesIndex;
     int m_playedVoice;
     float m_nextVoiceToPlay; // int seconds
     float m_nextSoundTime; // When the next random sound will be triggered
@@ -1293,7 +1295,11 @@ public class TheCellGameMgr : MonoBehaviour
                         }
                     }
                 }
-                else
+            }
+
+            if ((gameState == GameStates.Running) || (gameState == GameStates.ExitFound))
+            {
+                if (current.cellType != CellTypes.Deadly)
                 {
                     // Play a voice every x minutes
                     float playVoiceEachSec = 120.0f;
@@ -1311,7 +1317,7 @@ public class TheCellGameMgr : MonoBehaviour
                     UpdateAudioManager();
                 }
             }
-            
+
             if (current.cellType == CellTypes.Exit)
             {
                 if ((gameState != GameStates.ExitFound) && (gameState != GameStates.CodeAllSet))
@@ -2976,11 +2982,14 @@ public class TheCellGameMgr : MonoBehaviour
 
             clips = Resources.LoadAll(pathMinutes, typeof(AudioClip));
             Audio_Minutes = new List<AudioClip>(clips.Length);
+            m_MinutesPlayed = new List<bool>(clips.Length);
             foreach (var t in clips)
             {
                 Audio_Minutes.Add(t as AudioClip);
-                Debug.Log($"{Audio_Minutes[Audio_Minutes.Count-1]}");
+                m_MinutesPlayed.Add(false);
+                //Debug.Log($"{Audio_Minutes[Audio_Minutes.Count-1]}");
             }
+            m_nextMinutesIndex = Audio_Minutes.Count;
         }
     }
 
@@ -3421,6 +3430,29 @@ public class TheCellGameMgr : MonoBehaviour
     void UpdateAudioManager()
     {
         float gameLength = Time.fixedTime - startingTime;
+
+        int index = m_nextMinutesIndex - 1;
+        if (index >= 0)
+        {
+            float remaining = m_MaxGameLength - gameLength;
+            int nextCountdown = m_nextMinutesIndex - 4;
+            if (nextCountdown <= 0)
+                nextCountdown = m_nextMinutesIndex;
+            else
+                nextCountdown = nextCountdown * 5;
+
+            nextCountdown *= 60; // put it in seconds
+            if ((remaining < nextCountdown) && (m_MinutesPlayed[index] == false))
+            {
+                m_MinutesPlayed[index] = true;
+                float voiceLength = Audio_Minutes[index].length;
+                m_nextSoundTime += voiceLength;
+                m_nextVoiceToPlay += voiceLength;
+                AudioSource.PlayClipAtPoint(Audio_Minutes[index], Vector3.up);
+                m_nextMinutesIndex--;
+                Debug.Log($"Playing Minutes {index} remaining {remaining / 60.0f}m, gameLength {gameLength}s. nextSoundTime {m_nextSoundTime}s");
+            }
+        }
 
         if (gameLength > m_nextSoundTime)
         {

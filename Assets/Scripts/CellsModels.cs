@@ -256,7 +256,10 @@ public class CellsModels : MonoBehaviour
             if (cur != null)
             {
                 m_Scaners = cur.GetComponentsInChildren<HandScanTrigger>();
-                LitupScanner(1);
+                int state = 1;
+                if (newType == CellsModelsType.BlindM)
+                    state = 2;
+                LitupScanner(state);
             }
             return;
         }
@@ -360,7 +363,10 @@ public class CellsModels : MonoBehaviour
         if (current != null)
         {
             m_Scaners = current.GetComponentsInChildren<HandScanTrigger>();
-            LitupScanner(1);
+            int state = 1;
+            if (newType == CellsModelsType.BlindM)
+                state = 2;
+            LitupScanner(state);
         }
         //*/
 
@@ -382,6 +388,9 @@ public class CellsModels : MonoBehaviour
         {
             col = Color.black;
         }
+
+        if (m_CurrentType == CellsModelsType.BlindM)
+            col = Color.black;
 
         foreach (HandScanTrigger scaner in m_Scaners)
         {
@@ -409,6 +418,9 @@ public class CellsModels : MonoBehaviour
         {
             col = Color.black;
         }
+
+        if (m_CurrentType == CellsModelsType.BlindM)
+            col = Color.black;
 
         foreach (HandScanTrigger scaner in m_Scaners)
         {

@@ -443,7 +443,7 @@ public class OneCellClass : MonoBehaviour
         }
 
         TheCellGameMgr.instance.m_MovingOut = false;
-        Debug.Log($"Player entering cell {name} @ {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}s, pos on chess = {idOnChess}");
+        Debug.Log($"Player entering cell {name} @ {Time.fixedTime - TheCellGameMgr.instance.GetGameStartTime()}s, pos on chess = {idOnChess}, {cellType} {cellSubType}");
     }
 
 

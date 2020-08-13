@@ -1546,7 +1546,8 @@ public class TheCellGameMgr : MonoBehaviour
             //InitDoorsScript(cell, m_NorthModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.North, true);
             m_CentreModels.SwitchOffScanner(1, CardinalPoint.North);
-            SwitchScaners(m_NorthModels, GetCellPosById(cell.cellId));
+            if (current.cellSubType != CellSubTypes.Blind)
+                SwitchScaners(m_NorthModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -1564,7 +1565,8 @@ public class TheCellGameMgr : MonoBehaviour
             //InitDoorsScript(cell, m_EastModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.East, true);
             m_CentreModels.SwitchOffScanner(1, CardinalPoint.East);
-            SwitchScaners(m_EastModels, GetCellPosById(cell.cellId));
+            if (current.cellSubType != CellSubTypes.Blind)
+                SwitchScaners(m_EastModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -1582,7 +1584,8 @@ public class TheCellGameMgr : MonoBehaviour
             //InitDoorsScript(cell, m_SouthModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.South, true);
             m_CentreModels.SwitchOffScanner(1, CardinalPoint.South);
-            SwitchScaners(m_SouthModels, GetCellPosById(cell.cellId));
+            if (current.cellSubType != CellSubTypes.Blind)
+                SwitchScaners(m_SouthModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -1600,7 +1603,8 @@ public class TheCellGameMgr : MonoBehaviour
             //InitDoorsScript(cell, m_WestModels.GetActiveModel());
             //current.EnableDoorPerCardinal(CardinalPoint.West, true);
             m_CentreModels.SwitchOffScanner(1, CardinalPoint.West);
-            SwitchScaners(m_WestModels, GetCellPosById(cell.cellId));
+            if (current.cellSubType != CellSubTypes.Blind)
+                SwitchScaners(m_WestModels, GetCellPosById(cell.cellId));
         }
         else
         {
@@ -2088,10 +2092,6 @@ public class TheCellGameMgr : MonoBehaviour
                 {
                     Audio_Bank[23].Play();
                 }
-                m_CentreModels.SwitchOffScanner(0, CardinalPoint.North);
-                m_CentreModels.SwitchOffScanner(0, CardinalPoint.East);
-                m_CentreModels.SwitchOffScanner(0, CardinalPoint.South);
-                m_CentreModels.SwitchOffScanner(0, CardinalPoint.West);
             }
             else
             {

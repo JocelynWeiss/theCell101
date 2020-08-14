@@ -270,6 +270,7 @@ public class OneCellClass : MonoBehaviour
 
         TheCellGameMgr.instance.m_ViewLeft = 2;
 
+        /*
         CellsModels curModel = TheCellGameMgr.instance.m_CentreModels;
         GameObject shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.North, curModel);
         shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.North];
@@ -279,6 +280,21 @@ public class OneCellClass : MonoBehaviour
         shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.South];
         shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.West, curModel);
         shutter.transform.localPosition = curModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.West];
+
+        CellsModels tmpModel = TheCellGameMgr.instance.m_NorthModels;
+        if (tmpModel != null)
+        {
+            shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.South, tmpModel);
+            shutter.transform.localPosition = tmpModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.South];
+        }
+        tmpModel = TheCellGameMgr.instance.m_SouthModels;
+        if (tmpModel != null)
+        {
+            shutter = TheCellGameMgr.instance.GetShutterPerCardinal(TheCellGameMgr.CardinalPoint.North, tmpModel);
+            shutter.transform.localPosition = tmpModel.m_ShutterOriginPos[(int)TheCellGameMgr.CardinalPoint.North];
+        }
+        */
+
 
         int idOnChess = TheCellGameMgr.instance.playerCellId;
         if ((m_TunnelEnabled == false) && (cellSubType != TheCellGameMgr.CellSubTypes.Vortex))// don't activate consoles if tunnel is enabled or if in Vortex room

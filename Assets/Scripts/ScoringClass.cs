@@ -80,6 +80,7 @@ public class ScoringClass
     public string m_HMDid = "Dev_1";
     public bool m_IdIsSet = false;
     public ScoreInfoRecord m_AllScores = new ScoreInfoRecord();
+    //public bool m_TestLoading = false;
 
 
     // Start is called before the first frame update
@@ -211,12 +212,20 @@ public class ScoringClass
         m_AllScores.AllScores = new List<ScoreInfo>();
 
         string filePath;
-        filePath = System.IO.Path.Combine(Application.streamingAssetsPath, m_fileName);
+        //filePath = System.IO.Path.Combine(Application.streamingAssetsPath, m_fileName); // Android: This would try to access the apk
+        filePath = System.IO.Path.Combine(Application.persistentDataPath, m_fileName); // Always use this one on all platform
         if (System.IO.File.Exists(filePath))
         {
             string allLines = System.IO.File.ReadAllText(filePath);
             m_AllScores = JsonUtility.FromJson<ScoreInfoRecord>(allLines);
+            //m_TestLoading = true;
         }
+        /*
+        else
+        {
+            AddNewScore(0.0f, 0, 0, 1000);
+        }
+        //*/
 
 #if UNITY_EDITOR
         m_AllScores.AllScores.Sort(ScoreInfoRecord.CompareByFinalScoreMinToMax);
@@ -234,12 +243,20 @@ public class ScoringClass
     public void SaveScoresToFile()
     {
         string filePath;
-        filePath = System.IO.Path.Combine(Application.streamingAssetsPath, m_fileName);
+        filePath = System.IO.Path.Combine(Application.persistentDataPath, m_fileName);
         string jsonDic = JsonUtility.ToJson(m_AllScores, true);
         System.IO.File.WriteAllText(filePath, jsonDic); // Automatically overwriting if access is ok
+        /*
+        using (StreamWriter sw = File.CreateText(filePath))
+        {
+            sw.WriteLine(jsonDic);
+            Debug.Log($"Saving scores to {filePath}\n{jsonDic}");
+            sw.Close();
+        }
+        */
 
 #if UNITY_EDITOR
-        Debug.Log($"Saving scores to {filePath}\n{jsonDic}");
+        //Debug.Log($"Saving scores to {filePath}\n{jsonDic}");
 #endif
     }
 
@@ -252,7 +269,7 @@ public class ScoringClass
 
         string fileName = m_fileName;
         string filePath;
-        filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
+        filePath = System.IO.Path.Combine(Application.persistentDataPath, fileName);
 
         /*
         UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(filePath);

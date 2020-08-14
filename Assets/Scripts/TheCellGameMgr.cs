@@ -398,7 +398,7 @@ public class TheCellGameMgr : MonoBehaviour
         m_basicCanvas.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = dirTxt;
         m_basicCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = adbDeviceId;
         */
-        //m_basicCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = m_Scoring.m_HMDid;
+        //m_basicCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = $"{m_Scoring.m_HMDid} load {m_Scoring.m_TestLoading}";
         //m_basicCanvas.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = $"Scores Nb: {m_Scoring.m_AllScores.AllScores.Count}";
 
         // Init hands
@@ -894,8 +894,8 @@ public class TheCellGameMgr : MonoBehaviour
         //--- set lighting ---
 
         // Activate the minimap in english only
-        if (m_Language == GameLanguages.English)
-            m_ShowMiniMap = true;
+        //if (m_Language == GameLanguages.English)
+          //  m_ShowMiniMap = true;
         ShowMiniMap(m_ShowMiniMap);
 
         // Reset water levels
@@ -2410,6 +2410,7 @@ public class TheCellGameMgr : MonoBehaviour
         {
             model.m_ShutterOriginPos[(int)point] = ret.transform.localPosition;
             model.m_ShutterPosSaved[(int)point] = true;
+            //Debug.Log($"->->->{model.name} {model.m_CurrentType} {ret.name} on cardinal {point}, {model.m_ShutterOriginPos[(int)point]}");
         }
         
         return ret;
@@ -2445,8 +2446,8 @@ public class TheCellGameMgr : MonoBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
         {
-            front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
-            back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
+            front.transform.localPosition += Vector3.up * Time.fixedDeltaTime * 30.0f;
+            back.transform.localPosition += Vector3.up * Time.fixedDeltaTime * 30.0f;
 
             Vector3 forward = lockerWheel.GetForwardToDoor();
             lockerWheel.transform.RotateAround(lockerWheel.transform.position, forward, Time.fixedDeltaTime * 100.0f);
@@ -2454,12 +2455,16 @@ public class TheCellGameMgr : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is open.");
-        StartCoroutine(CloseShutters(point, front, back, adjModel, lockerWheel));
+
+        Vector3 frontOrigin = m_CentreModels.m_ShutterOriginPos[(int)point];
+        CardinalPoint invCard = GetOppositeCardinalPoint(point);
+        Vector3 backOrigin = adjModel.m_ShutterOriginPos[(int)invCard];
+        StartCoroutine(CloseShutters(point, front, back, adjModel, lockerWheel, frontOrigin, backOrigin));
     }
 
 
     // Close the shutters after x sec
-    private IEnumerator CloseShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel, HandsPullWheel lockerWheel)
+    private IEnumerator CloseShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels adjModel, HandsPullWheel lockerWheel, Vector3 frontOrigin, Vector3 backOrigin)
     {
         yield return new WaitForSecondsRealtime(5.0f);
 
@@ -2470,9 +2475,6 @@ public class TheCellGameMgr : MonoBehaviour
         float duration = 2.0f;
         float startTime = Time.fixedTime;
         float endTime = startTime + duration;
-        Vector3 frontOrigin = m_CentreModels.m_ShutterOriginPos[(int)point];
-        CardinalPoint invCard = GetOppositeCardinalPoint(point);
-        Vector3 backOrigin = adjModel.m_ShutterOriginPos[(int)invCard];
 
         while (Time.fixedTime < endTime)
         {
@@ -2562,12 +2564,12 @@ public class TheCellGameMgr : MonoBehaviour
         {
             OneCellClass cell = GetCurrentCell();
             HandsPullWheel wheel = cell.GetWheelByCardinal(cardinal);
-            StartCoroutine(AnimateShutters(cardinal, front, back, model, wheel));
+            StartCoroutine(AnimateShutters(cardinal, m_CentreModels, front, back, model, wheel));
         }
     }
 
 
-    IEnumerator AnimateShutters(CardinalPoint point, GameObject front, GameObject back, CellsModels backModel, HandsPullWheel lockerWheel)
+    IEnumerator AnimateShutters(CardinalPoint point, CellsModels frontModel, GameObject front, GameObject back, CellsModels backModel, HandsPullWheel lockerWheel)
     {
         if ((front == null) || (back == null))
         {
@@ -2580,8 +2582,7 @@ public class TheCellGameMgr : MonoBehaviour
         Audio_OpenShutters.Play();
         //--- Snd ---
 
-        //Vector3 frontPos = front.transform.localPosition;
-        Vector3 frontPos = m_CentreModels.m_ShutterOriginPos[(int)point];
+        Vector3 frontPos = frontModel.m_ShutterOriginPos[(int)point];
         CardinalPoint invCard = GetOppositeCardinalPoint(point);
         Vector3 backPos = backModel.m_ShutterOriginPos[(int)invCard];
         //Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} pos {frontPos}");
@@ -2589,15 +2590,17 @@ public class TheCellGameMgr : MonoBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 2.0f)
         {
-            front.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
-            back.transform.position += Vector3.up * Time.fixedDeltaTime * 0.3f;
+            front.transform.localPosition += Vector3.up * Time.fixedDeltaTime * 30.0f;
+            back.transform.localPosition += Vector3.up * Time.fixedDeltaTime * 30.0f;
 
             Vector3 forward = lockerWheel.GetForwardToDoor();
             lockerWheel.transform.RotateAround(lockerWheel.transform.position, forward, Time.fixedDeltaTime * 100.0f);
 
             yield return new WaitForFixedUpdate();
         }
-        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} is going back to {frontPos}");
+#if UNITY_EDITOR
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {front.name} back to {frontPos} {point} {frontModel.m_CurrentType}, {back.name} to {backPos} backModel {invCard} {backModel.m_CurrentType}");
+#endif
         front.transform.localPosition = frontPos;
         back.transform.localPosition = backPos;
     }

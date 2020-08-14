@@ -399,6 +399,7 @@ public class TheCellGameMgr : MonoBehaviour
         m_basicCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = adbDeviceId;
         */
         //m_basicCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = m_Scoring.m_HMDid;
+        //m_basicCanvas.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = $"Scores Nb: {m_Scoring.m_AllScores.AllScores.Count}";
 
         // Init hands
         m_hands[0].handType = OVRHand.Hand.HandLeft;
@@ -2838,7 +2839,7 @@ public class TheCellGameMgr : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"[ExitHandsTrigger] Awake. {transform.name}, model: {hatchModel.name} couldn't be found...");
+            Debug.LogWarning($"[ExitHandsTrigger] Awake. {transform.name}, hatchModel couldn't be found...");
             yield return 0;
         }
 

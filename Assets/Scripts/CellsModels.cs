@@ -411,7 +411,7 @@ public class CellsModels : MonoBehaviour
         bool isOn = false;
         if (state == 1)
         {
-            col = Color.green * 2.0f;
+            col = Color.green;
             isOn = true;
         }
         else if (state == 2)

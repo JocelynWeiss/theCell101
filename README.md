@@ -1,13 +1,13 @@
 # theCell101
 To manage The Cell...
 
-This is using Unity 2019.4.3f1
+This is using Unity 2019.4.8f1
 
 ## Player Settings
 Company Name: StudioHG  
 Product Name: TheCell  
 Package Name: com.StudioHG.TheCell  
-Minimum API Level: 19  
+Minimum API Level: 23  
 Scripting Backend: IL2CPP  
 Api Compatibility Level: .NET 4.x  
 Optimize Mesh Data: Off  

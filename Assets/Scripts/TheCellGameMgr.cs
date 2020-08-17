@@ -133,7 +133,7 @@ public class TheCellGameMgr : MonoBehaviour
     [ViewOnly] public int playerCellId = 12; // in which place on the chess the player is. Match the lookup table.
     GameObject playerSphere = null; // a sphere to represent where the player is on the board.
     [ViewOnly] public Canvas m_basicCanvas = null;
-	System.Random m_RandomBis = new System.Random();
+    System.Random m_RandomBis = new System.Random();
     static ScoringClass m_Scoring;
     public GameObject m_HmdSettings;
 
@@ -244,7 +244,7 @@ public class TheCellGameMgr : MonoBehaviour
     List<GameObject> m_ScreenCard; // The list of all small cards on the plan's room screen
 
     //--- Grabbables ---
-    GameObject m_GroupElements;
+    [ViewOnly] public GameObject m_GroupElements;
     GameObject m_ElementPrefab;
     private List<GameObject> m_ElemCubes = new List<GameObject>();
     public int m_ElemCubeNb = 16;

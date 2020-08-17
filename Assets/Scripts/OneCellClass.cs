@@ -691,8 +691,8 @@ public class OneCellClass : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(delay);
 
-        if (cellType == TheCellGameMgr.CellTypes.Exit)
-            enable = false; // Deactivate doors in exit room
+        if ((cellType == TheCellGameMgr.CellTypes.Exit) && (cardinal == TheCellGameMgr.CardinalPoint.South))
+          enable = false; // Deactivate south door in exit room
 
         if ((cellSubType == TheCellGameMgr.CellSubTypes.Lasers) || (cellSubType == TheCellGameMgr.CellSubTypes.Fire))
         {

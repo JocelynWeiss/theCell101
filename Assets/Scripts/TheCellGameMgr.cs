@@ -1339,6 +1339,12 @@ public class TheCellGameMgr : MonoBehaviour
                             float gameDur = m_EndGameTime - startingTime;
                             float brutScore = Math.Max(0.0f, m_MaxGameLength - gameDur);
 
+                            // Hide consoles
+                            m_Console_N.SetActive(false);
+                            m_Console_E.SetActive(false);
+                            m_Console_S.SetActive(false);
+                            m_Console_W.SetActive(false);
+
                             GameObject txt1 = m_basicCanvas.transform.GetChild(1).gameObject;
                             txt1.GetComponent<TextMeshProUGUI>().text = $"Time: {gameDur}\nBrutScore: {brutScore}";
                             //count code points

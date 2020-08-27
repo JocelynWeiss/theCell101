@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: b97bdd86cd9c75a42bb37eae68b241a8
+guid: d2ded0284e325764b8d589c6de7e50dd
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fond_mat
+    second: {fileID: 2100000, guid: b147d078c62f5004bbaba1feaf40cbb1, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

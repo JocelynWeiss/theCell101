@@ -401,7 +401,6 @@ public class OneCellClass : MonoBehaviour
                 StartCoroutine(StartDelayedFx());
                 break;
             case TheCellGameMgr.CellSubTypes.Fire:
-                TheCellGameMgr.instance.Audio_Bank[26].Play();
                 StartCoroutine(StartDelayedFx());
                 break;
             case TheCellGameMgr.CellSubTypes.Gaz:
@@ -504,6 +503,7 @@ public class OneCellClass : MonoBehaviour
         switch (cellSubType)
         {
             case TheCellGameMgr.CellSubTypes.Fire:
+                TheCellGameMgr.instance.Audio_Bank[26].Play();
                 TheCellGameMgr.instance.m_FxFlame.SetActive(true);
                 break;
             case TheCellGameMgr.CellSubTypes.Lasers:

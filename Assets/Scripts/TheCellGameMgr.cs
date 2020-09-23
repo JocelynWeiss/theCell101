@@ -1395,7 +1395,7 @@ public class TheCellGameMgr : MonoBehaviour
                             tmp.fontSize = 0.35f;
                             tmp.color = Color.green;
                             string duration = Mathf.Floor(gameDur / 60.0f).ToString("00") + "m";
-                            duration += (gameDur % 60.0f).ToString("00") + "s";
+                            duration += Mathf.Round(gameDur % 60.0f).ToString("00") + "s";
                             string timeLabel = m_LocalizedText["time"];
                             string scoreLabel = m_LocalizedText["score"];
                             string deathsLabel = m_LocalizedText["deaths"];

@@ -210,6 +210,7 @@ public class TheCellGameMgr : MonoBehaviour
     //25= 24 Tunnel effect
     //26= 25 Fire room
     //27= 32 Toxic room
+    //28= Hit metal
     [HideInInspector] public AudioSource[] Audio_Bank;
     [HideInInspector] public List<AudioClip> Audio_Voices;
     [HideInInspector] public List<AudioClip> Audio_Minutes;
@@ -1368,6 +1369,7 @@ public class TheCellGameMgr : MonoBehaviour
                             // Change exit colour					 
                             MeshRenderer exitRender = m_CentreModels.m_ExitCell.transform.Find("trap_exit/exit_panel").gameObject.GetComponent<MeshRenderer>();
                             exitRender.material.SetColor("_EmissionColor", Color.green * 2.0f);
+                            StartCoroutine(RotateExitLock());
                             StartCoroutine(OpenExitHatch());
 
                             OneCellClass exitCell = GetCurrentCell();
@@ -2839,6 +2841,8 @@ public class TheCellGameMgr : MonoBehaviour
 
     private IEnumerator OpenExitHatch()
     {
+        yield return new WaitForSecondsRealtime(1.5f); // wait for the lock to open
+
         GameObject hatchModel = null;
         GameObject hatch = m_CentreModels.m_ExitCell.transform.Find("trap_exit/door_exit").gameObject;
         if (hatch != null)
@@ -2864,6 +2868,36 @@ public class TheCellGameMgr : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {hatchModel.name} is open.");
+    }
+
+
+    // Rotate the hatch lock
+    private IEnumerator RotateExitLock()
+    {
+        GameObject lockWheel = m_CentreModels.m_ExitCell.transform.Find("trap_exit/door_exit/lock_exit").gameObject;
+        if (lockWheel != null)
+        {
+            Debug.Log($"lockModel: {lockWheel.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"couldn't be found lockModel...");
+            yield return 0;
+        }
+
+        //--- Snd ---
+        Audio_Bank[28].transform.SetParent(lockWheel.transform);
+        Audio_Bank[28].Play();
+        //--- Snd ---
+
+        float startTime = Time.time;
+        while (Time.time - startTime < 2.0f)
+        {
+            float dur = Time.time - startTime + 1.0f;
+            lockWheel.transform.RotateAround(lockWheel.transform.position, lockWheel.transform.forward, Time.deltaTime * -90.0f * dur);
+            yield return new WaitForFixedUpdate();
+        }
+        Debug.Log($"[GameMgr][{Time.fixedTime - startingTime}s] {lockWheel.name} is open.");
     }
 
 

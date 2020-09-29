@@ -81,6 +81,7 @@ public class ScoringClass
     public bool m_IdIsSet = false;
     public ScoreInfoRecord m_AllScores = new ScoreInfoRecord();
     //public bool m_TestLoading = false;
+    const string m_scoreUrlRoute = "http://studio-hg.ch/testRoutes.php/score";
 
 
     // Start is called before the first frame update
@@ -119,7 +120,8 @@ public class ScoringClass
         Debug.Log($"===== ScoringInfo ===== \n{text}");
 
         //TheCellGameMgr.instance.StartCoroutine(SendScore("https://helvetia-games-shop.ch/service", text));
-        TheCellGameMgr.instance.StartCoroutine(SendScore("https://henigma.ch/the-cell-scoring/", text)); // sur WordPress
+        //TheCellGameMgr.instance.StartCoroutine(SendScore("https://henigma.ch/the-cell-scoring/", text)); // sur WordPress
+        TheCellGameMgr.instance.StartCoroutine(SendScore(m_scoreUrlRoute, text)); // sur studio-hg/score
 
         // Get socres after x sec
         //TheCellGameMgr.instance.StartCoroutine(GetScore("https://helvetia-games-shop.ch/service/ScoreInfo", 3.0f));
@@ -395,6 +397,12 @@ public class ScoringClass
 
         m_AllScores.AllScores.Add(info);
 
+        // Send new score to server
+        ScoreCommand cmd = new ScoreCommand(info);
+        string text = JsonUtility.ToJson(cmd, false);
+        TheCellGameMgr.instance.StartCoroutine(SendScore(m_scoreUrlRoute, text));
+
+        // Store to local file
         SaveScoresToFile();
 
         // return its ranking

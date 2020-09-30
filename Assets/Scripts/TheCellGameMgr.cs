@@ -223,6 +223,7 @@ public class TheCellGameMgr : MonoBehaviour
     public List<AudioClip> m_AudioRandomSounds;
 
     public bool m_ShowMiniMap = true;
+    public int m_GameDifficulty = 1; // 1->Normal 2->Hard
 
     public ParticleSystem m_FxVentilo;
     public GameObject m_FxTopSteam;
@@ -683,8 +684,16 @@ public class TheCellGameMgr : MonoBehaviour
                 if (effectCells.Contains(id))
                 {
                     int index = effectCells.IndexOf(id);
-                    cell.InitCell(CellTypes.Effect, index, aRndNb);
-                    continue;
+
+                    if ((m_GameDifficulty == 2) && (index == (int)CellSubTypes.Screen))
+                    {
+                        Debug.Log($"m_GameDifficulty {m_GameDifficulty} = No screen room in hard mode!");
+                    }
+                    else
+                    {
+                        cell.InitCell(CellTypes.Effect, index, aRndNb);
+                        continue;
+                    }
                 }
 
                 // Choose an exit

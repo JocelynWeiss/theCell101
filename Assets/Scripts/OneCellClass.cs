@@ -131,6 +131,11 @@ public class OneCellClass : MonoBehaviour
                     ret = Color.grey;
                     break;
                 }
+                else if (cellSubType == TheCellGameMgr.CellSubTypes.Screen)
+                {
+                    ret = new Color(1.0f, 0.5f, 0.1f);
+                    break;
+                }
                 ret = Color.yellow;
                 break;
             case TheCellGameMgr.CellTypes.Deadly:
